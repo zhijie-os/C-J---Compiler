@@ -6,6 +6,14 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <fstream>
+
+
+
+extern int num_error;
+extern int line_num;
+
+extern FlexLexer* lexer;
 
 enum Token_Type{
     ID=1,
@@ -161,32 +169,40 @@ public:
     }
 };
 
+
+
+extern std::vector<Token> tokens_vector;
+
+
+
 void error()
 {
     std::cerr << "warning: ignoring bad character at or near line " << line_num << std::endl;
     num_error++;
     if(num_error>=10)
     {
-        std::cerr << "Too many errors... Abort... << std::endl;
-        exit(FAIL_FAILURE);
+        std::cerr << "Too many errors... Abort..." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 
 void string_error()
 {
     std::cerr << "error: string missing closing quote at or near line " << line_num << std::endl;
-    exit(FAIL_FAILURE);
+    exit(EXIT_FAILURE);
 }
 
 
-void scan_general()
+void scan_general(Token_Type type)
 {
-    tokens.push_back(Token(STRING,yytext,line_num));
+    tokens.push_back(Token(type,lexer->YYText(),line_num));
 }
 
-void scan_reserved(Type type)
+void scan_reserved(Token_Type type)
 {
     tokens.push_back(Token(type,line_num));
 }
+
+
 
 #endif
