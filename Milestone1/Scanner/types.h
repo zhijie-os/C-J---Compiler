@@ -161,5 +161,32 @@ public:
     }
 };
 
+void error()
+{
+    std::cerr << "warning: ignoring bad character at or near line " << line_num << std::endl;
+    num_error++;
+    if(num_error>=10)
+    {
+        std::cerr << "Too many errors... Abort... << std::endl;
+        exit(FAIL_FAILURE);
+    }
+}
+
+void string_error()
+{
+    std::cerr << "error: string missing closing quote at or near line " << line_num << std::endl;
+    exit(FAIL_FAILURE);
+}
+
+
+void scan_general()
+{
+    tokens.push_back(Token(STRING,yytext,line_num));
+}
+
+void scan_reserved(Type type)
+{
+    tokens.push_back(Token(type,line_num));
+}
 
 #endif

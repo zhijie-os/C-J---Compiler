@@ -32,7 +32,7 @@ number                                  {digit}+
 <COMMENT><<EOF>>                        {BEGIN(0);}
 
 "\""                                    {BEGIN(STRING);}
-<STRING>(\\.|[^"\\\r\r<<EOF>>])*        {scan_string();}
+<STRING>(\\.|[^"\\\r\r<<EOF>>])*        {scan_general(STRING);}
 <STRING>"\""                            {BEGIN(0);}
 <STRING>[\r\n]                          {string_error();}
 <STRING><<EOF>>                         {string_error();}
@@ -47,33 +47,6 @@ true
 
 %%
 
-void error()
-{
-    std::cerr << "warning: ignoring bad character at or near line " << line_num << std::endl;
-    num_error++;
-    if(num_error>=10)
-    {
-        std::cerr << "Too many errors... Abort... << std::endl;
-        exit(FAIL_FAILURE);
-    }
-}
-
-void string_error()
-{
-    std::cerr << "error: string missing closing quote at or near line " << line_num << std::endl;
-    exit(FAIL_FAILURE);
-}
-
-
-void scan_string()
-{
-    tokens.push_back(Token(STRING,yytext,line_num));
-}
-
-void scan_reserved(Type type)
-{
-
-}
 
 
 int main(int argc, char *argv[])
