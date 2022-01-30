@@ -2062,6 +2062,7 @@ int main(int argc, char *argv[])
     yylex();
 
     print_tokens();
+    free(tokens);
 }
 
 

@@ -264,7 +264,7 @@ void print_tokens()
 
     for(int i=0;i<num_tokens;i++)
     {
-        if(tokens[i].token_name = STRING)
+        if(tokens[i].token_name == STRING)
             print_string(i);
         else
             print_general(i);
