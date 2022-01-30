@@ -114,18 +114,160 @@ void scan_reserved(enum TOKEN_NAME tok_n)
     struct TOKEN tk;
     tk.token_name = tok_n;
     tk.attribute = "None"; 
-    tk.attr_length = 0;
+    tk.attr_length = 4;
     tk.line = line_num; 
 
     tokens[num_tokens] = tk;
     num_tokens++;
 }
 
+
+
+void print_string(int index)
+{
+    int length = tokens[index].attr_length;
+    char buff[length+1];
+    memset(buff,0,length+1);
+
+    int j=0;
+    for(int i=0;i<length;i++)
+    {
+        if(tokens[index].attribute[i]!='\0')
+        {
+            buff[j]=tokens[index].attribute[i];
+            j++;
+        }
+    }
+
+    printf("Token(string, %d, %s) ",tokens[index].line, buff);
+}
+
+void print_general(int index)
+{
+    int length = tokens[index].attr_length;
+    char name[20];
+    char attr[length+1];
+    memset(name,0,20);
+    memset(attr,0,length+1);
+    strncpy(attr,tokens[index].attribute,length);
+
+    switch(tokens[index].token_name)
+    {
+        case ID:
+            strcpy(name,"id");
+            break;
+        case NUMBER:
+            strcpy(name,"number");
+            break;
+        case TRUE:
+            strcpy(name,"true");
+            break;
+        case FALSE:
+            strcpy(name,"false");
+            break;  
+        case BOOLEAN:
+            strcpy(name,"boolean");
+            break;  
+        case INT:
+            strcpy(name,"int");
+            break;  
+        case VOID:
+            strcpy(name,"void");
+            break;  
+        case IF:
+            strcpy(name,"if");
+            break;  
+        case ELSE:
+            strcpy(name,"else");
+            break;  
+        case WHILE:
+            strcpy(name,"while");
+            break;  
+        case BREAK:
+            strcpy(name,"break");
+            break;  
+        case RETURN:
+            strcpy(name,"return");
+            break;  
+        case OP_ADD:
+            strcpy(name,"+");
+            break;  
+        case OP_SUB:
+            strcpy(name,"-");
+            break;  
+        case OP_MUL:
+            strcpy(name,"*");
+            break;  
+        case OP_DIV:
+            strcpy(name,"/");
+            break;  
+        case OP_MOD:
+            strcpy(name,"%");
+            break;  
+        case OP_LT:
+            strcpy(name,"<");
+            break; 
+        case OP_GT:
+            strcpy(name,">");
+            break; 
+        case OP_LE:
+            strcpy(name,"<=");
+            break; 
+        case OP_GE:
+            strcpy(name,">=");
+            break; 
+        case OP_EQ:
+            strcpy(name,"=");
+            break;
+        case OP_NE:
+            strcpy(name,"!=");
+            break; 
+        case OP_ASSIGN:
+            strcpy(name,"=");
+            break; 
+        case OP_NOT:
+            strcpy(name,"!");
+            break; 
+        case OP_AND:
+            strcpy(name,"&&");
+            break; 
+        case OP_OR:
+            strcpy(name,"||");
+            break; 
+        case L_PAR:
+            strcpy(name,"(");
+            break; 
+        case R_PAR:
+            strcpy(name,")");
+            break; 
+        case L_BRA:
+            strcpy(name,"{");
+            break;  
+        case R_BRA:
+            strcpy(name,"}");
+            break; 
+        case SMCOL:
+            strcpy(name,";");
+            break; 
+        case COMMA:
+            strcpy(name,",");
+            break;
+    }
+
+    printf("Token(%s, %d, %s) ", name ,tokens[index].line, attr);
+}
+
 void print_tokens()
 {
+
+
+
     for(int i=0;i<num_tokens;i++)
     {
-        printf("%d\n",tokens[i].token_name);
+        if(tokens[i].token_name = STRING)
+            print_string(i);
+        else
+            print_general(i);
     }
 }
 
