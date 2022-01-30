@@ -139,7 +139,7 @@ void print_string(int index)
         }
     }
 
-    printf("Token(string, %d, %s) ",tokens[index].line, buff);
+    printf("Token(string, %d, %s)",tokens[index].line, buff);
 }
 
 void print_general(int index)
@@ -254,21 +254,23 @@ void print_general(int index)
             break;
     }
 
-    printf("Token(%s, %d, %s) ", name ,tokens[index].line, attr);
+    printf("Token(%s, %d, %s)", name ,tokens[index].line, attr);
 }
 
+// print every tokens at the end
 void print_tokens()
 {
-
-
-
+    printf("[");
     for(int i=0;i<num_tokens;i++)
     {
         if(tokens[i].token_name == STRING)
             print_string(i);
         else
             print_general(i);
+        if(i<num_tokens-1)
+            printf(", ");
     }
+    printf("]\n");
 }
 
 

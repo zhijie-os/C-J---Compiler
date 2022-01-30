@@ -33,17 +33,19 @@ number  {digit}+
 "\""                                    {BEGIN(STRING);}
 <STRING>(\\.|[^"\\\r\n<<EOF>>])*        {scan_general(STRING);}
 <STRING>"\""                            {BEGIN(0);}
-<STRING>[\r\n]                          {error_string();}
-<STRING><<EOF>>                         {error_string();}
+<STRING>\n                              {printf("LF");error_string();}
+<STRING>\r                              {printf("CR");error_string();}
+<STRING><<EOF>>                         {printf("EOF");error_string();}
 
 
 "//"                                    {BEGIN(COMMENT);}
 <COMMENT>[^\r\n]                        {/* eats up the comment */};
-<COMMENT>[\r\n<<EOF>>]                  {BEGIN(0);}
+<COMMENT>\n                             {line_num++;BEGIN(0);}
+<COMMENT>[\r<<EOF>>]                    {BEGIN(0);}
 
 
 
-\n          {++line_num;}
+\n          {line_num++;}
 {ws}        {/* ignore whitespaces */}
 true        {scan_reserved(TRUE);}
 false       {scan_reserved(FALSE);}
@@ -106,7 +108,8 @@ int main(int argc, char *argv[])
 
     yylex();
 
-    print_tokens();
+    if(num_tokens>0)
+        print_tokens();
     free(tokens);
 }
 
