@@ -5,4 +5,4 @@ lex.yy.c: scanner.l
 	flex scanner.l
 
 clean: 
-	rm *.yy.c
+	rm *.yy.c scanner

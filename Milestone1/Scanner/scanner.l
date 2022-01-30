@@ -1,7 +1,7 @@
 %option noyywrap
 
 %{
-    #include "types.h"
+    #include "scanner.h"
 
     int num_error=0;
     int line_num=1;

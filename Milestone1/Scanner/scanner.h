@@ -1,5 +1,12 @@
-#ifndef TYPES_H
-#define TYPES_H
+/**
+ * @author Zhijie Xia
+ * @date 2022-01-29, Winter 2022
+ * @brief scanner for J--
+*/
+
+
+#ifndef SCANNER_H
+#define SCANNER_H
 
 
 #include <stdio.h>
@@ -9,9 +16,14 @@
 
 extern int num_error;
 extern int line_num;
+
+// number of tokens in the array
 extern int num_tokens;
+// the size of the array which contains every token
 extern int array_size;
 
+
+// enum class for differentiating different token types
 enum TOKEN_NAME
 {
     ID = 1,
@@ -51,6 +63,7 @@ enum TOKEN_NAME
 };
 
 
+// Token struct, looks like <token name, attribute, line number> 
 struct TOKEN{
     enum TOKEN_NAME token_name;
     char *attribute;
@@ -62,6 +75,7 @@ struct TOKEN{
 extern struct TOKEN *tokens;
 
 
+// double the array size 
 void array_doubling()
 {
     // double the size of the array
@@ -69,6 +83,7 @@ void array_doubling()
     tokens = (struct TOKEN *)realloc(tokens, array_size*sizeof(struct TOKEN));
 }
 
+// scanner counters an error, ignore if the total number of errors is acceptable; otherwise, abort;
 void error_general()
 {
     fprintf(stderr,"warning: ignoring bad character at or near line %d \n",line_num);
@@ -80,51 +95,71 @@ void error_general()
     }
 }
 
+// scanner counters an error in string which is unrecoverable, abort.
 void error_string()
 {
     fprintf(stderr,"error: string missing closing quote at or near line %d\n",line_num);
     exit(EXIT_FAILURE);
 }
 
+
+// scanner scans a non-string token
 void scan_general(enum TOKEN_NAME tok_n)
 {
+    // check if the array size is big enough to append 
     if(num_tokens >= array_size)
     {
+        // if not, double the array size
         array_doubling();
     }
 
+
+    // construct token with global variables
     struct TOKEN tk;
     tk.token_name = tok_n;
     tk.attribute = yytext;
     tk.attr_length = yyleng; 
     tk.line = line_num; 
 
+    // add the token into the array
     tokens[num_tokens] = tk;
+
+    // increase array size
     num_tokens++;
 }
 
 
 void scan_reserved(enum TOKEN_NAME tok_n)
 {
+
+    // check if the array size is big enough to append 
     if(num_tokens >= array_size)
     {
+        // if not, double the array size
         array_doubling();
     }
 
+
+    // construct token with global variables
     struct TOKEN tk;
     tk.token_name = tok_n;
     tk.attribute = "None"; 
     tk.attr_length = 4;
     tk.line = line_num; 
 
+
+    // add the token into the array
     tokens[num_tokens] = tk;
+
+    // increase array size
     num_tokens++;
 }
 
 
-
+// print string token on stdout (handles \0)
 void print_string(int index)
 {
+    // create buff for printable string
     int length = tokens[index].attr_length;
     char buff[length+1];
     memset(buff,0,length+1);
@@ -132,6 +167,7 @@ void print_string(int index)
     int j=0;
     for(int i=0;i<length;i++)
     {
+        // if char is not null, append into buff
         if(tokens[index].attribute[i]!='\0')
         {
             buff[j]=tokens[index].attribute[i];
@@ -139,11 +175,13 @@ void print_string(int index)
         }
     }
 
+    // print printable string
     printf("Token(string, %d, %s)",tokens[index].line, buff);
 }
 
 void print_general(int index)
 {
+    // name holds the token's "token name", attr holds the token's "attribute"
     int length = tokens[index].attr_length;
     char name[20];
     char attr[length+1];
@@ -151,6 +189,7 @@ void print_general(int index)
     memset(attr,0,length+1);
     strncpy(attr,tokens[index].attribute,length);
 
+    // find the right token_name
     switch(tokens[index].token_name)
     {
         case ID:

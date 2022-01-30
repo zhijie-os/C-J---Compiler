@@ -513,7 +513,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "scanner.l"
 #line 4 "scanner.l"
-    #include "types.h"
+    #include "scanner.h"
 
     int num_error=0;
     int line_num=1;
