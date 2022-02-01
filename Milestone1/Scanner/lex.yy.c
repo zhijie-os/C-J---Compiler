@@ -2087,6 +2087,7 @@ int main(int argc, char *argv[])
 
     if(num_tokens>0)
         print_tokens();
+    free_attributes();
     free(tokens);
 }
 

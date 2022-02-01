@@ -314,4 +314,13 @@ void print_tokens()
 }
 
 
+void free_attributes()
+{
+     for(int i=0;i<num_tokens;i++)
+    {
+        free(tokens[i].attribute);
+    }
+}
+
+
 #endif
