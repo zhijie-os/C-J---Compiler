@@ -117,7 +117,8 @@ void scan_general(enum TOKEN_NAME tok_n)
     // construct token with global variables
     struct TOKEN tk;
     tk.token_name = tok_n;
-    tk.attribute = yytext;
+    tk.attribute = (char*)malloc(yyleng);
+    strncpy(tk.attribute,yytext,yyleng);
     tk.attr_length = yyleng; 
     tk.line = line_num; 
 
