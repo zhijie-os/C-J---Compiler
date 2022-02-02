@@ -31,7 +31,7 @@ number  {digit}+
 %% 
 
 "\""                                    {BEGIN(STRING);}
-<STRING>(\\.|[^"\\\r\n<<EOF>>])*        {scan_general(STRING);}
+<STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*        {scan_general(STRING);}
 <STRING>"\""                            {BEGIN(0);}
 <STRING>\\[^bftrn'"\\]                  {printf("unable to escape");error_string();}
 <STRING>\n                              {printf("LF");error_string();}
@@ -86,8 +86,6 @@ return      {scan_reserved(RETURN);}
 
 
 %%
-
-
 
 int main(int argc, char *argv[])
 {

@@ -318,7 +318,8 @@ void free_attributes()
 {
      for(int i=0;i<num_tokens;i++)
     {
-        free(tokens[i].attribute);
+        if(tokens[i].token_name == ID || tokens[i].token_name == STRING||tokens[i].token_name == NUMBER )
+            free(tokens[i].attribute);
     }
 }
 
