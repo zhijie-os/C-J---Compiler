@@ -257,7 +257,7 @@ void print_general(int index)
             strcpy(name,">=");
             break; 
         case OP_EQ:
-            strcpy(name,"=");
+            strcpy(name,"==");
             break;
         case OP_NE:
             strcpy(name,"!=");
