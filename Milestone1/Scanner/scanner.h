@@ -96,9 +96,9 @@ void error_general()
 }
 
 // scanner counters an error in string which is unrecoverable, abort.
-void error_string()
+void error_string(const char* info)
 {
-    fprintf(stderr,"error: string missing closing quote at or near line %d\n",line_num);
+    fprintf(stderr,"error: %s at or near line %d\n", info,line_num);
     exit(EXIT_FAILURE);
 }
 
@@ -118,7 +118,7 @@ void scan_general(enum TOKEN_NAME tok_n)
     struct TOKEN tk;
     tk.token_name = tok_n;
     tk.attribute = (char*)malloc(yyleng);
-    strncpy(tk.attribute,yytext,yyleng);
+    memmove(tk.attribute,yytext,yyleng);
     tk.attr_length = yyleng; 
     tk.line = line_num; 
 

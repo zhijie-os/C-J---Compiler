@@ -33,10 +33,10 @@ number  {digit}+
 "\""                                    {BEGIN(STRING);}
 <STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*        {scan_general(STRING);}
 <STRING>"\""                            {BEGIN(0);}
-<STRING>\\[^bftrn'"\\]                  {printf("unable to escape");error_string();}
-<STRING>\n                              {printf("LF");error_string();}
-<STRING>\r                              {printf("CR");error_string();}
-<STRING><<EOF>>                         {printf("EOF");error_string();}
+<STRING>\\[^bftrn'"\\]                  {error_string("unsupported escape character");}
+<STRING>\n                              {error_string("newline in string literal");}
+<STRING>\r                              {error_string("return in string literal");}
+<STRING><<EOF>>                         {error_string("string missing closing quote");}
 
 
 "//"                                    {BEGIN(COMMENT);}

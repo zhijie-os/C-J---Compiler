@@ -834,22 +834,22 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 36 "scanner.l"
-{printf("unable to escape");error_string();}
+{error_string("unsupported escape character");}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
 #line 37 "scanner.l"
-{printf("LF");error_string();}
+{error_string("newline in string literal");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 38 "scanner.l"
-{printf("CR");error_string();}
+{error_string("return in string literal");}
 	YY_BREAK
 case YY_STATE_EOF(STRING):
 #line 39 "scanner.l"
-{printf("EOF");error_string();}
+{error_string("string missing closing quote");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
