@@ -5,6 +5,7 @@
 ### Where is the **scanner**?
 
 The scanenr is under `Milestone1/Scanner` directory. Some tests files can be found inside `Milestone1/Test`.
+A report can be found under `Milestone1/Report`.
 
 ### How to compile the **scanner**?
 

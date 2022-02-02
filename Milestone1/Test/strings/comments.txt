@@ -1,0 +1,7 @@
+// line 1
+// line 2
+
+thisIsLine4
+
+
+"unclos\x\a\b"
