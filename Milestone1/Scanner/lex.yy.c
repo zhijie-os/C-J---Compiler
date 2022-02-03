@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -533,10 +533,10 @@ char *yytext;
     int array_size=2;
     
     struct TOKEN *tokens;
-#line 536 "lex.yy.c"
+#line 537 "lex.yy.c"
 
 /* regular definition */
-#line 539 "lex.yy.c"
+#line 540 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -758,7 +758,7 @@ YY_DECL
 #line 31 "scanner.l"
 
 
-#line 761 "lex.yy.c"
+#line 762 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1058,7 +1058,7 @@ YY_RULE_SETUP
 #line 88 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1061 "lex.yy.c"
+#line 1062 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
