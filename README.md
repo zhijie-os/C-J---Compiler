@@ -18,3 +18,16 @@ A report can be found under `Milestone1/Report`.
 2. run: `./scanner <path to the input file>`.
 
 
+## Milestone 2
+
+### Where is the **parser**?
+
+The parser is located in `Milestone2/Parser` direcotry.
+
+### How to compile the **parser**?
+
+1. cd into `Milestone2/Parser`
+2. run `make clean`
+3. run `make`
+
+
