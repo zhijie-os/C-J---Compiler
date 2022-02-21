@@ -25,146 +25,146 @@
 dummy_start     : start                 {print_tree($1,0);}
 
 start           : /* empty */
-                | globaldeclarations    {$$=new_nonterminal("start",1,$1);}
+                | globaldeclarations    {$$=new_ast("program",1,$1);}
                 ;
 
-literal         : NUMBER                {$$=new_nonterminal("literal",1,new_terminal("NUMBER",yylval.attribute));}
-                | STRING                {$$=new_nonterminal("literal",1,new_terminal("STRING",yylval.attribute));}
-                | TRUE                  {$$=new_nonterminal("literal",1,new_reserved("TRUE"));}
-                | FALSE                 {$$=new_nonterminal("literal",1,new_reserved("FALSE"));}
+literal         : NUMBER                {$$=atomic_ast("number", yylval.attribute);}
+                | STRING                {$$=atomic_ast("string", yylval.attribute);}
+                | TRUE                  {$$=atomic_ast("true", yylval.attribute);}
+                | FALSE                 {$$=atomic_ast("false", yylval.attribute);}
                 ;       
 
-type            : BOOLEAN               {$$=new_nonterminal("literal",1,new_reserved("BOOLEAN"));}
-                | INT                   {$$=new_nonterminal("literal",1,new_reserved("INT"));}
+type            : BOOLEAN               {$$=atomic_ast("boolean", yylval.attribute);}
+                | INT                   {$$=atomic_ast("int", yylval.attribute);}
                 ;
 
-globaldeclarations      : globaldeclaration                             {$$=new_nonterminal("globaldeclarations",1,$1);}
-                        | globaldeclarations globaldeclaration          {$$=new_nonterminal("globaldeclarations", 2, $1, $2);}
+globaldeclarations      : globaldeclaration                             {$$=$1;}
+                        | globaldeclarations globaldeclaration          {$$=new_ast("globaldeclarations",2,$1, $2);}
                         ;
 
-globaldeclaration       : variabledeclaration                           {$$=new_nonterminal("globaldeclaration",1,$1);}
-                        | functiondeclaration                           {$$=new_nonterminal("globaldeclaration",1,$1);}
-                        | mainfunctiondeclaration                       {$$=new_nonterminal("globaldeclaration",1,$1);}
+globaldeclaration       : variabledeclaration                           {$$=$1;}
+                        | functiondeclaration                           {$$=$1;}
+                        | mainfunctiondeclaration                       {$$=$1;}
                         ;
 
-variabledeclaration     : type identifier ';'                           {$$=new_nonterminal("globaldeclaration",3,$1,$2, new_reserved(";"));}
+variabledeclaration     : type identifier ';'                           {$$=new_ast("variabledeclaration", 2,$1,$2);}
                         ;
 
-identifier              : ID                                            {$$=new_nonterminal("identifier",1,new_terminal("ID",yylval.attribute));}
+identifier              : ID                                            {$$=atomic_ast("id",yylval.attribute);}
                         ;
 
-functiondeclaration     : functionheader block                          {$$=new_nonterminal("functiondeclaration",2,$1,$2);}
+functiondeclaration     : functionheader block                          {$$=new_ast("functiondeclaration",2,$1,$2);}
                         ;
 
-functionheader          : type functiondeclarator                       {$$=new_nonterminal("functionheader", 2, $1, $2);}
-                        | VOID functiondeclarator                       {$$=new_nonterminal("functionheader", 2, new_reserved("VOID"), $2);}
+functionheader          : type functiondeclarator                       {$$=new_ast("functionheader", 2, $1, $2);}
+                        | VOID functiondeclarator                       {$$=new_ast("functionheader", 2, atomic_ast("VOID",yylval.attribute), $2);}
                         ;
 
-functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_nonterminal("functiondeclarator", 4, $1, new_reserved("("), $3, new_reserved(")"));}
-                        | identifier '(' ')'                            {$$=new_nonterminal("functiondeclarator", 3, $1, new_reserved("("), new_reserved(")"));}
+functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_ast("functiondeclarator", 2, $1,$3);}
+                        | identifier '(' ')'                            {$$=$1;}
                         ;
 
-formalparameterlist     : formalparameter                               {$$=new_nonterminal("formalparameterlist", 1, $1);}
-                        | formalparameterlist ',' formalparameter       {$$=new_nonterminal("formalparameterlist", 3, $1, new_reserved(","),$3);}
+formalparameterlist     : formalparameter                               {$$=$1;}
+                        | formalparameterlist ',' formalparameter       {$$=new_ast("formalparameterlist", 2, $1,$3);}
                         ;
 
-formalparameter         : type identifier                               {$$=new_nonterminal("formalparameter", 2, $1, $2);}
+formalparameter         : type identifier                               {$$=new_ast("formalparameter", 2, $1, $2);}
                         ;
 
-mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_nonterminal("mainfunctiondeclaration", 2, $1, $2);}
+mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_ast("mainfunctiondeclaration", 2, $1, $2);}
                         ;
 
-mainfunctiondeclarator  : identifier '(' ')'                            {$$=new_nonterminal("mainfunctiondeclarator", 3, $1, new_reserved("("), new_reserved(")"));}
+mainfunctiondeclarator  : identifier '(' ')'                            {$$=$1;}
                         ;
 
-block                   : '{' blockstatements '}'                       {$$=new_nonterminal("block", 3, new_reserved("{"), $2, new_reserved("}"));}
-                        | '{' '}'                                       {$$=new_nonterminal("block", 2, new_reserved("{"), new_reserved("}"));}
+block                   : '{' blockstatements '}'                       {$$=$2;}
+                        | '{' '}'                                       {$$=new_ast("block", 0);}
                         ;
 
-blockstatements         : blockstatement                                {$$=new_nonterminal("blockstatements", 1, $1);}
-                        | blockstatements blockstatement                {$$=new_nonterminal("blockstatements", 2, $1, $2);}
+blockstatements         : blockstatement                                {$$=$1;}
+                        | blockstatements blockstatement                {$$=new_ast("blockstatements", 2, $1, $2);}
                         ;
 
-blockstatement          : variabledeclaration                           {$$=new_nonterminal("blockstatement", 1, $1);}
-                        | statement                                     {$$=new_nonterminal("blockstatement", 1, $1);}
+blockstatement          : variabledeclaration                           {$$=$1;}
+                        | statement                                     {$$=$1;}
                         ;
 
-statement               : block                                             {$$=new_nonterminal("statement", 1, $1);}
-                        | ';'                                               {$$=new_nonterminal("statement", 1, new_reserved(";"));}
-                        | statementexpression ';'                           {$$=new_nonterminal("statement", 2, $1, new_reserved(";"));}
-                        | BREAK ';'                                         {$$=new_nonterminal("statement", 2, new_reserved("BREAK"), new_reserved(";"));}
-                        | RETURN expression ';'                             {$$=new_nonterminal("statement", 3, new_reserved("RETURN"), $2, new_reserved(";"));}
-                        | RETURN ';'                                        {$$=new_nonterminal("statement", 2, new_reserved("RETURN"), new_reserved(";"));}
-                        | IF '(' expression ')' statement                   {$$=new_nonterminal("statement", 5, new_reserved("IF"), new_reserved("("), $3, new_reserved(")"), $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new_nonterminal("statement", 7, new_reserved("IF"), new_reserved("("), $3, new_reserved(")"), $5, new_reserved("ELSE"), $7);}
-                        | WHILE '(' expression ')' statement                {$$=new_nonterminal("statement", 5, new_reserved("WHILE"), new_reserved("("), $3, new_reserved(")"), $5);}
+statement               : block                                             {$$=$1;}
+                        | ';'                                               {$$=new_ast("statement", 0);}
+                        | statementexpression ';'                           {$$=$1;}
+                        | BREAK ';'                                         {$$=new_ast("statement", 1, atomic_ast("break",yylval.attribute));}
+                        | RETURN expression ';'                             {$$=new_ast("statement", 2, atomic_ast("return",yylval.attribute), $2);}
+                        | RETURN ';'                                        {$$=new_ast("statement", 1, atomic_ast("return",yylval.attribute));}
+                        | IF '(' expression ')' statement                   {$$=new_ast("statement", 3, atomic_ast("if",yylval.attribute), $3, $5);}
+                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("statement", 5, atomic_ast("if",yylval.attribute), $3, $5,atomic_ast("else",yylval.attribute), $7);}
+                        | WHILE '(' expression ')' statement                {$$=new_ast("statement", 3, atomic_ast("WHILE",yylval.attribute), $3, $5);}
                         ;
 
-statementexpression     : assignment                                        {$$=new_nonterminal("statementexpression", 1, $1);}
-                        | functioninvocation                                {$$=new_nonterminal("statementexpression", 1, $1);}
+statementexpression     : assignment                                        {$$=$1;}
+                        | functioninvocation                                {$$=$1;}
                         ;
 
-primary                 : literal                                           {$$=new_nonterminal("primary", 1, $1);}
-                        | '(' expression ')'                                {$$=new_nonterminal("primary", 3, new_reserved("("), $2, new_reserved(")"));}
-                        | functioninvocation                                {$$=new_nonterminal("primary", 1, $1);}
+primary                 : literal                                           {$$=$1;}
+                        | '(' expression ')'                                {$$=$2;}
+                        | functioninvocation                                {$$=$1;}
                         ;
 
-argumentlist            : expression                                        {$$=new_nonterminal("argumentlist", 1, $1);}
-                        | argumentlist ',' expression                       {$$=new_nonterminal("argumentlist", 3, $1, new_reserved(","), $3);}
+argumentlist            : expression                                        {$$=$1;}
+                        | argumentlist ',' expression                       {$$=new_ast("argumentlist", 2, $1, $3);}
                         ;
 
-functioninvocation      : identifier '(' argumentlist ')'                   {$$=new_nonterminal("functioninvocation", 4, $1, new_reserved("("), $3, new_reserved(")"));}
-                        | identifier '(' ')'                                {$$=new_nonterminal("functioninvocation", 3, $1, new_reserved("("), new_reserved(")"));}
+functioninvocation      : identifier '(' argumentlist ')'                   {$$=new_ast("functioninvocation", 2, $1, $3);}
+                        | identifier '(' ')'                                {$$=$1;}
                         ;
 
-postfixexpression       : primary                                           {$$=new_nonterminal("postfixexpression", 1, $1);}
-                        | identifier                                        {$$=new_nonterminal("postfixexpression", 1, $1);}
+postfixexpression       : primary                                           {$$=$1;}
+                        | identifier                                        {$$=$1;}
                         ;
 
-unaryexpression         : '-' unaryexpression                               {$$=new_nonterminal("unaryexpression", 2, new_reserved("-"), $2);}
-                        | '!' unaryexpression                               {$$=new_nonterminal("unaryexpression", 2, new_reserved("!"), $2);}
-                        | postfixexpression                                 {$$=new_nonterminal("unaryexpression", 1, $1);}
+unaryexpression         : '-' unaryexpression                               {$$=new_ast("-", 1,  $2);}
+                        | '!' unaryexpression                               {$$=new_ast("!", 1,  $2);}
+                        | postfixexpression                                 {$$=$1;}
                         ;
 
-multiplicativeexpression: unaryexpression                                   {$$=new_nonterminal("multiplicativeexpression", 1, $1);}
-                        | multiplicativeexpression '*' unaryexpression      {$$=new_nonterminal("multiplicativeexpression", 3, $1, new_reserved("*"), $3);}
-                        | multiplicativeexpression '/' unaryexpression      {$$=new_nonterminal("multiplicativeexpression", 3, $1, new_reserved("/"), $3);}
-                        | multiplicativeexpression '%' unaryexpression      {$$=new_nonterminal("multiplicativeexpression", 3, $1, new_reserved("%"), $3);}
+multiplicativeexpression: unaryexpression                                   {$$=$1;}
+                        | multiplicativeexpression '*' unaryexpression      {$$=new_ast("*", 2, $1,  $3);}
+                        | multiplicativeexpression '/' unaryexpression      {$$=new_ast("/", 2, $1, $3);}
+                        | multiplicativeexpression '%' unaryexpression      {$$=new_ast("%", 2, $1, $3);}
                         ;
 
-additiveexpression      : multiplicativeexpression                          {$$=new_nonterminal("additiveexpression", 1, $1);}
-                        | additiveexpression '+' multiplicativeexpression   {$$=new_nonterminal("additiveexpression", 3, $1, new_reserved("+"), $3);}
-                        | additiveexpression '-' multiplicativeexpression   {$$=new_nonterminal("additiveexpression", 3, $1, new_reserved("-"), $3);}
+additiveexpression      : multiplicativeexpression                          {$$=$1;}
+                        | additiveexpression '+' multiplicativeexpression   {$$=new_ast("+", 2, $1, $3);}
+                        | additiveexpression '-' multiplicativeexpression   {$$=new_ast("-", 2, $1, $3);}
                         ;
 
-relationalexpression    : additiveexpression                                {$$=new_nonterminal("relationalexpression", 1, $1);}
-                        | relationalexpression '<' additiveexpression       {$$=new_nonterminal("relationalexpression", 3, $1, new_reserved("<"), $3);}
-                        | relationalexpression '>' additiveexpression       {$$=new_nonterminal("relationalexpression", 3, $1, new_reserved(">"), $3);}
-                        | relationalexpression LE additiveexpression        {$$=new_nonterminal("relationalexpression", 3, $1, new_reserved("<="), $3);}
-                        | relationalexpression GE additiveexpression        {$$=new_nonterminal("relationalexpression", 3, $1, new_reserved(">="), $3);}
+relationalexpression    : additiveexpression                                {$$=$1;}
+                        | relationalexpression '<' additiveexpression       {$$=new_ast("<", 2, $1, $3);}
+                        | relationalexpression '>' additiveexpression       {$$=new_ast(">", 2, $1, $3);}
+                        | relationalexpression LE additiveexpression        {$$=new_ast("<=", 2, $1, $3);}
+                        | relationalexpression GE additiveexpression        {$$=new_ast(">=", 2, $1, $3);}
                         ;
 
-equalityexpression      : relationalexpression                              {$$=new_nonterminal("equalityexpression", 1, $1);}
-                        | equalityexpression EQ relationalexpression        {$$=new_nonterminal("equalityexpression", 3, $1, new_reserved("=="), $3);}
-                        | equalityexpression NE relationalexpression        {$$=new_nonterminal("equalityexpression", 3, $1, new_reserved("!="), $3);}
+equalityexpression      : relationalexpression                              {$$=$1;}
+                        | equalityexpression EQ relationalexpression        {$$=new_ast("==", 2, $1, $3);}
+                        | equalityexpression NE relationalexpression        {$$=new_ast("!=", 2, $1, $3);}
                         ;
 
-conditionalandexpression: equalityexpression                                {$$=new_nonterminal("conditionalandexpression", 1, $1);}
-                        | conditionalandexpression AND equalityexpression   {$$=new_nonterminal("conditionalandexpression", 3, $1, new_reserved("&&"), $3);}
+conditionalandexpression: equalityexpression                                {$$=$1;}
+                        | conditionalandexpression AND equalityexpression   {$$=new_ast("&&", 2, $1, $3);}
                         ;
 
-conditionalorexpression : conditionalandexpression                              {$$=new_nonterminal("conditionalorexpression", 1, $1);}
-                        | conditionalorexpression OR conditionalandexpression   {$$=new_nonterminal("conditionalorexpression", 3, $1, new_reserved("||"), $3);}
+conditionalorexpression : conditionalandexpression                              {$$=$1;}
+                        | conditionalorexpression OR conditionalandexpression   {$$=new_ast("||", 2, $1, $3);}
                         ;
 
-assignmentexpression    : conditionalorexpression           {$$=new_nonterminal("assignmentexpression", 1, $1);}
-                        | assignment                        {$$=new_nonterminal("assignmentexpression", 1, $1);}
+assignmentexpression    : conditionalorexpression           {$$=$1;}
+                        | assignment                        {$$=$1;}
                         ;       
 
-assignment              : identifier '=' assignmentexpression   {$$=new_nonterminal("assignment", 3, $1, new_reserved("="), $3);}
+assignment              : identifier '=' assignmentexpression   {$$=new_ast("=", 2, $1,  $3);}
                         ;
 
-expression              : assignmentexpression              {$$=new_nonterminal("expression", 1, $1);}
+expression              : assignmentexpression              {$$=$1;}
                         ;
 
 

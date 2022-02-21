@@ -1434,457 +1434,457 @@ yyreduce:
 
   case 4:
 #line 28 "parser.y"
-                                        {(yyval.node)=new_nonterminal("start",1,(yyvsp[0].node));}
+                                        {(yyval.node)=new_ast("program",1,(yyvsp[0].node));}
 #line 1439 "parser.tab.c"
     break;
 
   case 5:
 #line 31 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_terminal("NUMBER",yylval.attribute));}
+                                        {(yyval.node)=atomic_ast("number", yylval.attribute);}
 #line 1445 "parser.tab.c"
     break;
 
   case 6:
 #line 32 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_terminal("STRING",yylval.attribute));}
+                                        {(yyval.node)=atomic_ast("string", yylval.attribute);}
 #line 1451 "parser.tab.c"
     break;
 
   case 7:
 #line 33 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_reserved("TRUE"));}
+                                        {(yyval.node)=atomic_ast("true", yylval.attribute);}
 #line 1457 "parser.tab.c"
     break;
 
   case 8:
 #line 34 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_reserved("FALSE"));}
+                                        {(yyval.node)=atomic_ast("false", yylval.attribute);}
 #line 1463 "parser.tab.c"
     break;
 
   case 9:
 #line 37 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_reserved("BOOLEAN"));}
+                                        {(yyval.node)=atomic_ast("boolean", yylval.attribute);}
 #line 1469 "parser.tab.c"
     break;
 
   case 10:
 #line 38 "parser.y"
-                                        {(yyval.node)=new_nonterminal("literal",1,new_reserved("INT"));}
+                                        {(yyval.node)=atomic_ast("int", yylval.attribute);}
 #line 1475 "parser.tab.c"
     break;
 
   case 11:
 #line 41 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclarations",1,(yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1481 "parser.tab.c"
     break;
 
   case 12:
 #line 42 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclarations", 2, (yyvsp[-1].node), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("globaldeclarations",2,(yyvsp[-1].node), (yyvsp[0].node));}
 #line 1487 "parser.tab.c"
     break;
 
   case 13:
 #line 45 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclaration",1,(yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1493 "parser.tab.c"
     break;
 
   case 14:
 #line 46 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclaration",1,(yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1499 "parser.tab.c"
     break;
 
   case 15:
 #line 47 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclaration",1,(yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1505 "parser.tab.c"
     break;
 
   case 16:
 #line 50 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("globaldeclaration",3,(yyvsp[-2].node),(yyvsp[-1].node), new_reserved(";"));}
+                                                                        {(yyval.node)=new_ast("variabledeclaration", 2,(yyvsp[-2].node),(yyvsp[-1].node));}
 #line 1511 "parser.tab.c"
     break;
 
   case 17:
 #line 53 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("identifier",1,new_terminal("ID",yylval.attribute));}
+                                                                        {(yyval.node)=atomic_ast("id",yylval.attribute);}
 #line 1517 "parser.tab.c"
     break;
 
   case 18:
 #line 56 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("functiondeclaration",2,(yyvsp[-1].node),(yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("functiondeclaration",2,(yyvsp[-1].node),(yyvsp[0].node));}
 #line 1523 "parser.tab.c"
     break;
 
   case 19:
 #line 59 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("functionheader", 2, (yyvsp[-1].node), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("functionheader", 2, (yyvsp[-1].node), (yyvsp[0].node));}
 #line 1529 "parser.tab.c"
     break;
 
   case 20:
 #line 60 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("functionheader", 2, new_reserved("VOID"), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("functionheader", 2, atomic_ast("VOID",yylval.attribute), (yyvsp[0].node));}
 #line 1535 "parser.tab.c"
     break;
 
   case 21:
 #line 63 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("functiondeclarator", 4, (yyvsp[-3].node), new_reserved("("), (yyvsp[-1].node), new_reserved(")"));}
+                                                                        {(yyval.node)=new_ast("functiondeclarator", 2, (yyvsp[-3].node),(yyvsp[-1].node));}
 #line 1541 "parser.tab.c"
     break;
 
   case 22:
 #line 64 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("functiondeclarator", 3, (yyvsp[-2].node), new_reserved("("), new_reserved(")"));}
+                                                                        {(yyval.node)=(yyvsp[-2].node);}
 #line 1547 "parser.tab.c"
     break;
 
   case 23:
 #line 67 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("formalparameterlist", 1, (yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1553 "parser.tab.c"
     break;
 
   case 24:
 #line 68 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("formalparameterlist", 3, (yyvsp[-2].node), new_reserved(","),(yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("formalparameterlist", 2, (yyvsp[-2].node),(yyvsp[0].node));}
 #line 1559 "parser.tab.c"
     break;
 
   case 25:
 #line 71 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("formalparameter", 2, (yyvsp[-1].node), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("formalparameter", 2, (yyvsp[-1].node), (yyvsp[0].node));}
 #line 1565 "parser.tab.c"
     break;
 
   case 26:
 #line 74 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("mainfunctiondeclaration", 2, (yyvsp[-1].node), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("mainfunctiondeclaration", 2, (yyvsp[-1].node), (yyvsp[0].node));}
 #line 1571 "parser.tab.c"
     break;
 
   case 27:
 #line 77 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("mainfunctiondeclarator", 3, (yyvsp[-2].node), new_reserved("("), new_reserved(")"));}
+                                                                        {(yyval.node)=(yyvsp[-2].node);}
 #line 1577 "parser.tab.c"
     break;
 
   case 28:
 #line 80 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("block", 3, new_reserved("{"), (yyvsp[-1].node), new_reserved("}"));}
+                                                                        {(yyval.node)=(yyvsp[-1].node);}
 #line 1583 "parser.tab.c"
     break;
 
   case 29:
 #line 81 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("block", 2, new_reserved("{"), new_reserved("}"));}
+                                                                        {(yyval.node)=new_ast("block", 0);}
 #line 1589 "parser.tab.c"
     break;
 
   case 30:
 #line 84 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("blockstatements", 1, (yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1595 "parser.tab.c"
     break;
 
   case 31:
 #line 85 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("blockstatements", 2, (yyvsp[-1].node), (yyvsp[0].node));}
+                                                                        {(yyval.node)=new_ast("blockstatements", 2, (yyvsp[-1].node), (yyvsp[0].node));}
 #line 1601 "parser.tab.c"
     break;
 
   case 32:
 #line 88 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("blockstatement", 1, (yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1607 "parser.tab.c"
     break;
 
   case 33:
 #line 89 "parser.y"
-                                                                        {(yyval.node)=new_nonterminal("blockstatement", 1, (yyvsp[0].node));}
+                                                                        {(yyval.node)=(yyvsp[0].node);}
 #line 1613 "parser.tab.c"
     break;
 
   case 34:
 #line 92 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1619 "parser.tab.c"
     break;
 
   case 35:
 #line 93 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 1, new_reserved(";"));}
+                                                                            {(yyval.node)=new_ast("statement", 0);}
 #line 1625 "parser.tab.c"
     break;
 
   case 36:
 #line 94 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 2, (yyvsp[-1].node), new_reserved(";"));}
+                                                                            {(yyval.node)=(yyvsp[-1].node);}
 #line 1631 "parser.tab.c"
     break;
 
   case 37:
 #line 95 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 2, new_reserved("BREAK"), new_reserved(";"));}
+                                                                            {(yyval.node)=new_ast("statement", 1, atomic_ast("break",yylval.attribute));}
 #line 1637 "parser.tab.c"
     break;
 
   case 38:
 #line 96 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 3, new_reserved("RETURN"), (yyvsp[-1].node), new_reserved(";"));}
+                                                                            {(yyval.node)=new_ast("statement", 2, atomic_ast("return",yylval.attribute), (yyvsp[-1].node));}
 #line 1643 "parser.tab.c"
     break;
 
   case 39:
 #line 97 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 2, new_reserved("RETURN"), new_reserved(";"));}
+                                                                            {(yyval.node)=new_ast("statement", 1, atomic_ast("return",yylval.attribute));}
 #line 1649 "parser.tab.c"
     break;
 
   case 40:
 #line 98 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 5, new_reserved("IF"), new_reserved("("), (yyvsp[-2].node), new_reserved(")"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("statement", 3, atomic_ast("if",yylval.attribute), (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1655 "parser.tab.c"
     break;
 
   case 41:
 #line 99 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 7, new_reserved("IF"), new_reserved("("), (yyvsp[-4].node), new_reserved(")"), (yyvsp[-2].node), new_reserved("ELSE"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("statement", 5, atomic_ast("if",yylval.attribute), (yyvsp[-4].node), (yyvsp[-2].node),atomic_ast("else",yylval.attribute), (yyvsp[0].node));}
 #line 1661 "parser.tab.c"
     break;
 
   case 42:
 #line 100 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statement", 5, new_reserved("WHILE"), new_reserved("("), (yyvsp[-2].node), new_reserved(")"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("statement", 3, atomic_ast("WHILE",yylval.attribute), (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1667 "parser.tab.c"
     break;
 
   case 43:
 #line 103 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statementexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1673 "parser.tab.c"
     break;
 
   case 44:
 #line 104 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("statementexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1679 "parser.tab.c"
     break;
 
   case 45:
 #line 107 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("primary", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1685 "parser.tab.c"
     break;
 
   case 46:
 #line 108 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("primary", 3, new_reserved("("), (yyvsp[-1].node), new_reserved(")"));}
+                                                                            {(yyval.node)=(yyvsp[-1].node);}
 #line 1691 "parser.tab.c"
     break;
 
   case 47:
 #line 109 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("primary", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1697 "parser.tab.c"
     break;
 
   case 48:
 #line 112 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("argumentlist", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1703 "parser.tab.c"
     break;
 
   case 49:
 #line 113 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("argumentlist", 3, (yyvsp[-2].node), new_reserved(","), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("argumentlist", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1709 "parser.tab.c"
     break;
 
   case 50:
 #line 116 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("functioninvocation", 4, (yyvsp[-3].node), new_reserved("("), (yyvsp[-1].node), new_reserved(")"));}
+                                                                            {(yyval.node)=new_ast("functioninvocation", 2, (yyvsp[-3].node), (yyvsp[-1].node));}
 #line 1715 "parser.tab.c"
     break;
 
   case 51:
 #line 117 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("functioninvocation", 3, (yyvsp[-2].node), new_reserved("("), new_reserved(")"));}
+                                                                            {(yyval.node)=(yyvsp[-2].node);}
 #line 1721 "parser.tab.c"
     break;
 
   case 52:
 #line 120 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("postfixexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1727 "parser.tab.c"
     break;
 
   case 53:
 #line 121 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("postfixexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1733 "parser.tab.c"
     break;
 
   case 54:
 #line 124 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("unaryexpression", 2, new_reserved("-"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("-", 1,  (yyvsp[0].node));}
 #line 1739 "parser.tab.c"
     break;
 
   case 55:
 #line 125 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("unaryexpression", 2, new_reserved("!"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("!", 1,  (yyvsp[0].node));}
 #line 1745 "parser.tab.c"
     break;
 
   case 56:
 #line 126 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("unaryexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1751 "parser.tab.c"
     break;
 
   case 57:
 #line 129 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("multiplicativeexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1757 "parser.tab.c"
     break;
 
   case 58:
 #line 130 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("multiplicativeexpression", 3, (yyvsp[-2].node), new_reserved("*"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("*", 2, (yyvsp[-2].node),  (yyvsp[0].node));}
 #line 1763 "parser.tab.c"
     break;
 
   case 59:
 #line 131 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("multiplicativeexpression", 3, (yyvsp[-2].node), new_reserved("/"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("/", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1769 "parser.tab.c"
     break;
 
   case 60:
 #line 132 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("multiplicativeexpression", 3, (yyvsp[-2].node), new_reserved("%"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("%", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1775 "parser.tab.c"
     break;
 
   case 61:
 #line 135 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("additiveexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1781 "parser.tab.c"
     break;
 
   case 62:
 #line 136 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("additiveexpression", 3, (yyvsp[-2].node), new_reserved("+"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("+", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1787 "parser.tab.c"
     break;
 
   case 63:
 #line 137 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("additiveexpression", 3, (yyvsp[-2].node), new_reserved("-"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("-", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1793 "parser.tab.c"
     break;
 
   case 64:
 #line 140 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("relationalexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1799 "parser.tab.c"
     break;
 
   case 65:
 #line 141 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("relationalexpression", 3, (yyvsp[-2].node), new_reserved("<"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("<", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1805 "parser.tab.c"
     break;
 
   case 66:
 #line 142 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("relationalexpression", 3, (yyvsp[-2].node), new_reserved(">"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast(">", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1811 "parser.tab.c"
     break;
 
   case 67:
 #line 143 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("relationalexpression", 3, (yyvsp[-2].node), new_reserved("<="), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("<=", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1817 "parser.tab.c"
     break;
 
   case 68:
 #line 144 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("relationalexpression", 3, (yyvsp[-2].node), new_reserved(">="), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast(">=", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1823 "parser.tab.c"
     break;
 
   case 69:
 #line 147 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("equalityexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1829 "parser.tab.c"
     break;
 
   case 70:
 #line 148 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("equalityexpression", 3, (yyvsp[-2].node), new_reserved("=="), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("==", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1835 "parser.tab.c"
     break;
 
   case 71:
 #line 149 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("equalityexpression", 3, (yyvsp[-2].node), new_reserved("!="), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("!=", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1841 "parser.tab.c"
     break;
 
   case 72:
 #line 152 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("conditionalandexpression", 1, (yyvsp[0].node));}
+                                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1847 "parser.tab.c"
     break;
 
   case 73:
 #line 153 "parser.y"
-                                                                            {(yyval.node)=new_nonterminal("conditionalandexpression", 3, (yyvsp[-2].node), new_reserved("&&"), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("&&", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1853 "parser.tab.c"
     break;
 
   case 74:
 #line 156 "parser.y"
-                                                                                {(yyval.node)=new_nonterminal("conditionalorexpression", 1, (yyvsp[0].node));}
+                                                                                {(yyval.node)=(yyvsp[0].node);}
 #line 1859 "parser.tab.c"
     break;
 
   case 75:
 #line 157 "parser.y"
-                                                                                {(yyval.node)=new_nonterminal("conditionalorexpression", 3, (yyvsp[-2].node), new_reserved("||"), (yyvsp[0].node));}
+                                                                                {(yyval.node)=new_ast("||", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1865 "parser.tab.c"
     break;
 
   case 76:
 #line 160 "parser.y"
-                                                            {(yyval.node)=new_nonterminal("assignmentexpression", 1, (yyvsp[0].node));}
+                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1871 "parser.tab.c"
     break;
 
   case 77:
 #line 161 "parser.y"
-                                                            {(yyval.node)=new_nonterminal("assignmentexpression", 1, (yyvsp[0].node));}
+                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1877 "parser.tab.c"
     break;
 
   case 78:
 #line 164 "parser.y"
-                                                                {(yyval.node)=new_nonterminal("assignment", 3, (yyvsp[-2].node), new_reserved("="), (yyvsp[0].node));}
+                                                                {(yyval.node)=new_ast("=", 2, (yyvsp[-2].node),  (yyvsp[0].node));}
 #line 1883 "parser.tab.c"
     break;
 
   case 79:
 #line 167 "parser.y"
-                                                            {(yyval.node)=new_nonterminal("expression", 1, (yyvsp[0].node));}
+                                                            {(yyval.node)=(yyvsp[0].node);}
 #line 1889 "parser.tab.c"
     break;
 

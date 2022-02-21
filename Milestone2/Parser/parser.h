@@ -25,9 +25,8 @@ struct ast
 
 
 
-struct ast *new_nonterminal(const char *symbol, int num_of_children, ...);
-struct ast *new_reserved(const char *symbol);
-struct ast *new_terminal(const char *symbol, struct info *attribute);
+struct ast *new_ast(const char *symbol, int num_of_children, ...);
+struct ast *atomic_ast(const char *symbol, struct info *atr);
 struct info *create_atr(int lineno, const char *literal);
 void print_tree(struct ast *root, int level);
 

@@ -12,16 +12,16 @@ void yyerror(char const *s)
 }
 
 
-struct ast *new_nonterminal(const char *symbol, int num_of_children, ...)
+struct ast *new_ast(const char *symbol, int num_of_children, ...)
 {
     struct ast *a = (struct ast *)malloc(sizeof(struct ast));
 
     a->symbol = strdup(symbol);
 
     a->num_of_children = num_of_children;
+    a->attribute = NULL;
 
     a->children = (struct ast **)malloc(a->num_of_children*sizeof(struct ast*));
-
     va_list ptr;
     va_start(ptr, num_of_children);
 
@@ -34,25 +34,14 @@ struct ast *new_nonterminal(const char *symbol, int num_of_children, ...)
     return a;
 };
 
-struct ast *new_reserved(const char *symbol)
-{
-    struct ast *a = (struct ast *)malloc(sizeof(struct ast));
 
-    a->symbol = strdup(symbol);
-
-    a->num_of_children = 0;
-    return a;
-};
-
-struct ast *new_terminal(const char *symbol, struct info *attribute)
+struct ast *atomic_ast(const char *symbol,struct info *atr)
 {
     struct ast *a = (struct ast *)malloc(sizeof(struct ast));
     a->symbol = strdup(symbol);
-    a->attribute = attribute;
-
     a->num_of_children = 0;
+    a->attribute = atr;
 
-    return a;
 }
 
 struct info *create_atr(int lineno, const char *literal)
