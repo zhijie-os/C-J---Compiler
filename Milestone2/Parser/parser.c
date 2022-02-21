@@ -8,7 +8,7 @@
 
 void yyerror(char const *s)
 {
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "%s, %d\n", s, line_num);
 }
 
 

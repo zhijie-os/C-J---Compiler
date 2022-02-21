@@ -77,7 +77,7 @@ mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_
 mainfunctiondeclarator  : identifier '(' ')'                            {$$=$1;}
                         ;
 
-block                   : '{' blockstatements '}'                       {$$=$2;}
+block                   : '{' blockstatements '}'                       {$$=new_ast("block",1,$2);}
                         | '{' '}'                                       {$$=new_ast("block", 0);}
                         ;
 
@@ -90,14 +90,14 @@ blockstatement          : variabledeclaration                           {$$=$1;}
                         ;
 
 statement               : block                                             {$$=$1;}
-                        | ';'                                               {$$=new_ast("statement", 0);}
+                        | ';'                                               {$$=atomic_ast("nullStmt",yylval.attribute);}
                         | statementexpression ';'                           {$$=$1;}
-                        | BREAK ';'                                         {$$=new_ast("statement", 1, atomic_ast("break",yylval.attribute));}
+                        | BREAK ';'                                         {$$=atomic_ast("break", yylval.attribute);}
                         | RETURN expression ';'                             {$$=new_ast("statement", 2, atomic_ast("return",yylval.attribute), $2);}
                         | RETURN ';'                                        {$$=new_ast("statement", 1, atomic_ast("return",yylval.attribute));}
-                        | IF '(' expression ')' statement                   {$$=new_ast("statement", 3, atomic_ast("if",yylval.attribute), $3, $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("statement", 5, atomic_ast("if",yylval.attribute), $3, $5,atomic_ast("else",yylval.attribute), $7);}
-                        | WHILE '(' expression ')' statement                {$$=new_ast("statement", 3, atomic_ast("WHILE",yylval.attribute), $3, $5);}
+                        | IF '(' expression ')' statement                   {$$=new_ast("if", 2, $3, $5);}
+                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("ifElse", 3, $3, $5, $7);}
+                        | WHILE '(' expression ')' statement                {printf("matched"); $$=new_ast("while", 2, $3, $5); }
                         ;
 
 statementexpression     : assignment                                        {$$=$1;}

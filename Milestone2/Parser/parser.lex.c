@@ -956,7 +956,7 @@ YY_RULE_SETUP
 case 20:
 YY_RULE_SETUP
 #line 57 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return WHILE;}
+{yylval.attribute=create_atr(line_num,yytext); printf("While");return WHILE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP

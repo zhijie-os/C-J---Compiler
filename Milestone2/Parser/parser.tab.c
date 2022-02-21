@@ -1578,7 +1578,7 @@ yyreduce:
 
   case 28:
 #line 80 "parser.y"
-                                                                        {(yyval.node)=(yyvsp[-1].node);}
+                                                                        {(yyval.node)=new_ast("block",1,(yyvsp[-1].node));}
 #line 1583 "parser.tab.c"
     break;
 
@@ -1620,7 +1620,7 @@ yyreduce:
 
   case 35:
 #line 93 "parser.y"
-                                                                            {(yyval.node)=new_ast("statement", 0);}
+                                                                            {(yyval.node)=atomic_ast("nullStmt",yylval.attribute);}
 #line 1625 "parser.tab.c"
     break;
 
@@ -1632,7 +1632,7 @@ yyreduce:
 
   case 37:
 #line 95 "parser.y"
-                                                                            {(yyval.node)=new_ast("statement", 1, atomic_ast("break",yylval.attribute));}
+                                                                            {(yyval.node)=atomic_ast("break", yylval.attribute);}
 #line 1637 "parser.tab.c"
     break;
 
@@ -1650,19 +1650,19 @@ yyreduce:
 
   case 40:
 #line 98 "parser.y"
-                                                                            {(yyval.node)=new_ast("statement", 3, atomic_ast("if",yylval.attribute), (yyvsp[-2].node), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("if", 2, (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1655 "parser.tab.c"
     break;
 
   case 41:
 #line 99 "parser.y"
-                                                                            {(yyval.node)=new_ast("statement", 5, atomic_ast("if",yylval.attribute), (yyvsp[-4].node), (yyvsp[-2].node),atomic_ast("else",yylval.attribute), (yyvsp[0].node));}
+                                                                            {(yyval.node)=new_ast("ifElse", 3, (yyvsp[-4].node), (yyvsp[-2].node), (yyvsp[0].node));}
 #line 1661 "parser.tab.c"
     break;
 
   case 42:
 #line 100 "parser.y"
-                                                                            {(yyval.node)=new_ast("statement", 3, atomic_ast("WHILE",yylval.attribute), (yyvsp[-2].node), (yyvsp[0].node));}
+                                                                            {printf("matched"); (yyval.node)=new_ast("while", 2, (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1667 "parser.tab.c"
     break;
 
