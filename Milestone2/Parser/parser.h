@@ -3,58 +3,35 @@
 
 #include <stdlib.h>
 
-enum TOKEN_TYPE
-{
-    ID = 1,
-    STRING,
-    NUMBER,
-    TRUE,
-    FALSE,
-    BOOLEAN,
-    INT,
-    VOID,
-    IF,
-    ELSE,
-    WHILE,
-    BREAK,
-    RETURN,
-    OP_ADD,
-    OP_SUB,
-    OP_MUL,
-    OP_DIV,
-    OP_MOD,
-    OP_LT,
-    OP_GT,
-    OP_LE,
-    OP_GE,
-    OP_EQ,
-    OP_NE,
-    OP_ASSIGN,
-    OP_NOT,
-    OP_AND,
-    OP_OR,
-    L_PAR,
-    R_PAR,
-    L_BRA,
-    R_BRA,
-    SMCOL,
-    COMMA,
+
+extern int yylineno;    /* from lexer*/
+void yyerror(char const *s);
+
+extern int num_lexer_error;
+extern int line_num;
+
+struct info{
+    int lineno;
+    char *literal;
 };
 
 struct ast
 {
+    char *symbol;
     int num_of_children;
-    struct ast *children;
+    struct info *attribute;
+    struct ast **children;
 };
 
 
 
-struct ast *newast(TOKEN_TYPE type, struct ast *c1);
+struct ast *new_nonterminal(const char *symbol, int num_of_children, ...);
+struct ast *new_reserved(const char *symbol);
+struct ast *new_terminal(const char *symbol, struct info *attribute);
+struct info *create_atr(int lineno, const char *literal);
+void print_tree(struct ast *root, int level);
 
-struct ast *newast(TOKEN_TYPE type, struct ast *c1, struct ast *c2);
-
-struct ast *newast(TOKEN_TYPE type, struct ast *c1, struct ast *c2, struct ast *c3);
-
-struct ast *newast(TOKEN_TYPE type, struct ast *c1, struct ast *c2, struct ast *c3, struct ast *c4);
+void lexer_string_error(const char* info);
+void lexer_general_error();
 
 #endif
