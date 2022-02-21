@@ -8,34 +8,27 @@ void yyerror(char const *s)
     fprintf(stderr, "%s\n", s);
 }
 
-struct ast *new_nonterminal(const char *symbol, struct ast *c1, struct ast *c2, struct ast *c3)
+struct ast *new_ast(const char *symbol, int num, ...)
 {
     struct ast *a = (struct ast *)malloc(sizeof(struct ast));
-
     a->symbol = strdup(symbol);
-
-    a->num_of_children = 0;
-    if (c1 != NULL)
-    {
-        a->num_of_children += 1;
-    }
-    if (c2 != NULL)
-    {
-        a->num_of_children += 1;
-    }
-    if (c3 != NULL)
-    {
-        a->num_of_children += 1;
-    }
-
-
-
+    a->num_of_children = num;
     a->children = (struct ast **)malloc(a->num_of_children*sizeof(struct ast*));
-
-  
-    a->children[0] = c1;
-    a->children[1] = c2;
-    a->children[2] = c3;
+    va_list ptr;
+ 
+    // Initializing argument to the
+    // list pointer
+    va_start(ptr, num);
+ 
+    for (int i = 0; i < num; i++)
+ 
+        // Accessing current variable
+        // and pointing to next one
+        a->children[i] = va_arg(ptr, struct ast *);
+ 
+    // Ending argument list traversal
+    va_end(ptr);
+ 
 
     return a;
 };

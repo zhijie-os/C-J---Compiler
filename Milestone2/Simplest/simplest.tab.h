@@ -59,12 +59,10 @@ union YYSTYPE
 {
 #line 7 "simplest.y"
 
-        int     val;
-        char    *str;
         struct  ast *node;   
         struct  info *attribute;     
 
-#line 68 "simplest.tab.h"
+#line 66 "simplest.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

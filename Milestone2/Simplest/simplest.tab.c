@@ -130,12 +130,10 @@ union YYSTYPE
 {
 #line 7 "simplest.y"
 
-        int     val;
-        char    *str;
         struct  ast *node;   
         struct  info *attribute;     
 
-#line 139 "simplest.tab.c"
+#line 137 "simplest.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -510,7 +508,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    19,    19,    23,    24,    25
+       0,    16,    16,    20,    21,    22
 };
 #endif
 
@@ -1295,31 +1293,31 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 19 "simplest.y"
+#line 16 "simplest.y"
                             {print_tree((yyvsp[0].node),0);}
-#line 1301 "simplest.tab.c"
+#line 1299 "simplest.tab.c"
     break;
 
   case 3:
-#line 23 "simplest.y"
-                            {(yyval.node)=new_num("NUM",yylval.attribute);}
-#line 1307 "simplest.tab.c"
+#line 20 "simplest.y"
+                            {(yyval.node)=new_ast("exp",1,new_num("NUM",yylval.attribute));}
+#line 1305 "simplest.tab.c"
     break;
 
   case 4:
-#line 24 "simplest.y"
-                            {(yyval.node)=new_nonterminal("exp",(yyvsp[-2].node),new_reserved("+"),(yyvsp[0].node));}
-#line 1313 "simplest.tab.c"
+#line 21 "simplest.y"
+                            {(yyval.node)=new_ast("exp",3,(yyvsp[-2].node),new_reserved("+"),(yyvsp[0].node));}
+#line 1311 "simplest.tab.c"
     break;
 
   case 5:
-#line 25 "simplest.y"
-                            {(yyval.node)=new_nonterminal("exp",(yyvsp[-2].node),new_reserved("-"),(yyvsp[0].node));}
-#line 1319 "simplest.tab.c"
+#line 22 "simplest.y"
+                            {(yyval.node)=new_ast("exp",3,(yyvsp[-2].node),new_reserved("-"),(yyvsp[0].node));}
+#line 1317 "simplest.tab.c"
     break;
 
 
-#line 1323 "simplest.tab.c"
+#line 1321 "simplest.tab.c"
 
       default: break;
     }
@@ -1551,7 +1549,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 28 "simplest.y"
+#line 25 "simplest.y"
 
 
 

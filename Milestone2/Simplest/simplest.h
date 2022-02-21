@@ -20,7 +20,7 @@ struct ast
 
 
 
-struct ast *new_nonterminal(const char *symbol,struct ast *c1, struct ast *c2, struct ast *c3);
+struct ast *new_ast(const char *symbol, int num, ...);
 struct ast *new_reserved(const char *symbol);
 struct ast *new_num(const char *symbol, struct info *attribute);
 struct info *create_atr(int lineno, const char *literal);
