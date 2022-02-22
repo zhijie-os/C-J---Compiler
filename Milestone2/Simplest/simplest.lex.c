@@ -518,7 +518,7 @@ char *yyget_text ( void );
 
 int yyget_lineno ( void );
 
-void yyset_lineno ( int _line_number  );
+void yyset_lineno ( int _yylinenober  );
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -1664,13 +1664,13 @@ char *yyget_text  (void)
 }
 
 /** Set the current line number.
- * @param _line_number line number
+ * @param _yylinenober line number
  * 
  */
-void yyset_lineno (int  _line_number )
+void yyset_lineno (int  _yylinenober )
 {
     
-    yylineno = _line_number;
+    yylineno = _yylinenober;
 }
 
 /** Set the input stream. This does not discard the current

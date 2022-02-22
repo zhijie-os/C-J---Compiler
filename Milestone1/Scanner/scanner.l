@@ -1,10 +1,10 @@
-%option noyywrap
+%option noyywrap yylineno
 
 %{
     #include "scanner.h"
 
     int num_error=0;
-    int line_num=1;
+   
     int num_tokens=0;
     int array_size=2;
     
@@ -41,12 +41,12 @@ number  {digit}+
 
 "//"                                    {BEGIN(COMMENT);}
 <COMMENT>[^\r\n]                        {/* eats up the comment */};
-<COMMENT>\n                             {line_num++;BEGIN(0);}
+<COMMENT>\n                             {BEGIN(0);}
 <COMMENT>[\r<<EOF>>]                    {BEGIN(0);}
 
 
 
-\n          {line_num++;}
+\n          {}
 {ws}        {/* ignore whitespaces */}
 true        {scan_reserved(TRUE);}
 false       {scan_reserved(FALSE);}

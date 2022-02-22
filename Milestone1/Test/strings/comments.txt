@@ -4,4 +4,9 @@
 thisIsLine4
 
 
-"unclos\x\a\b"
+// "unclos\x\a\b"
+
+
+"string string"
+
+2 + 3

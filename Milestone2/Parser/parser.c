@@ -8,7 +8,7 @@
 
 void yyerror(char const *s)
 {
-    fprintf(stderr, "%s, %d\n", s, line_num);
+    fprintf(stderr, "%s, %d\n", s, yylineno);
 }
 
 
@@ -82,7 +82,7 @@ void print_tree(struct ast *root, int level)
 // scanner counters an error in string which is unrecoverable, abort.
 void lexer_string_error(const char* info)
 {
-    fprintf(stderr,"error: %s at or near line %d\n", info,line_num);
+    fprintf(stderr,"error: %s at or near line %d\n", info,yylineno);
     exit(EXIT_FAILURE);
 }
 
@@ -91,7 +91,7 @@ void lexer_string_error(const char* info)
 // scanner counters an error, ignore if the total number of errors is acceptable; otherwise, abort;
 void lexer_general_error()
 {
-    fprintf(stderr,"warning: ignoring bad character at or near line %d \n",line_num);
+    fprintf(stderr,"warning: ignoring bad character at or near line %d \n",yylineno);
     num_lexer_error ++;
     if(num_lexer_error>=10)
     {

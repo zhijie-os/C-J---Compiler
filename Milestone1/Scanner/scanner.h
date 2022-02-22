@@ -15,7 +15,7 @@
 #include <errno.h>
 
 extern int num_error;
-extern int line_num;
+extern int yylineno;
 
 // number of tokens in the array
 extern int num_tokens;
@@ -86,7 +86,7 @@ void array_doubling()
 // scanner counters an error, ignore if the total number of errors is acceptable; otherwise, abort;
 void error_general()
 {
-    fprintf(stderr,"warning: ignoring bad character at or near line %d \n",line_num);
+    fprintf(stderr,"warning: ignoring bad character at or near line %d \n",yylineno);
     num_error ++;
     if(num_error>=10)
     {
@@ -98,7 +98,7 @@ void error_general()
 // scanner counters an error in string which is unrecoverable, abort.
 void error_string(const char* info)
 {
-    fprintf(stderr,"error: %s at or near line %d\n", info,line_num);
+    fprintf(stderr,"error: %s at or near line %d\n", info,yylineno);
     exit(EXIT_FAILURE);
 }
 
@@ -120,7 +120,7 @@ void scan_general(enum TOKEN_NAME tok_n)
     tk.attribute = (char*)malloc(yyleng);
     memmove(tk.attribute,yytext,yyleng);
     tk.attr_length = yyleng; 
-    tk.line = line_num; 
+    tk.line = yylineno; 
 
     // add the token into the array
     tokens[num_tokens] = tk;
@@ -146,7 +146,7 @@ void scan_reserved(enum TOKEN_NAME tok_n)
     tk.token_name = tok_n;
     tk.attribute = "None"; 
     tk.attr_length = 4;
-    tk.line = line_num; 
+    tk.line = yylineno; 
 
 
     // add the token into the array

@@ -555,13 +555,12 @@ char *yytext;
     #include "parser.h"
     #include "parser.tab.h"
 
-
     int num_lexer_error=0;
-    int line_num=1;
-#line 562 "parser.lex.c"
+
+#line 561 "parser.lex.c"
 
 /* regular definition */
-#line 565 "parser.lex.c"
+#line 564 "parser.lex.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -780,10 +779,10 @@ YY_DECL
 		}
 
 	{
-#line 30 "parser.l"
+#line 29 "parser.l"
 
 
-#line 787 "parser.lex.c"
+#line 786 "parser.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -852,248 +851,248 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 32 "parser.l"
+#line 31 "parser.l"
 {BEGIN(STRING);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 33 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return STRING;}
+#line 32 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return STRING;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 34 "parser.l"
+#line 33 "parser.l"
 {BEGIN(0);}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 35 "parser.l"
+#line 34 "parser.l"
 {lexer_string_error("unsupported escape character");}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 36 "parser.l"
+#line 35 "parser.l"
 {lexer_string_error("newline in string literal");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 37 "parser.l"
+#line 36 "parser.l"
 {lexer_string_error("return in string literal");}
 	YY_BREAK
 case YY_STATE_EOF(STRING):
-#line 38 "parser.l"
+#line 37 "parser.l"
 {lexer_string_error("string missing closing quote");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "parser.l"
+#line 40 "parser.l"
 {BEGIN(COMMENT);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 42 "parser.l"
+#line 41 "parser.l"
 {/* eats up the comment */};
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 43 "parser.l"
-{line_num++;BEGIN(0);}
+#line 42 "parser.l"
+{BEGIN(0);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 44 "parser.l"
+#line 43 "parser.l"
 {BEGIN(0);}
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 48 "parser.l"
-{line_num++;}
+#line 47 "parser.l"
+{}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 49 "parser.l"
+#line 48 "parser.l"
 {/* ignore whitespaces */}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 50 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return TRUE;}
+#line 49 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return TRUE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 51 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return FALSE;}
+#line 50 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return FALSE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 52 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return BOOLEAN;}
+#line 51 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return BOOLEAN;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 53 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return INT;}
+#line 52 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return INT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 54 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return VOID;}
+#line 53 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return VOID;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 55 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return IF;}
+#line 54 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return IF;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 56 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return ELSE;}
+#line 55 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return ELSE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 57 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); printf("While");return WHILE;}
+#line 56 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); printf("While");return WHILE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 58 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return BREAK;}
+#line 57 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return BREAK;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 59 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return RETURN;}
+#line 58 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return RETURN;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 60 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '+';}
+#line 59 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '+';}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 61 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '-';}
+#line 60 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '-';}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 62 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '*';}
+#line 61 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '*';}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 63 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '/';}
+#line 62 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '/';}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 64 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '%';}
+#line 63 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '%';}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 65 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '<';}
+#line 64 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '<';}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 66 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '>';}
+#line 65 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '>';}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 67 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return LE;}
+#line 66 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return LE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 68 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return GE;}
+#line 67 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return GE;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 69 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return EQ;}
+#line 68 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return EQ;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 70 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return NE;}
+#line 69 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return NE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 71 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '=';}
+#line 70 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '=';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 72 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '!';}
+#line 71 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '!';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 73 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return AND;}
+#line 72 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return AND;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 74 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return OR;}
+#line 73 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return OR;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 75 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '(';}
+#line 74 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '(';}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 76 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return ')';}
+#line 75 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return ')';}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 77 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '{';}
+#line 76 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '{';}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 78 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return '}';}
+#line 77 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return '}';}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 79 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return ';';}
+#line 78 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return ';';}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 80 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return ',';}
+#line 79 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return ',';}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 81 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return NUMBER;}
+#line 80 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return NUMBER;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 82 "parser.l"
-{yylval.attribute=create_atr(line_num,yytext); return ID;}
+#line 81 "parser.l"
+{yylval.attribute=create_atr(yylineno,yytext); return ID;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 84 "parser.l"
+#line 83 "parser.l"
 {lexer_general_error();}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 86 "parser.l"
+#line 85 "parser.l"
 ECHO;
 	YY_BREAK
-#line 1097 "parser.lex.c"
+#line 1096 "parser.lex.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -2111,6 +2110,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 86 "parser.l"
+#line 85 "parser.l"
 
 

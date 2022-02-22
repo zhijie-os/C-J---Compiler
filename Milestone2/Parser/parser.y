@@ -11,6 +11,8 @@
     struct  info *attribute; 
 }
 
+%define api.location.type {int}
+
 %token  <node> NUMBER STRING TRUE FALSE BOOLEAN INT ID VOID BREAK RETURN IF ELSE WHILE LE GE NE EQ AND OR
 %type   <node> start literal type globaldeclarations globaldeclaration variabledeclaration identifier
 %type   <node> functiondeclaration  functionheader functiondeclarator formalparameterlist formalparameter
@@ -93,12 +95,15 @@ statement               : block                                             {$$=
                         | ';'                                               {$$=atomic_ast("nullStmt",yylval.attribute);}
                         | statementexpression ';'                           {$$=$1;}
                         | BREAK ';'                                         {$$=atomic_ast("break", yylval.attribute);}
-                        | RETURN expression ';'                             {$$=new_ast("statement", 2, atomic_ast("return",yylval.attribute), $2);}
-                        | RETURN ';'                                        {$$=new_ast("statement", 1, atomic_ast("return",yylval.attribute));}
+                        | RETURN expression ';'                             {$$=new_ast("statement", 2, atomic_ast("return",create_atr(@1.first_line,NULL)), $2);}
+                        | RETURN ';'                                        {$$=new_ast("statement", 1, atomic_ast("return",create_atr(@1.first_line,NULL)));}
                         | IF '(' expression ')' statement                   {$$=new_ast("if", 2, $3, $5);}
                         | IF '(' expression ')' statement ELSE statement    {$$=new_ast("ifElse", 3, $3, $5, $7);}
-                        | WHILE '(' expression ')' statement                {printf("matched"); $$=new_ast("while", 2, $3, $5); }
+                        | WHILE '(' expression ')' statement                {$$=new_ast("while", 2, $3, $5); }
                         ;
+
+
+
 
 statementexpression     : assignment                                        {$$=$1;}
                         | functioninvocation                                {$$=$1;}
@@ -156,6 +161,8 @@ conditionalandexpression: equalityexpression                                {$$=
 conditionalorexpression : conditionalandexpression                              {$$=$1;}
                         | conditionalorexpression OR conditionalandexpression   {$$=new_ast("||", 2, $1, $3);}
                         ;
+
+
 
 assignmentexpression    : conditionalorexpression           {$$=$1;}
                         | assignment                        {$$=$1;}

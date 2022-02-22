@@ -8,7 +8,7 @@ extern int yylineno;    /* from lexer*/
 void yyerror(char const *s);
 
 extern int num_lexer_error;
-extern int line_num;
+
 
 struct info{
     int lineno;
