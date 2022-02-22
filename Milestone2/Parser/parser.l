@@ -29,7 +29,7 @@ number  {digit}+
 %% 
 
 "\""                                                {BEGIN(STRING);}
-<STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {yylval.attribute=create_atr(yylineno,yytext); return STRING;}
+<STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {atomic_ast("X", yylineno, yytext); return STRING;}
 <STRING>"\""                                        {BEGIN(0);}
 <STRING>\\[^bftrn'"\\]                              {lexer_string_error("unsupported escape character");}
 <STRING>\n                                          {lexer_string_error("newline in string literal");}
@@ -46,39 +46,39 @@ number  {digit}+
 
 \n          {}
 {ws}        {/* ignore whitespaces */}
-true        {yylval.attribute=create_atr(yylineno,yytext); return TRUE;}
-false       {yylval.attribute=create_atr(yylineno,yytext); return FALSE;}
-boolean     {yylval.attribute=create_atr(yylineno,yytext); return BOOLEAN;}
-int         {yylval.attribute=create_atr(yylineno,yytext); return INT;}
-void        {yylval.attribute=create_atr(yylineno,yytext); return VOID;}
-if          {yylval.attribute=create_atr(yylineno,yytext); return IF;}
-else        {yylval.attribute=create_atr(yylineno,yytext); return ELSE;}
-while       {yylval.attribute=create_atr(yylineno,yytext); printf("While");return WHILE;}
-break       {yylval.attribute=create_atr(yylineno,yytext); return BREAK;}
-return      {yylval.attribute=create_atr(yylineno,yytext); return RETURN;}
-"+"         {yylval.attribute=create_atr(yylineno,yytext); return '+';}
-"-"         {yylval.attribute=create_atr(yylineno,yytext); return '-';}
-"*"         {yylval.attribute=create_atr(yylineno,yytext); return '*';}
-"/"         {yylval.attribute=create_atr(yylineno,yytext); return '/';}
-"%"         {yylval.attribute=create_atr(yylineno,yytext); return '%';}
-"<"         {yylval.attribute=create_atr(yylineno,yytext); return '<';}
-">"         {yylval.attribute=create_atr(yylineno,yytext); return '>';}
-"<="        {yylval.attribute=create_atr(yylineno,yytext); return LE;}
-">="        {yylval.attribute=create_atr(yylineno,yytext); return GE;}
-"=="        {yylval.attribute=create_atr(yylineno,yytext); return EQ;}
-"!="        {yylval.attribute=create_atr(yylineno,yytext); return NE;}
-"="         {yylval.attribute=create_atr(yylineno,yytext); return '=';}
-"!"         {yylval.attribute=create_atr(yylineno,yytext); return '!';}
-"&&"        {yylval.attribute=create_atr(yylineno,yytext); return AND;}
-"||"        {yylval.attribute=create_atr(yylineno,yytext); return OR;}
-"("         {yylval.attribute=create_atr(yylineno,yytext); return '(';}
-")"         {yylval.attribute=create_atr(yylineno,yytext); return ')';}
-"{"         {yylval.attribute=create_atr(yylineno,yytext); return '{';}
-"}"         {yylval.attribute=create_atr(yylineno,yytext); return '}';}
-";"         {yylval.attribute=create_atr(yylineno,yytext); return ';';}
-","         {yylval.attribute=create_atr(yylineno,yytext); return ',';}
-{number}    {yylval.attribute=create_atr(yylineno,yytext); return NUMBER;}
-{id}        {yylval.attribute=create_atr(yylineno,yytext); return ID;}
+true        {yylval=atomic_ast("true", yylineno, yytext); return TRUE;}
+false       {yylval=atomic_ast("false", yylineno, yytext); return FALSE;}
+boolean     {yylval=atomic_ast("boolean", yylineno, yytext); return BOOLEAN;}
+int         {yylval=atomic_ast("int", yylineno, yytext); return INT;}
+void        {yylval=atomic_ast("void", yylineno, yytext); return VOID;}
+if          {yylval=atomic_ast("if", yylineno, yytext); return IF;}
+else        {yylval=atomic_ast("else", yylineno, yytext); return ELSE;}
+while       {yylval=atomic_ast("while", yylineno, yytext); ;return WHILE;}
+break       {yylval=atomic_ast("break", yylineno, yytext); return BREAK;}
+return      {yylval=atomic_ast("return", yylineno, yytext); return RETURN;}
+"+"         {yylval=atomic_ast("+", yylineno, yytext); return '+';}
+"-"         {yylval=atomic_ast("-", yylineno, yytext); return '-';}
+"*"         {yylval=atomic_ast("*", yylineno, yytext); return '*';}
+"/"         {yylval=atomic_ast("/", yylineno, yytext); return '/';}
+"%"         {yylval=atomic_ast("%", yylineno, yytext); return '%';}
+"<"         {yylval=atomic_ast("<", yylineno, yytext); return '<';}
+">"         {yylval=atomic_ast(">", yylineno, yytext); return '>';}
+"<="        {yylval=atomic_ast("<=", yylineno, yytext); return LE;}
+">="        {yylval=atomic_ast(">=", yylineno, yytext); return GE;}
+"=="        {yylval=atomic_ast("==", yylineno, yytext); return EQ;}
+"!="        {yylval=atomic_ast("!+", yylineno, yytext); return NE;}
+"="         {yylval=atomic_ast("=", yylineno, yytext); return '=';}
+"!"         {yylval=atomic_ast("!", yylineno, yytext); return '!';}
+"&&"        {yylval=atomic_ast("&&", yylineno, yytext); return AND;}
+"||"        {yylval=atomic_ast("||", yylineno, yytext); return OR;}
+"("         {yylval=atomic_ast("(", yylineno, yytext); return '(';}
+")"         {yylval=atomic_ast(")", yylineno, yytext); return ')';}
+"{"         {yylval=atomic_ast("{", yylineno, yytext); return '{';}
+"}"         {yylval=atomic_ast("}", yylineno, yytext); return '}';}
+";"         {yylval=atomic_ast(";", yylineno, yytext); return ';';}
+","         {yylval=atomic_ast(",", yylineno, yytext); return ',';}
+{number}    {yylval=atomic_ast("number", yylineno, yytext); return NUMBER;}
+{id}        {yylval=atomic_ast("id", yylineno, yytext); return ID;}
 
 .           {lexer_general_error();}
 

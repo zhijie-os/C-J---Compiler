@@ -17,9 +17,9 @@ struct ast *new_ast(const char *symbol, int num_of_children, ...)
     struct ast *a = (struct ast *)malloc(sizeof(struct ast));
 
     a->symbol = strdup(symbol);
-
     a->num_of_children = num_of_children;
-    a->attribute = NULL;
+
+
 
     a->children = (struct ast **)malloc(a->num_of_children*sizeof(struct ast*));
     va_list ptr;
@@ -35,23 +35,14 @@ struct ast *new_ast(const char *symbol, int num_of_children, ...)
 };
 
 
-struct ast *atomic_ast(const char *symbol,struct info *atr)
+struct ast *atomic_ast(const char *symbol,int line_num, const char *atr)
 {
     struct ast *a = (struct ast *)malloc(sizeof(struct ast));
     a->symbol = strdup(symbol);
     a->num_of_children = 0;
-    a->attribute = atr;
+    a->line_num = line_num;
+    a->attribute = strdup(atr);
 
-}
-
-struct info *create_atr(int lineno, const char *literal)
-{
-    struct info *a = (struct info *)malloc(sizeof(struct info));
-
-    a->lineno = lineno;
-    a->literal = strdup(literal);
-
-    return a;
 }
 
 void print_tree(struct ast *root, int level)
@@ -65,7 +56,7 @@ void print_tree(struct ast *root, int level)
 
     if (root->attribute)
     {
-        printf(" {lineno: %d, literal: '%s'}", root->attribute->lineno, root->attribute->literal);
+        printf(" {lineno: %d, literal: '%s'}", root->line_num, root->attribute);
     }
     
     printf("\n");

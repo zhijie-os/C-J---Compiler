@@ -5,21 +5,10 @@
 %}
 
 
-%union
-{
-    struct  ast *node;   
-    struct  info *attribute; 
-}
 
-%define api.location.type {int}
+%define api.value.type {struct ast*}
 
-%token  <node> NUMBER STRING TRUE FALSE BOOLEAN INT ID VOID BREAK RETURN IF ELSE WHILE LE GE NE EQ AND OR
-%type   <node> start literal type globaldeclarations globaldeclaration variabledeclaration identifier
-%type   <node> functiondeclaration  functionheader functiondeclarator formalparameterlist formalparameter
-%type   <node> mainfunctiondeclaration mainfunctiondeclarator block blockstatements blockstatement
-%type   <node> statement statementexpression primary argumentlist functioninvocation postfixexpression unaryexpression
-%type   <node> multiplicativeexpression additiveexpression relationalexpression equalityexpression
-%type   <node> conditionalandexpression conditionalorexpression assignmentexpression assignment expression
+%token  NUMBER STRING TRUE FALSE BOOLEAN INT ID VOID BREAK RETURN IF ELSE WHILE LE GE NE EQ AND OR
 
 
 %%
@@ -30,14 +19,14 @@ start           : /* empty */
                 | globaldeclarations    {$$=new_ast("program",1,$1);}
                 ;
 
-literal         : NUMBER                {$$=atomic_ast("number", yylval.attribute);}
-                | STRING                {$$=atomic_ast("string", yylval.attribute);}
-                | TRUE                  {$$=atomic_ast("true", yylval.attribute);}
-                | FALSE                 {$$=atomic_ast("false", yylval.attribute);}
+literal         : NUMBER                {$$=$1;}
+                | STRING                {$$=$1;}
+                | TRUE                  {$$=$1;}
+                | FALSE                 {$$=$1;}
                 ;       
 
-type            : BOOLEAN               {$$=atomic_ast("boolean", yylval.attribute);}
-                | INT                   {$$=atomic_ast("int", yylval.attribute);}
+type            : BOOLEAN               {$$=$1;}
+                | INT                   {$$=$1;}
                 ;
 
 globaldeclarations      : globaldeclaration                             {$$=$1;}
@@ -52,14 +41,14 @@ globaldeclaration       : variabledeclaration                           {$$=$1;}
 variabledeclaration     : type identifier ';'                           {$$=new_ast("variabledeclaration", 2,$1,$2);}
                         ;
 
-identifier              : ID                                            {$$=atomic_ast("id",yylval.attribute);}
+identifier              : ID                                            {$$=$1;}
                         ;
 
 functiondeclaration     : functionheader block                          {$$=new_ast("functiondeclaration",2,$1,$2);}
                         ;
 
 functionheader          : type functiondeclarator                       {$$=new_ast("functionheader", 2, $1, $2);}
-                        | VOID functiondeclarator                       {$$=new_ast("functionheader", 2, atomic_ast("VOID",yylval.attribute), $2);}
+                        | VOID functiondeclarator                       {$$=new_ast("functionheader", 2, $1, $2);}
                         ;
 
 functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_ast("functiondeclarator", 2, $1,$3);}
@@ -80,7 +69,7 @@ mainfunctiondeclarator  : identifier '(' ')'                            {$$=$1;}
                         ;
 
 block                   : '{' blockstatements '}'                       {$$=new_ast("block",1,$2);}
-                        | '{' '}'                                       {$$=new_ast("block", 0);}
+                        | '{' '}'                                       {$$=new_ast("block",0);}
                         ;
 
 blockstatements         : blockstatement                                {$$=$1;}
@@ -92,11 +81,11 @@ blockstatement          : variabledeclaration                           {$$=$1;}
                         ;
 
 statement               : block                                             {$$=$1;}
-                        | ';'                                               {$$=atomic_ast("nullStmt",yylval.attribute);}
+                        | ';'                                               {$$=$1;}
                         | statementexpression ';'                           {$$=$1;}
-                        | BREAK ';'                                         {$$=atomic_ast("break", yylval.attribute);}
-                        | RETURN expression ';'                             {$$=new_ast("statement", 2, atomic_ast("return",create_atr(@1.first_line,NULL)), $2);}
-                        | RETURN ';'                                        {$$=new_ast("statement", 1, atomic_ast("return",create_atr(@1.first_line,NULL)));}
+                        | BREAK ';'                                         {$$=$1;}
+                        | RETURN expression ';'                             {$$=new_ast("statement", 2, $1, $2);}
+                        | RETURN ';'                                        {$$=$1;}
                         | IF '(' expression ')' statement                   {$$=new_ast("if", 2, $3, $5);}
                         | IF '(' expression ')' statement ELSE statement    {$$=new_ast("ifElse", 3, $3, $5, $7);}
                         | WHILE '(' expression ')' statement                {$$=new_ast("while", 2, $3, $5); }
@@ -168,7 +157,7 @@ assignmentexpression    : conditionalorexpression           {$$=$1;}
                         | assignment                        {$$=$1;}
                         ;       
 
-assignment              : identifier '=' assignmentexpression   {$$=new_ast("=", 2, $1,  $3);}
+assignment              : identifier '=' assignmentexpression   {$$=new_ast("assignment", 3, $1, $2,  $3);}
                         ;
 
 expression              : assignmentexpression              {$$=$1;}
