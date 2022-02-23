@@ -1610,7 +1610,7 @@ yyreduce:
 
   case 35:
 #line 84 "parser.y"
-                                                                            {yyval=yyvsp[0];}
+                                                                            {yyval=new_ast("nullStmt",0);}
 #line 1615 "parser.tab.c"
     break;
 
@@ -1628,7 +1628,7 @@ yyreduce:
 
   case 38:
 #line 87 "parser.y"
-                                                                            {yyval=new_ast("statement", 2, yyvsp[-2], yyvsp[-1]);}
+                                                                            {yyval=new_ast("STATEMENT:", 2, yyvsp[-2], yyvsp[-1]);}
 #line 1633 "parser.tab.c"
     break;
 
@@ -1640,19 +1640,19 @@ yyreduce:
 
   case 40:
 #line 89 "parser.y"
-                                                                            {yyval=new_ast("if", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("STATEMENT:", 3, yyvsp[-4], yyvsp[-2], yyvsp[0]);}
 #line 1645 "parser.tab.c"
     break;
 
   case 41:
 #line 90 "parser.y"
-                                                                            {yyval=new_ast("ifElse", 3, yyvsp[-4], yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("STATEMENT:", 5, yyvsp[-6], yyvsp[-4], yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1651 "parser.tab.c"
     break;
 
   case 42:
 #line 91 "parser.y"
-                                                                            {yyval=new_ast("while", 2, yyvsp[-2], yyvsp[0]); }
+                                                                            {yyval=new_ast("STATEMENT:", 3, yyvsp[-4], yyvsp[-2], yyvsp[0]); }
 #line 1657 "parser.tab.c"
     break;
 

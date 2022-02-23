@@ -81,14 +81,14 @@ blockstatement          : variabledeclaration                           {$$=$1;}
                         ;
 
 statement               : block                                             {$$=$1;}
-                        | ';'                                               {$$=$1;}
+                        | ';'                                               {$$=new_ast("nullStmt",0);}
                         | statementexpression ';'                           {$$=$1;}
                         | BREAK ';'                                         {$$=$1;}
-                        | RETURN expression ';'                             {$$=new_ast("statement", 2, $1, $2);}
+                        | RETURN expression ';'                             {$$=new_ast("STATEMENT:", 2, $1, $2);}
                         | RETURN ';'                                        {$$=$1;}
-                        | IF '(' expression ')' statement                   {$$=new_ast("if", 2, $3, $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("ifElse", 3, $3, $5, $7);}
-                        | WHILE '(' expression ')' statement                {$$=new_ast("while", 2, $3, $5); }
+                        | IF '(' expression ')' statement                   {$$=new_ast("STATEMENT:", 3, $1, $3, $5);}
+                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("STATEMENT:", 5, $1, $3, $5, $6, $7);}
+                        | WHILE '(' expression ')' statement                {$$=new_ast("STATEMENT:", 3, $1, $3, $5); }
                         ;
 
 

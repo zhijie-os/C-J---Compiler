@@ -8,7 +8,7 @@
 
 void yyerror(char const *s)
 {
-    fprintf(stderr, "%s, %d\n", s, yylineno);
+    fprintf(stderr, "ERROR: %s, probably at or near \"%s\" on line %d\n", s,  yylval->symbol, yylval->line_num);
 }
 
 
