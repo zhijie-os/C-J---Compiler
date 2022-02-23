@@ -16,7 +16,7 @@
 dummy_start     : start                 {print_tree($1,0);}
 
 start           : /* empty */
-                | globaldeclarations    {$$=new_ast("program",1,$1);}
+                | globaldeclarations    {$$=new_ast("PROGRAM:",1,$1);}
                 ;
 
 literal         : NUMBER                {$$=$1;}
@@ -30,7 +30,7 @@ type            : BOOLEAN               {$$=$1;}
                 ;
 
 globaldeclarations      : globaldeclaration                             {$$=$1;}
-                        | globaldeclarations globaldeclaration          {$$=new_ast("globaldeclarations",2,$1, $2);}
+                        | globaldeclarations globaldeclaration          {$$=new_ast("GLOBALDECLARATIONS:",2,$1, $2);}
                         ;
 
 globaldeclaration       : variabledeclaration                           {$$=$1;}
@@ -38,42 +38,42 @@ globaldeclaration       : variabledeclaration                           {$$=$1;}
                         | mainfunctiondeclaration                       {$$=$1;}
                         ;
 
-variabledeclaration     : type identifier ';'                           {$$=new_ast("variabledeclaration", 2,$1,$2);}
+variabledeclaration     : type identifier ';'                           {$$=new_ast("VARIABLEDECLARATION:", 2,$1,$2);}
                         ;
 
 identifier              : ID                                            {$$=$1;}
                         ;
 
-functiondeclaration     : functionheader block                          {$$=new_ast("functiondeclaration",2,$1,$2);}
+functiondeclaration     : functionheader block                          {$$=new_ast("FUNCTIONDECLARATION:",2,$1,$2);}
                         ;
 
-functionheader          : type functiondeclarator                       {$$=new_ast("functionheader", 2, $1, $2);}
-                        | VOID functiondeclarator                       {$$=new_ast("functionheader", 2, $1, $2);}
+functionheader          : type functiondeclarator                       {$$=new_ast("FUNCTIONHEADER:", 2, $1, $2);}
+                        | VOID functiondeclarator                       {$$=new_ast("FUNCTIONHEADER:", 2, $1, $2);}
                         ;
 
-functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_ast("functiondeclarator", 2, $1,$3);}
+functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_ast("FUNCTIONDECLARATOR:", 2, $1,$3);}
                         | identifier '(' ')'                            {$$=$1;}
                         ;
 
 formalparameterlist     : formalparameter                               {$$=$1;}
-                        | formalparameterlist ',' formalparameter       {$$=new_ast("formalparameterlist", 2, $1,$3);}
+                        | formalparameterlist ',' formalparameter       {$$=new_ast("FORMALPARAMETERLIST:", 2, $1,$3);}
                         ;
 
-formalparameter         : type identifier                               {$$=new_ast("formalparameter", 2, $1, $2);}
+formalparameter         : type identifier                               {$$=new_ast("FORMALPARAMETER:", 2, $1, $2);}
                         ;
 
-mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_ast("mainfunctiondeclaration", 2, $1, $2);}
+mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_ast("MAINFUNCTIONDECLARATION:", 2, $1, $2);}
                         ;
 
 mainfunctiondeclarator  : identifier '(' ')'                            {$$=$1;}
                         ;
 
-block                   : '{' blockstatements '}'                       {$$=new_ast("block",1,$2);}
-                        | '{' '}'                                       {$$=new_ast("block",0);}
+block                   : '{' blockstatements '}'                       {$$=new_ast("BLOCK:",1,$2);}
+                        | '{' '}'                                       {$$=new_ast("BLOCK:",0);}
                         ;
 
 blockstatements         : blockstatement                                {$$=$1;}
-                        | blockstatements blockstatement                {$$=new_ast("blockstatements", 2, $1, $2);}
+                        | blockstatements blockstatement                {$$=new_ast("BLOCKSTATEMENTS:", 2, $1, $2);}
                         ;
 
 blockstatement          : variabledeclaration                           {$$=$1;}
@@ -104,10 +104,10 @@ primary                 : literal                                           {$$=
                         ;
 
 argumentlist            : expression                                        {$$=$1;}
-                        | argumentlist ',' expression                       {$$=new_ast("argumentlist", 2, $1, $3);}
+                        | argumentlist ',' expression                       {$$=new_ast("ARGUMENTLIST:", 2, $1, $3);}
                         ;
 
-functioninvocation      : identifier '(' argumentlist ')'                   {$$=new_ast("functioninvocation", 2, $1, $3);}
+functioninvocation      : identifier '(' argumentlist ')'                   {$$=new_ast("FUNCTIONINVOCATION:", 2, $1, $3);}
                         | identifier '(' ')'                                {$$=$1;}
                         ;
 
@@ -115,40 +115,40 @@ postfixexpression       : primary                                           {$$=
                         | identifier                                        {$$=$1;}
                         ;
 
-unaryexpression         : '-' unaryexpression                               {$$=new_ast("-", 1,  $2);}
-                        | '!' unaryexpression                               {$$=new_ast("!", 1,  $2);}
+unaryexpression         : '-' unaryexpression                               {$$=new_ast("UNARYEXPRESSION", 2, $1, $2);}
+                        | '!' unaryexpression                               {$$=new_ast("UNARYEXPRESSION", 2, $1, $2);}
                         | postfixexpression                                 {$$=$1;}
                         ;
 
 multiplicativeexpression: unaryexpression                                   {$$=$1;}
-                        | multiplicativeexpression '*' unaryexpression      {$$=new_ast("*", 2, $1,  $3);}
-                        | multiplicativeexpression '/' unaryexpression      {$$=new_ast("/", 2, $1, $3);}
-                        | multiplicativeexpression '%' unaryexpression      {$$=new_ast("%", 2, $1, $3);}
+                        | multiplicativeexpression '*' unaryexpression      {$$=new_ast("MULTIPLICATIVEEXPRESSION:", 3, $1, $2, $3);}
+                        | multiplicativeexpression '/' unaryexpression      {$$=new_ast("MULTIPLICATIVEEXPRESSION:", 3, $1, $2, $3);}
+                        | multiplicativeexpression '%' unaryexpression      {$$=new_ast("MULTIPLICATIVEEXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 additiveexpression      : multiplicativeexpression                          {$$=$1;}
-                        | additiveexpression '+' multiplicativeexpression   {$$=new_ast("+", 2, $1, $3);}
-                        | additiveexpression '-' multiplicativeexpression   {$$=new_ast("-", 2, $1, $3);}
+                        | additiveexpression '+' multiplicativeexpression   {$$=new_ast("ADDITIVEEXPRESSION:", 3, $1, $2, $3);}
+                        | additiveexpression '-' multiplicativeexpression   {$$=new_ast("ADDITIVEEXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 relationalexpression    : additiveexpression                                {$$=$1;}
-                        | relationalexpression '<' additiveexpression       {$$=new_ast("<", 2, $1, $3);}
-                        | relationalexpression '>' additiveexpression       {$$=new_ast(">", 2, $1, $3);}
-                        | relationalexpression LE additiveexpression        {$$=new_ast("<=", 2, $1, $3);}
-                        | relationalexpression GE additiveexpression        {$$=new_ast(">=", 2, $1, $3);}
+                        | relationalexpression '<' additiveexpression       {$$=new_ast("RELATIONALEXPRESSION:", 3, $1, $2, $3);}
+                        | relationalexpression '>' additiveexpression       {$$=new_ast("RELATIONALEXPRESSION:", 3, $1, $2, $3);}
+                        | relationalexpression LE additiveexpression        {$$=new_ast("RELATIONALEXPRESSION:", 3, $1, $2, $3);}
+                        | relationalexpression GE additiveexpression        {$$=new_ast("RELATIONALEXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 equalityexpression      : relationalexpression                              {$$=$1;}
-                        | equalityexpression EQ relationalexpression        {$$=new_ast("==", 2, $1, $3);}
-                        | equalityexpression NE relationalexpression        {$$=new_ast("!=", 2, $1, $3);}
+                        | equalityexpression EQ relationalexpression        {$$=new_ast("EQUALITYEXPRESSION:", 3, $1, $2, $3);}
+                        | equalityexpression NE relationalexpression        {$$=new_ast("EQUALITYEXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 conditionalandexpression: equalityexpression                                {$$=$1;}
-                        | conditionalandexpression AND equalityexpression   {$$=new_ast("&&", 2, $1, $3);}
+                        | conditionalandexpression AND equalityexpression   {$$=new_ast("CONDITIONALANDEXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 conditionalorexpression : conditionalandexpression                              {$$=$1;}
-                        | conditionalorexpression OR conditionalandexpression   {$$=new_ast("||", 2, $1, $3);}
+                        | conditionalorexpression OR conditionalandexpression   {$$=new_ast("CONDITIONALOREXPRESSION:", 3, $1, $2, $3);}
                         ;
 
 
@@ -157,7 +157,7 @@ assignmentexpression    : conditionalorexpression           {$$=$1;}
                         | assignment                        {$$=$1;}
                         ;       
 
-assignment              : identifier '=' assignmentexpression   {$$=new_ast("assignment", 3, $1, $2,  $3);}
+assignment              : identifier '=' assignmentexpression   {$$=new_ast("ASSIGNMENT:", 3, $1, $2,  $3);}
                         ;
 
 expression              : assignmentexpression              {$$=$1;}

@@ -56,7 +56,7 @@ void print_tree(struct ast *root, int level)
 
     if (root->attribute)
     {
-        printf(" {lineno: %d, literal: '%s'}", root->line_num, root->attribute);
+        printf(" { lineno: %d, attribute: '%s'}", root->line_num, root->attribute);
     }
     
     printf("\n");

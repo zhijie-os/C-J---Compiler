@@ -1424,7 +1424,7 @@ yyreduce:
 
   case 4:
 #line 19 "parser.y"
-                                        {yyval=new_ast("program",1,yyvsp[0]);}
+                                        {yyval=new_ast("PROGRAM:",1,yyvsp[0]);}
 #line 1429 "parser.tab.c"
     break;
 
@@ -1472,7 +1472,7 @@ yyreduce:
 
   case 12:
 #line 33 "parser.y"
-                                                                        {yyval=new_ast("globaldeclarations",2,yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("GLOBALDECLARATIONS:",2,yyvsp[-1], yyvsp[0]);}
 #line 1477 "parser.tab.c"
     break;
 
@@ -1496,7 +1496,7 @@ yyreduce:
 
   case 16:
 #line 41 "parser.y"
-                                                                        {yyval=new_ast("variabledeclaration", 2,yyvsp[-2],yyvsp[-1]);}
+                                                                        {yyval=new_ast("VARIABLEDECLARATION:", 2,yyvsp[-2],yyvsp[-1]);}
 #line 1501 "parser.tab.c"
     break;
 
@@ -1508,25 +1508,25 @@ yyreduce:
 
   case 18:
 #line 47 "parser.y"
-                                                                        {yyval=new_ast("functiondeclaration",2,yyvsp[-1],yyvsp[0]);}
+                                                                        {yyval=new_ast("FUNCTIONDECLARATION:",2,yyvsp[-1],yyvsp[0]);}
 #line 1513 "parser.tab.c"
     break;
 
   case 19:
 #line 50 "parser.y"
-                                                                        {yyval=new_ast("functionheader", 2, yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("FUNCTIONHEADER:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1519 "parser.tab.c"
     break;
 
   case 20:
 #line 51 "parser.y"
-                                                                        {yyval=new_ast("functionheader", 2, yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("FUNCTIONHEADER:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1525 "parser.tab.c"
     break;
 
   case 21:
 #line 54 "parser.y"
-                                                                        {yyval=new_ast("functiondeclarator", 2, yyvsp[-3],yyvsp[-1]);}
+                                                                        {yyval=new_ast("FUNCTIONDECLARATOR:", 2, yyvsp[-3],yyvsp[-1]);}
 #line 1531 "parser.tab.c"
     break;
 
@@ -1544,19 +1544,19 @@ yyreduce:
 
   case 24:
 #line 59 "parser.y"
-                                                                        {yyval=new_ast("formalparameterlist", 2, yyvsp[-2],yyvsp[0]);}
+                                                                        {yyval=new_ast("FORMALPARAMETERLIST:", 2, yyvsp[-2],yyvsp[0]);}
 #line 1549 "parser.tab.c"
     break;
 
   case 25:
 #line 62 "parser.y"
-                                                                        {yyval=new_ast("formalparameter", 2, yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("FORMALPARAMETER:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1555 "parser.tab.c"
     break;
 
   case 26:
 #line 65 "parser.y"
-                                                                        {yyval=new_ast("mainfunctiondeclaration", 2, yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("MAINFUNCTIONDECLARATION:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1561 "parser.tab.c"
     break;
 
@@ -1568,13 +1568,13 @@ yyreduce:
 
   case 28:
 #line 71 "parser.y"
-                                                                        {yyval=new_ast("block",1,yyvsp[-1]);}
+                                                                        {yyval=new_ast("BLOCK:",1,yyvsp[-1]);}
 #line 1573 "parser.tab.c"
     break;
 
   case 29:
 #line 72 "parser.y"
-                                                                        {yyval=new_ast("block",0);}
+                                                                        {yyval=new_ast("BLOCK:",0);}
 #line 1579 "parser.tab.c"
     break;
 
@@ -1586,7 +1586,7 @@ yyreduce:
 
   case 31:
 #line 76 "parser.y"
-                                                                        {yyval=new_ast("blockstatements", 2, yyvsp[-1], yyvsp[0]);}
+                                                                        {yyval=new_ast("BLOCKSTATEMENTS:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1591 "parser.tab.c"
     break;
 
@@ -1694,13 +1694,13 @@ yyreduce:
 
   case 49:
 #line 107 "parser.y"
-                                                                            {yyval=new_ast("argumentlist", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("ARGUMENTLIST:", 2, yyvsp[-2], yyvsp[0]);}
 #line 1699 "parser.tab.c"
     break;
 
   case 50:
 #line 110 "parser.y"
-                                                                            {yyval=new_ast("functioninvocation", 2, yyvsp[-3], yyvsp[-1]);}
+                                                                            {yyval=new_ast("FUNCTIONINVOCATION:", 2, yyvsp[-3], yyvsp[-1]);}
 #line 1705 "parser.tab.c"
     break;
 
@@ -1724,13 +1724,13 @@ yyreduce:
 
   case 54:
 #line 118 "parser.y"
-                                                                            {yyval=new_ast("-", 1,  yyvsp[0]);}
+                                                                            {yyval=new_ast("UNARYEXPRESSION", 2, yyvsp[-1], yyvsp[0]);}
 #line 1729 "parser.tab.c"
     break;
 
   case 55:
 #line 119 "parser.y"
-                                                                            {yyval=new_ast("!", 1,  yyvsp[0]);}
+                                                                            {yyval=new_ast("UNARYEXPRESSION", 2, yyvsp[-1], yyvsp[0]);}
 #line 1735 "parser.tab.c"
     break;
 
@@ -1748,19 +1748,19 @@ yyreduce:
 
   case 58:
 #line 124 "parser.y"
-                                                                            {yyval=new_ast("*", 2, yyvsp[-2],  yyvsp[0]);}
+                                                                            {yyval=new_ast("MULTIPLICATIVEEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1753 "parser.tab.c"
     break;
 
   case 59:
 #line 125 "parser.y"
-                                                                            {yyval=new_ast("/", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("MULTIPLICATIVEEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1759 "parser.tab.c"
     break;
 
   case 60:
 #line 126 "parser.y"
-                                                                            {yyval=new_ast("%", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("MULTIPLICATIVEEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1765 "parser.tab.c"
     break;
 
@@ -1772,13 +1772,13 @@ yyreduce:
 
   case 62:
 #line 130 "parser.y"
-                                                                            {yyval=new_ast("+", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("ADDITIVEEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1777 "parser.tab.c"
     break;
 
   case 63:
 #line 131 "parser.y"
-                                                                            {yyval=new_ast("-", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("ADDITIVEEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1783 "parser.tab.c"
     break;
 
@@ -1790,25 +1790,25 @@ yyreduce:
 
   case 65:
 #line 135 "parser.y"
-                                                                            {yyval=new_ast("<", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("RELATIONALEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1795 "parser.tab.c"
     break;
 
   case 66:
 #line 136 "parser.y"
-                                                                            {yyval=new_ast(">", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("RELATIONALEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1801 "parser.tab.c"
     break;
 
   case 67:
 #line 137 "parser.y"
-                                                                            {yyval=new_ast("<=", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("RELATIONALEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1807 "parser.tab.c"
     break;
 
   case 68:
 #line 138 "parser.y"
-                                                                            {yyval=new_ast(">=", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("RELATIONALEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1813 "parser.tab.c"
     break;
 
@@ -1820,13 +1820,13 @@ yyreduce:
 
   case 70:
 #line 142 "parser.y"
-                                                                            {yyval=new_ast("==", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("EQUALITYEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1825 "parser.tab.c"
     break;
 
   case 71:
 #line 143 "parser.y"
-                                                                            {yyval=new_ast("!=", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("EQUALITYEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1831 "parser.tab.c"
     break;
 
@@ -1838,7 +1838,7 @@ yyreduce:
 
   case 73:
 #line 147 "parser.y"
-                                                                            {yyval=new_ast("&&", 2, yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new_ast("CONDITIONALANDEXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1843 "parser.tab.c"
     break;
 
@@ -1850,7 +1850,7 @@ yyreduce:
 
   case 75:
 #line 151 "parser.y"
-                                                                                {yyval=new_ast("||", 2, yyvsp[-2], yyvsp[0]);}
+                                                                                {yyval=new_ast("CONDITIONALOREXPRESSION:", 3, yyvsp[-2], yyvsp[-1], yyvsp[0]);}
 #line 1855 "parser.tab.c"
     break;
 
@@ -1868,7 +1868,7 @@ yyreduce:
 
   case 78:
 #line 160 "parser.y"
-                                                                {yyval=new_ast("assignment", 3, yyvsp[-2], yyvsp[-1],  yyvsp[0]);}
+                                                                {yyval=new_ast("ASSIGNMENT:", 3, yyvsp[-2], yyvsp[-1],  yyvsp[0]);}
 #line 1873 "parser.tab.c"
     break;
 
