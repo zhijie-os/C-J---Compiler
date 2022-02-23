@@ -1,6 +1,6 @@
-#line 1 "parser.lex.c"
+#line 2 "parser.lex.c"
 
-#line 3 "parser.lex.c"
+#line 4 "parser.lex.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -557,10 +557,10 @@ char *yytext;
 
     int num_lexer_error=0;
 
-#line 560 "parser.lex.c"
+#line 561 "parser.lex.c"
 
 /* regular definition */
-#line 563 "parser.lex.c"
+#line 564 "parser.lex.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -782,7 +782,7 @@ YY_DECL
 #line 29 "parser.l"
 
 
-#line 785 "parser.lex.c"
+#line 786 "parser.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -920,157 +920,157 @@ YY_RULE_SETUP
 case 13:
 YY_RULE_SETUP
 #line 49 "parser.l"
-{yylval=atomic_ast("true", yylineno, yytext); return TRUE;}
+{yylval=atomic_ast("true", yylineno,"None"); return TRUE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 50 "parser.l"
-{yylval=atomic_ast("false", yylineno, yytext); return FALSE;}
+{yylval=atomic_ast("false", yylineno,"None"); return FALSE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 51 "parser.l"
-{yylval=atomic_ast("boolean", yylineno, yytext); return BOOLEAN;}
+{yylval=atomic_ast("boolean", yylineno,"None"); return BOOLEAN;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 52 "parser.l"
-{yylval=atomic_ast("int", yylineno, yytext); return INT;}
+{yylval=atomic_ast("int", yylineno,"None"); return INT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 53 "parser.l"
-{yylval=atomic_ast("void", yylineno, yytext); return VOID;}
+{yylval=atomic_ast("void", yylineno,"None"); return VOID;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 54 "parser.l"
-{yylval=atomic_ast("if", yylineno, yytext); return IF;}
+{yylval=atomic_ast("if", yylineno,"None"); return IF;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 55 "parser.l"
-{yylval=atomic_ast("else", yylineno, yytext); return ELSE;}
+{yylval=atomic_ast("else", yylineno,"None"); return ELSE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 56 "parser.l"
-{yylval=atomic_ast("while", yylineno, yytext); ;return WHILE;}
+{yylval=atomic_ast("while", yylineno,"None"); ;return WHILE;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 57 "parser.l"
-{yylval=atomic_ast("break", yylineno, yytext); return BREAK;}
+{yylval=atomic_ast("break", yylineno,"None"); return BREAK;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 58 "parser.l"
-{yylval=atomic_ast("return", yylineno, yytext); return RETURN;}
+{yylval=atomic_ast("return", yylineno,"None"); return RETURN;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 59 "parser.l"
-{yylval=atomic_ast("+", yylineno, yytext); return '+';}
+{yylval=atomic_ast("+", yylineno,"None"); return '+';}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 60 "parser.l"
-{yylval=atomic_ast("-", yylineno, yytext); return '-';}
+{yylval=atomic_ast("-", yylineno,"None"); return '-';}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 61 "parser.l"
-{yylval=atomic_ast("*", yylineno, yytext); return '*';}
+{yylval=atomic_ast("*", yylineno,"None"); return '*';}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 62 "parser.l"
-{yylval=atomic_ast("/", yylineno, yytext); return '/';}
+{yylval=atomic_ast("/", yylineno,"None"); return '/';}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 63 "parser.l"
-{yylval=atomic_ast("%", yylineno, yytext); return '%';}
+{yylval=atomic_ast("%", yylineno,"None"); return '%';}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 64 "parser.l"
-{yylval=atomic_ast("<", yylineno, yytext); return '<';}
+{yylval=atomic_ast("<", yylineno,"None"); return '<';}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 65 "parser.l"
-{yylval=atomic_ast(">", yylineno, yytext); return '>';}
+{yylval=atomic_ast(">", yylineno,"None"); return '>';}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 66 "parser.l"
-{yylval=atomic_ast("<=", yylineno, yytext); return LE;}
+{yylval=atomic_ast("<=", yylineno,"None"); return LE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 67 "parser.l"
-{yylval=atomic_ast(">=", yylineno, yytext); return GE;}
+{yylval=atomic_ast(">=", yylineno,"None"); return GE;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 68 "parser.l"
-{yylval=atomic_ast("==", yylineno, yytext); return EQ;}
+{yylval=atomic_ast("==", yylineno,"None"); return EQ;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 69 "parser.l"
-{yylval=atomic_ast("!+", yylineno, yytext); return NE;}
+{yylval=atomic_ast("!+", yylineno,"None"); return NE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 70 "parser.l"
-{yylval=atomic_ast("=", yylineno, yytext); return '=';}
+{yylval=atomic_ast("=", yylineno,"None"); return '=';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 71 "parser.l"
-{yylval=atomic_ast("!", yylineno, yytext); return '!';}
+{yylval=atomic_ast("!", yylineno,"None"); return '!';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 72 "parser.l"
-{yylval=atomic_ast("&&", yylineno, yytext); return AND;}
+{yylval=atomic_ast("&&", yylineno,"None"); return AND;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 73 "parser.l"
-{yylval=atomic_ast("||", yylineno, yytext); return OR;}
+{yylval=atomic_ast("||", yylineno,"None"); return OR;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 74 "parser.l"
-{yylval=atomic_ast("(", yylineno, yytext); return '(';}
+{yylval=atomic_ast("(", yylineno,"None"); return '(';}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 75 "parser.l"
-{yylval=atomic_ast(")", yylineno, yytext); return ')';}
+{yylval=atomic_ast(")", yylineno,"None"); return ')';}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 76 "parser.l"
-{yylval=atomic_ast("{", yylineno, yytext); return '{';}
+{yylval=atomic_ast("{", yylineno,"None"); return '{';}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 77 "parser.l"
-{yylval=atomic_ast("}", yylineno, yytext); return '}';}
+{yylval=atomic_ast("}", yylineno,"None"); return '}';}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 78 "parser.l"
-{yylval=atomic_ast(";", yylineno, yytext); return ';';}
+{yylval=atomic_ast(";", yylineno,"None"); return ';';}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 79 "parser.l"
-{yylval=atomic_ast(",", yylineno, yytext); return ',';}
+{yylval=atomic_ast(",", yylineno,"None"); return ',';}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
@@ -1092,7 +1092,7 @@ YY_RULE_SETUP
 #line 85 "parser.l"
 ECHO;
 	YY_BREAK
-#line 1095 "parser.lex.c"
+#line 1096 "parser.lex.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();

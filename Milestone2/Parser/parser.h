@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-
+extern FILE *yyin;
 extern int yylineno;    /* from lexer*/
 void yyerror(char const *s);
 

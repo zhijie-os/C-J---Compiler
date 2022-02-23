@@ -93,7 +93,23 @@ void lexer_general_error()
 
 
 
-int main()
+
+int main(int argc, char *argv[])
 {
+    if(argc==2)
+    {
+        yyin = fopen(argv[1],"r");
+        if(yyin==NULL)
+        {
+            fprintf(stderr, "Faile to open %s\n",argv[1]);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        perror("Usage:./parser <file path>\n");
+        exit(EXIT_FAILURE);
+    }
+
     return yyparse();
 }

@@ -46,37 +46,37 @@ number  {digit}+
 
 \n          {}
 {ws}        {/* ignore whitespaces */}
-true        {yylval=atomic_ast("true", yylineno, yytext); return TRUE;}
-false       {yylval=atomic_ast("false", yylineno, yytext); return FALSE;}
-boolean     {yylval=atomic_ast("boolean", yylineno, yytext); return BOOLEAN;}
-int         {yylval=atomic_ast("int", yylineno, yytext); return INT;}
-void        {yylval=atomic_ast("void", yylineno, yytext); return VOID;}
-if          {yylval=atomic_ast("if", yylineno, yytext); return IF;}
-else        {yylval=atomic_ast("else", yylineno, yytext); return ELSE;}
-while       {yylval=atomic_ast("while", yylineno, yytext); ;return WHILE;}
-break       {yylval=atomic_ast("break", yylineno, yytext); return BREAK;}
-return      {yylval=atomic_ast("return", yylineno, yytext); return RETURN;}
-"+"         {yylval=atomic_ast("+", yylineno, yytext); return '+';}
-"-"         {yylval=atomic_ast("-", yylineno, yytext); return '-';}
-"*"         {yylval=atomic_ast("*", yylineno, yytext); return '*';}
-"/"         {yylval=atomic_ast("/", yylineno, yytext); return '/';}
-"%"         {yylval=atomic_ast("%", yylineno, yytext); return '%';}
-"<"         {yylval=atomic_ast("<", yylineno, yytext); return '<';}
-">"         {yylval=atomic_ast(">", yylineno, yytext); return '>';}
-"<="        {yylval=atomic_ast("<=", yylineno, yytext); return LE;}
-">="        {yylval=atomic_ast(">=", yylineno, yytext); return GE;}
-"=="        {yylval=atomic_ast("==", yylineno, yytext); return EQ;}
-"!="        {yylval=atomic_ast("!+", yylineno, yytext); return NE;}
-"="         {yylval=atomic_ast("=", yylineno, yytext); return '=';}
-"!"         {yylval=atomic_ast("!", yylineno, yytext); return '!';}
-"&&"        {yylval=atomic_ast("&&", yylineno, yytext); return AND;}
-"||"        {yylval=atomic_ast("||", yylineno, yytext); return OR;}
-"("         {yylval=atomic_ast("(", yylineno, yytext); return '(';}
-")"         {yylval=atomic_ast(")", yylineno, yytext); return ')';}
-"{"         {yylval=atomic_ast("{", yylineno, yytext); return '{';}
-"}"         {yylval=atomic_ast("}", yylineno, yytext); return '}';}
-";"         {yylval=atomic_ast(";", yylineno, yytext); return ';';}
-","         {yylval=atomic_ast(",", yylineno, yytext); return ',';}
+true        {yylval=atomic_ast("true", yylineno,"None"); return TRUE;}
+false       {yylval=atomic_ast("false", yylineno,"None"); return FALSE;}
+boolean     {yylval=atomic_ast("boolean", yylineno,"None"); return BOOLEAN;}
+int         {yylval=atomic_ast("int", yylineno,"None"); return INT;}
+void        {yylval=atomic_ast("void", yylineno,"None"); return VOID;}
+if          {yylval=atomic_ast("if", yylineno,"None"); return IF;}
+else        {yylval=atomic_ast("else", yylineno,"None"); return ELSE;}
+while       {yylval=atomic_ast("while", yylineno,"None"); ;return WHILE;}
+break       {yylval=atomic_ast("break", yylineno,"None"); return BREAK;}
+return      {yylval=atomic_ast("return", yylineno,"None"); return RETURN;}
+"+"         {yylval=atomic_ast("+", yylineno,"None"); return '+';}
+"-"         {yylval=atomic_ast("-", yylineno,"None"); return '-';}
+"*"         {yylval=atomic_ast("*", yylineno,"None"); return '*';}
+"/"         {yylval=atomic_ast("/", yylineno,"None"); return '/';}
+"%"         {yylval=atomic_ast("%", yylineno,"None"); return '%';}
+"<"         {yylval=atomic_ast("<", yylineno,"None"); return '<';}
+">"         {yylval=atomic_ast(">", yylineno,"None"); return '>';}
+"<="        {yylval=atomic_ast("<=", yylineno,"None"); return LE;}
+">="        {yylval=atomic_ast(">=", yylineno,"None"); return GE;}
+"=="        {yylval=atomic_ast("==", yylineno,"None"); return EQ;}
+"!="        {yylval=atomic_ast("!+", yylineno,"None"); return NE;}
+"="         {yylval=atomic_ast("=", yylineno,"None"); return '=';}
+"!"         {yylval=atomic_ast("!", yylineno,"None"); return '!';}
+"&&"        {yylval=atomic_ast("&&", yylineno,"None"); return AND;}
+"||"        {yylval=atomic_ast("||", yylineno,"None"); return OR;}
+"("         {yylval=atomic_ast("(", yylineno,"None"); return '(';}
+")"         {yylval=atomic_ast(")", yylineno,"None"); return ')';}
+"{"         {yylval=atomic_ast("{", yylineno,"None"); return '{';}
+"}"         {yylval=atomic_ast("}", yylineno,"None"); return '}';}
+";"         {yylval=atomic_ast(";", yylineno,"None"); return ';';}
+","         {yylval=atomic_ast(",", yylineno,"None"); return ',';}
 {number}    {yylval=atomic_ast("number", yylineno, yytext); return NUMBER;}
 {id}        {yylval=atomic_ast("id", yylineno, yytext); return ID;}
 
