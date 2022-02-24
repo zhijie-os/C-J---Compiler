@@ -42,7 +42,6 @@ number  {digit}+
 "//"                                    {BEGIN(COMMENT);}
 <COMMENT>[^\r\n]                        {/* eats up the comment */};
 <COMMENT>\n                             {BEGIN(0);}
-<COMMENT>[\r<<EOF>>]                    {BEGIN(0);}
 
 
 
@@ -108,7 +107,7 @@ int main(int argc, char *argv[])
     yylex();
 
     if(num_tokens>0)
-        print_tokens();
+       print_tokens();
     free_attributes();
     free(tokens);
 }

@@ -1,0 +1,9 @@
+main()
+{
+    if(true)
+    ;
+    if(false)
+    ;
+    if(false)
+    ;
+}

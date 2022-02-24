@@ -1,0 +1,12 @@
+main()
+{
+    x=a+1;
+    if(true)
+    ;
+    if(false)
+    {
+        k = "this is a block";
+    }
+    return abc;
+    return abcde;
+}
