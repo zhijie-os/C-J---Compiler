@@ -7,8 +7,10 @@
 
 extern FILE *yyin;
 extern int yydebug;
-extern int yylineno;    /* from lexer*/
+extern int yylineno;   
 void yyerror(char const *s);
+extern int yylex (void);
+extern int yyparse (void);
 extern struct ast* yylval;
 
 extern int num_lexer_error;

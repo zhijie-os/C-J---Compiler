@@ -5,4 +5,4 @@ parser: parser.y parser.l parser.h
 
 
 clean:
-	rm *.*.* parser
+	rm *.*.* parser parser.output

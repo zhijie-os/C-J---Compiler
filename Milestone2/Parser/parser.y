@@ -5,10 +5,11 @@
 %}
 
 
-
+%expect 1
 %define api.value.type {struct ast*}
 
 %token  NUMBER STRING_Y TRUE FALSE BOOLEAN INT ID VOID BREAK RETURN IF ELSE WHILE LE GE NE EQ AND OR
+
 
 
 %%

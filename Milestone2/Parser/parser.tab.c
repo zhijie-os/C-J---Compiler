@@ -560,14 +560,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16,    18,    19,    22,    23,    24,    25,    28,
-      29,    32,    33,    36,    37,    38,    41,    44,    47,    50,
-      51,    54,    55,    58,    59,    62,    65,    68,    71,    72,
-      75,    76,    79,    80,    83,    84,    85,    86,    87,    88,
-      89,    90,    91,    97,    98,   101,   102,   103,   106,   107,
-     110,   111,   114,   115,   118,   119,   120,   123,   124,   125,
-     126,   129,   130,   131,   134,   135,   136,   137,   138,   141,
-     142,   143,   146,   147,   150,   151,   156,   157,   160,   163
+       0,    17,    17,    19,    20,    23,    24,    25,    26,    29,
+      30,    33,    34,    37,    38,    39,    42,    45,    48,    51,
+      52,    55,    56,    59,    60,    63,    66,    69,    72,    73,
+      76,    77,    80,    81,    84,    85,    86,    87,    88,    89,
+      90,    91,    92,    98,    99,   102,   103,   104,   107,   108,
+     111,   112,   115,   116,   119,   120,   121,   124,   125,   126,
+     127,   130,   131,   132,   135,   136,   137,   138,   139,   142,
+     143,   144,   147,   148,   151,   152,   157,   158,   161,   164
 };
 #endif
 
@@ -1228,463 +1228,463 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* dummy_start: start  */
-#line 16 "parser.y"
+#line 17 "parser.y"
                                         {print_tree(yyvsp[0],0);}
 #line 1234 "parser.tab.c"
     break;
 
   case 4: /* start: globaldeclarations  */
-#line 19 "parser.y"
+#line 20 "parser.y"
                                         {yyval=rename_ast("PROGRAM:",yyvsp[0]);}
 #line 1240 "parser.tab.c"
     break;
 
   case 5: /* literal: NUMBER  */
-#line 22 "parser.y"
+#line 23 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1246 "parser.tab.c"
     break;
 
   case 6: /* literal: STRING_Y  */
-#line 23 "parser.y"
+#line 24 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1252 "parser.tab.c"
     break;
 
   case 7: /* literal: TRUE  */
-#line 24 "parser.y"
+#line 25 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1258 "parser.tab.c"
     break;
 
   case 8: /* literal: FALSE  */
-#line 25 "parser.y"
+#line 26 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1264 "parser.tab.c"
     break;
 
   case 9: /* type: BOOLEAN  */
-#line 28 "parser.y"
+#line 29 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1270 "parser.tab.c"
     break;
 
   case 10: /* type: INT  */
-#line 29 "parser.y"
+#line 30 "parser.y"
                                         {yyval=yyvsp[0];}
 #line 1276 "parser.tab.c"
     break;
 
   case 11: /* globaldeclarations: globaldeclaration  */
-#line 32 "parser.y"
+#line 33 "parser.y"
                                                                         {yyval=fold_ast_base(yyvsp[0]);}
 #line 1282 "parser.tab.c"
     break;
 
   case 12: /* globaldeclarations: globaldeclarations globaldeclaration  */
-#line 33 "parser.y"
+#line 34 "parser.y"
                                                                         {yyval=fold_ast(yyvsp[-1], yyvsp[0]);}
 #line 1288 "parser.tab.c"
     break;
 
   case 13: /* globaldeclaration: variabledeclaration  */
-#line 36 "parser.y"
+#line 37 "parser.y"
                                                                         {yyval=rename_ast("GLOBAL_VAR_DECL",yyvsp[0]);}
 #line 1294 "parser.tab.c"
     break;
 
   case 14: /* globaldeclaration: functiondeclaration  */
-#line 37 "parser.y"
+#line 38 "parser.y"
                                                                         {yyval=yyvsp[0];}
 #line 1300 "parser.tab.c"
     break;
 
   case 15: /* globaldeclaration: mainfunctiondeclaration  */
-#line 38 "parser.y"
+#line 39 "parser.y"
                                                                         {yyval=yyvsp[0];}
 #line 1306 "parser.tab.c"
     break;
 
   case 16: /* variabledeclaration: type identifier ';'  */
-#line 41 "parser.y"
+#line 42 "parser.y"
                                                                         {yyval=new_ast("VAR_DECL:", 2,yyvsp[-2],yyvsp[-1]);}
 #line 1312 "parser.tab.c"
     break;
 
   case 17: /* identifier: ID  */
-#line 44 "parser.y"
+#line 45 "parser.y"
                                                                         {yyval=yyvsp[0];}
 #line 1318 "parser.tab.c"
     break;
 
   case 18: /* functiondeclaration: functionheader block  */
-#line 47 "parser.y"
+#line 48 "parser.y"
                                                                         {yyval=rename_ast("FUNCDEC:", attach_new_children(yyvsp[-1],1,yyvsp[0]));}
 #line 1324 "parser.tab.c"
     break;
 
   case 19: /* functionheader: type functiondeclarator  */
-#line 50 "parser.y"
+#line 51 "parser.y"
                                                                         {yyval=steal_children(new_ast("FUNCTIONHEADER:",1,yyvsp[-1]),yyvsp[0]);}
 #line 1330 "parser.tab.c"
     break;
 
   case 20: /* functionheader: VOID functiondeclarator  */
-#line 51 "parser.y"
+#line 52 "parser.y"
                                                                         {yyval=steal_children(new_ast("FUNCTIONHEADER:",1,yyvsp[-1]),yyvsp[0]);}
 #line 1336 "parser.tab.c"
     break;
 
   case 21: /* functiondeclarator: identifier '(' formalparameterlist ')'  */
-#line 54 "parser.y"
+#line 55 "parser.y"
                                                                         {yyval=new_ast("FUNCTIONDECLARATOR:", 2, yyvsp[-3],rename_ast("FORMALS:",yyvsp[-1]));}
 #line 1342 "parser.tab.c"
     break;
 
   case 22: /* functiondeclarator: identifier '(' ')'  */
-#line 55 "parser.y"
+#line 56 "parser.y"
                                                                         {yyval=new_ast("FUNCTIONDECLARATOR:", 2, yyvsp[-2], new_ast("FORMALS:",0));}
 #line 1348 "parser.tab.c"
     break;
 
   case 23: /* formalparameterlist: formalparameter  */
-#line 58 "parser.y"
+#line 59 "parser.y"
                                                                         {yyval=fold_ast_base(yyvsp[0]);}
 #line 1354 "parser.tab.c"
     break;
 
   case 24: /* formalparameterlist: formalparameterlist ',' formalparameter  */
-#line 59 "parser.y"
+#line 60 "parser.y"
                                                                         {yyval=fold_ast(yyvsp[-2],yyvsp[0]);}
 #line 1360 "parser.tab.c"
     break;
 
   case 25: /* formalparameter: type identifier  */
-#line 62 "parser.y"
+#line 63 "parser.y"
                                                                         {yyval=new_ast("FORMAL:", 2, yyvsp[-1], yyvsp[0]);}
 #line 1366 "parser.tab.c"
     break;
 
   case 26: /* mainfunctiondeclaration: mainfunctiondeclarator block  */
-#line 65 "parser.y"
+#line 66 "parser.y"
                                                                         {yyval=new_ast("MAINDECL:", 4, new_ast("VOID:",0),yyvsp[-1],new_ast("FORMALS:",0) ,yyvsp[0]);}
 #line 1372 "parser.tab.c"
     break;
 
   case 27: /* mainfunctiondeclarator: identifier '(' ')'  */
-#line 68 "parser.y"
+#line 69 "parser.y"
                                                                         {yyval=yyvsp[-2];}
 #line 1378 "parser.tab.c"
     break;
 
   case 28: /* block: '{' blockstatements '}'  */
-#line 71 "parser.y"
+#line 72 "parser.y"
                                                                         {yyval=rename_ast("BLOCK:",yyvsp[-1]);}
 #line 1384 "parser.tab.c"
     break;
 
   case 29: /* block: '{' '}'  */
-#line 72 "parser.y"
+#line 73 "parser.y"
                                                                         {yyval=new_ast("BLOCK:",0);}
 #line 1390 "parser.tab.c"
     break;
 
   case 30: /* blockstatements: blockstatement  */
-#line 75 "parser.y"
+#line 76 "parser.y"
                                                                         {yyval=fold_ast_base(yyvsp[0]);}
 #line 1396 "parser.tab.c"
     break;
 
   case 31: /* blockstatements: blockstatements blockstatement  */
-#line 76 "parser.y"
+#line 77 "parser.y"
                                                                         {yyval=fold_ast(yyvsp[-1], yyvsp[0]);}
 #line 1402 "parser.tab.c"
     break;
 
   case 32: /* blockstatement: variabledeclaration  */
-#line 79 "parser.y"
+#line 80 "parser.y"
                                                                         {yyval=yyvsp[0];}
 #line 1408 "parser.tab.c"
     break;
 
   case 33: /* blockstatement: statement  */
-#line 80 "parser.y"
+#line 81 "parser.y"
                                                                         {yyval=yyvsp[0];}
 #line 1414 "parser.tab.c"
     break;
 
   case 34: /* statement: block  */
-#line 83 "parser.y"
+#line 84 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1420 "parser.tab.c"
     break;
 
   case 35: /* statement: ';'  */
-#line 84 "parser.y"
+#line 85 "parser.y"
                                                                             {yyval=atomic_ast("nullStmt",yyvsp[0]->line_num,"None");}
 #line 1426 "parser.tab.c"
     break;
 
   case 36: /* statement: statementexpression ';'  */
-#line 85 "parser.y"
+#line 86 "parser.y"
                                                                             {yyval=new_ast("STMTEXPR",1,yyvsp[-1]);}
 #line 1432 "parser.tab.c"
     break;
 
   case 37: /* statement: BREAK ';'  */
-#line 86 "parser.y"
+#line 87 "parser.y"
                                                                             {yyval=yyvsp[-1];}
 #line 1438 "parser.tab.c"
     break;
 
   case 38: /* statement: RETURN expression ';'  */
-#line 87 "parser.y"
+#line 88 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-2],1,yyvsp[-1]);}
 #line 1444 "parser.tab.c"
     break;
 
   case 39: /* statement: RETURN ';'  */
-#line 88 "parser.y"
+#line 89 "parser.y"
                                                                             {yyval=yyvsp[-1];}
 #line 1450 "parser.tab.c"
     break;
 
   case 40: /* statement: IF '(' expression ')' statement  */
-#line 89 "parser.y"
+#line 90 "parser.y"
                                                                             {yyval=new_ast("IF:", 2,  yyvsp[-2], yyvsp[0]);}
 #line 1456 "parser.tab.c"
     break;
 
   case 41: /* statement: IF '(' expression ')' statement ELSE statement  */
-#line 90 "parser.y"
+#line 91 "parser.y"
                                                                             {yyval=new_ast("IF_ELSE:", 3, yyvsp[-4], yyvsp[-2], yyvsp[0]);}
 #line 1462 "parser.tab.c"
     break;
 
   case 42: /* statement: WHILE '(' expression ')' statement  */
-#line 91 "parser.y"
+#line 92 "parser.y"
                                                                             {yyval=new_ast("WHILE:", 3, yyvsp[-4], yyvsp[-2], yyvsp[0]); }
 #line 1468 "parser.tab.c"
     break;
 
   case 43: /* statementexpression: assignment  */
-#line 97 "parser.y"
+#line 98 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1474 "parser.tab.c"
     break;
 
   case 44: /* statementexpression: functioninvocation  */
-#line 98 "parser.y"
+#line 99 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1480 "parser.tab.c"
     break;
 
   case 45: /* primary: literal  */
-#line 101 "parser.y"
+#line 102 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1486 "parser.tab.c"
     break;
 
   case 46: /* primary: '(' expression ')'  */
-#line 102 "parser.y"
+#line 103 "parser.y"
                                                                             {yyval=yyvsp[-1];}
 #line 1492 "parser.tab.c"
     break;
 
   case 47: /* primary: functioninvocation  */
-#line 103 "parser.y"
+#line 104 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1498 "parser.tab.c"
     break;
 
   case 48: /* argumentlist: expression  */
-#line 106 "parser.y"
+#line 107 "parser.y"
                                                                             {yyval=fold_ast_base(yyvsp[0]);}
 #line 1504 "parser.tab.c"
     break;
 
   case 49: /* argumentlist: argumentlist ',' expression  */
-#line 107 "parser.y"
+#line 108 "parser.y"
                                                                             {yyval=fold_ast(yyvsp[-2], yyvsp[0]);}
 #line 1510 "parser.tab.c"
     break;
 
   case 50: /* functioninvocation: identifier '(' argumentlist ')'  */
-#line 110 "parser.y"
+#line 111 "parser.y"
                                                                             {yyval=new_ast("FUNC_CALL:", 2, yyvsp[-3], rename_ast("ACTUALS:",yyvsp[-1]));}
 #line 1516 "parser.tab.c"
     break;
 
   case 51: /* functioninvocation: identifier '(' ')'  */
-#line 111 "parser.y"
+#line 112 "parser.y"
                                                                             {yyval=new_ast("FUNC_CALL:", 2, yyvsp[-2], new_ast("ACTUALS:",0));}
 #line 1522 "parser.tab.c"
     break;
 
   case 52: /* postfixexpression: primary  */
-#line 114 "parser.y"
+#line 115 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1528 "parser.tab.c"
     break;
 
   case 53: /* postfixexpression: identifier  */
-#line 115 "parser.y"
+#line 116 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1534 "parser.tab.c"
     break;
 
   case 54: /* unaryexpression: '-' unaryexpression  */
-#line 118 "parser.y"
+#line 119 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 1, yyvsp[0]);}
 #line 1540 "parser.tab.c"
     break;
 
   case 55: /* unaryexpression: '!' unaryexpression  */
-#line 119 "parser.y"
+#line 120 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 1, yyvsp[0]);}
 #line 1546 "parser.tab.c"
     break;
 
   case 56: /* unaryexpression: postfixexpression  */
-#line 120 "parser.y"
+#line 121 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1552 "parser.tab.c"
     break;
 
   case 57: /* multiplicativeexpression: unaryexpression  */
-#line 123 "parser.y"
+#line 124 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1558 "parser.tab.c"
     break;
 
   case 58: /* multiplicativeexpression: multiplicativeexpression '*' unaryexpression  */
-#line 124 "parser.y"
+#line 125 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1564 "parser.tab.c"
     break;
 
   case 59: /* multiplicativeexpression: multiplicativeexpression '/' unaryexpression  */
-#line 125 "parser.y"
+#line 126 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1570 "parser.tab.c"
     break;
 
   case 60: /* multiplicativeexpression: multiplicativeexpression '%' unaryexpression  */
-#line 126 "parser.y"
+#line 127 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1576 "parser.tab.c"
     break;
 
   case 61: /* additiveexpression: multiplicativeexpression  */
-#line 129 "parser.y"
+#line 130 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1582 "parser.tab.c"
     break;
 
   case 62: /* additiveexpression: additiveexpression '+' multiplicativeexpression  */
-#line 130 "parser.y"
+#line 131 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1588 "parser.tab.c"
     break;
 
   case 63: /* additiveexpression: additiveexpression '-' multiplicativeexpression  */
-#line 131 "parser.y"
+#line 132 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1594 "parser.tab.c"
     break;
 
   case 64: /* relationalexpression: additiveexpression  */
-#line 134 "parser.y"
+#line 135 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1600 "parser.tab.c"
     break;
 
   case 65: /* relationalexpression: relationalexpression '<' additiveexpression  */
-#line 135 "parser.y"
+#line 136 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1606 "parser.tab.c"
     break;
 
   case 66: /* relationalexpression: relationalexpression '>' additiveexpression  */
-#line 136 "parser.y"
+#line 137 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1612 "parser.tab.c"
     break;
 
   case 67: /* relationalexpression: relationalexpression LE additiveexpression  */
-#line 137 "parser.y"
+#line 138 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1618 "parser.tab.c"
     break;
 
   case 68: /* relationalexpression: relationalexpression GE additiveexpression  */
-#line 138 "parser.y"
+#line 139 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1624 "parser.tab.c"
     break;
 
   case 69: /* equalityexpression: relationalexpression  */
-#line 141 "parser.y"
+#line 142 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1630 "parser.tab.c"
     break;
 
   case 70: /* equalityexpression: equalityexpression EQ relationalexpression  */
-#line 142 "parser.y"
+#line 143 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1636 "parser.tab.c"
     break;
 
   case 71: /* equalityexpression: equalityexpression NE relationalexpression  */
-#line 143 "parser.y"
+#line 144 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1642 "parser.tab.c"
     break;
 
   case 72: /* conditionalandexpression: equalityexpression  */
-#line 146 "parser.y"
+#line 147 "parser.y"
                                                                             {yyval=yyvsp[0];}
 #line 1648 "parser.tab.c"
     break;
 
   case 73: /* conditionalandexpression: conditionalandexpression AND equalityexpression  */
-#line 147 "parser.y"
+#line 148 "parser.y"
                                                                             {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1654 "parser.tab.c"
     break;
 
   case 74: /* conditionalorexpression: conditionalandexpression  */
-#line 150 "parser.y"
+#line 151 "parser.y"
                                                                                 {yyval=yyvsp[0];}
 #line 1660 "parser.tab.c"
     break;
 
   case 75: /* conditionalorexpression: conditionalorexpression OR conditionalandexpression  */
-#line 151 "parser.y"
+#line 152 "parser.y"
                                                                                 {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1666 "parser.tab.c"
     break;
 
   case 76: /* assignmentexpression: conditionalorexpression  */
-#line 156 "parser.y"
+#line 157 "parser.y"
                                                             {yyval=yyvsp[0];}
 #line 1672 "parser.tab.c"
     break;
 
   case 77: /* assignmentexpression: assignment  */
-#line 157 "parser.y"
+#line 158 "parser.y"
                                                             {yyval=yyvsp[0];}
 #line 1678 "parser.tab.c"
     break;
 
   case 78: /* assignment: identifier '=' assignmentexpression  */
-#line 160 "parser.y"
+#line 161 "parser.y"
                                                                 {yyval=attach_new_children(yyvsp[-1], 2, yyvsp[-2], yyvsp[0]);}
 #line 1684 "parser.tab.c"
     break;
 
   case 79: /* expression: assignmentexpression  */
-#line 163 "parser.y"
+#line 164 "parser.y"
                                                             {yyval=yyvsp[0];}
 #line 1690 "parser.tab.c"
     break;
@@ -1883,4 +1883,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 167 "parser.y"
+#line 168 "parser.y"
