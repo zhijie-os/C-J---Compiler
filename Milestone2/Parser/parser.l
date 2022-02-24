@@ -29,7 +29,7 @@ number  {digit}+
 %% 
 
 "\""                                                {BEGIN(STRING);}
-<STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {atomic_ast("X", yylineno, yytext); return STRING;}
+<STRING>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {yylval=atomic_ast("string", yylineno,yytext); return STRING_Y;}
 <STRING>"\""                                        {BEGIN(0);}
 <STRING>\\[^bftrn'"\\]                              {lexer_string_error("unsupported escape character");}
 <STRING>\n                                          {lexer_string_error("newline in string literal");}
@@ -40,7 +40,6 @@ number  {digit}+
 "//"                                                {BEGIN(COMMENT);}
 <COMMENT>[^\r\n]                                    {/* eats up the comment */};
 <COMMENT>\n                                         {BEGIN(0);}
-<COMMENT>[\r<<EOF>>]                                {BEGIN(0);}
 
 
 
@@ -66,7 +65,7 @@ return      {yylval=atomic_ast("return", yylineno,"None"); return RETURN;}
 "<="        {yylval=atomic_ast("<=", yylineno,"None"); return LE;}
 ">="        {yylval=atomic_ast(">=", yylineno,"None"); return GE;}
 "=="        {yylval=atomic_ast("==", yylineno,"None"); return EQ;}
-"!="        {yylval=atomic_ast("!+", yylineno,"None"); return NE;}
+"!="        {yylval=atomic_ast("!=", yylineno,"None"); return NE;}
 "="         {yylval=atomic_ast("=", yylineno,"None"); return '=';}
 "!"         {yylval=atomic_ast("!", yylineno,"None"); return '!';}
 "&&"        {yylval=atomic_ast("&&", yylineno,"None"); return AND;}
