@@ -1,0 +1,31 @@
+PROGRAM:
+    MAINDECL:
+        VOID:
+        id { lineno: 1, attribute: "main" }
+        FORMALS:
+        BLOCK:
+            STMTEXPR
+                = { lineno: 2 }
+                    id { lineno: 2, attribute: "x" }
+                    - { lineno: 2 }
+                        id { lineno: 2, attribute: "a" }
+                        - { lineno: 2 }
+                            number { lineno: 2, attribute: "1" }
+            STMTEXPR
+                = { lineno: 3 }
+                    id { lineno: 3, attribute: "x" }
+                    - { lineno: 3 }
+                        id { lineno: 3, attribute: "a" }
+                        - { lineno: 3 }
+                            id { lineno: 3, attribute: "b" }
+            STMTEXPR
+                = { lineno: 4 }
+                    id { lineno: 4, attribute: "x" }
+                    - { lineno: 4 }
+                        - { lineno: 4 }
+                            - { lineno: 4 }
+                                - { lineno: 4 }
+                                    - { lineno: 4 }
+                                        - { lineno: 4 }
+                                            - { lineno: 4 }
+                                                id { lineno: 4, attribute: "x" }

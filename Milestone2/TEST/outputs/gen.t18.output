@@ -1,0 +1,701 @@
+PROGRAM:
+    MAINDECL:
+        VOID:
+        id { lineno: 5, attribute: "calculator" }
+        FORMALS:
+        BLOCK:
+            STMTEXPR
+                FUNC_CALL:
+                    id { lineno: 7, attribute: "init" }
+                    ACTUALS:
+            STMTEXPR
+                FUNC_CALL:
+                    id { lineno: 8, attribute: "parser" }
+                    ACTUALS:
+    GLOBAL_VAR_DECL
+        boolean { lineno: 15 }
+        id { lineno: 15, attribute: "_havechar" }
+    GLOBAL_VAR_DECL
+        int { lineno: 16 }
+        id { lineno: 16, attribute: "_char" }
+    FUNCDEC:
+        int { lineno: 18 }
+        id { lineno: 18, attribute: "getc" }
+        FORMALS:
+        BLOCK:
+            IF:
+                id { lineno: 20, attribute: "_havechar" }
+                BLOCK:
+                    STMTEXPR
+                        = { lineno: 21 }
+                            id { lineno: 21, attribute: "_havechar" }
+                            false { lineno: 21 }
+                    return { lineno: 22 }
+                        id { lineno: 22, attribute: "_char" }
+            return { lineno: 24 }
+                FUNC_CALL:
+                    id { lineno: 24, attribute: "getchar" }
+                    ACTUALS:
+    FUNCDEC:
+        void { lineno: 27 }
+        id { lineno: 27, attribute: "ungetc" }
+        FORMALS:
+            FORMAL:
+                int { lineno: 27 }
+                id { lineno: 27, attribute: "ch" }
+        BLOCK:
+            IF:
+                id { lineno: 29, attribute: "_havechar" }
+                BLOCK:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 30, attribute: "prints" }
+                            ACTUALS:
+                                string { lineno: 30, attribute: "Internal error: too many ungets!\n" }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 31, attribute: "halt" }
+                            ACTUALS:
+            STMTEXPR
+                = { lineno: 33 }
+                    id { lineno: 33, attribute: "_havechar" }
+                    true { lineno: 33 }
+            STMTEXPR
+                = { lineno: 34 }
+                    id { lineno: 34, attribute: "_char" }
+                    id { lineno: 34, attribute: "ch" }
+    GLOBAL_VAR_DECL
+        boolean { lineno: 41 }
+        id { lineno: 41, attribute: "_havetoken" }
+    GLOBAL_VAR_DECL
+        int { lineno: 42 }
+        id { lineno: 42, attribute: "_token" }
+    GLOBAL_VAR_DECL
+        int { lineno: 43 }
+        id { lineno: 43, attribute: "attr" }
+    FUNCDEC:
+        int { lineno: 45 }
+        id { lineno: 45, attribute: "peek" }
+        FORMALS:
+        BLOCK:
+            IF:
+                id { lineno: 47, attribute: "_havetoken" }
+                return { lineno: 48 }
+                    id { lineno: 48, attribute: "_token" }
+            STMTEXPR
+                = { lineno: 50 }
+                    id { lineno: 50, attribute: "_havetoken" }
+                    true { lineno: 50 }
+            return { lineno: 51 }
+                = { lineno: 51 }
+                    id { lineno: 51, attribute: "_token" }
+                    FUNC_CALL:
+                        id { lineno: 51, attribute: "scanner" }
+                        ACTUALS:
+    FUNCDEC:
+        void { lineno: 54 }
+        id { lineno: 54, attribute: "match" }
+        FORMALS:
+            FORMAL:
+                int { lineno: 54 }
+                id { lineno: 54, attribute: "expect" }
+        BLOCK:
+            IF:
+                != { lineno: 56 }
+                    FUNC_CALL:
+                        id { lineno: 56, attribute: "peek" }
+                        ACTUALS:
+                    id { lineno: 56, attribute: "expect" }
+                BLOCK:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 57, attribute: "prints" }
+                            ACTUALS:
+                                string { lineno: 57, attribute: "rror: expected " }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 58, attribute: "printc" }
+                            ACTUALS:
+                                id { lineno: 58, attribute: "expect" }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 59, attribute: "prints" }
+                            ACTUALS:
+                                string { lineno: 59, attribute: "\n" }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 60, attribute: "halt" }
+                            ACTUALS:
+            STMTEXPR
+                = { lineno: 62 }
+                    id { lineno: 62, attribute: "_havetoken" }
+                    false { lineno: 62 }
+    FUNCDEC:
+        int { lineno: 65 }
+        id { lineno: 65, attribute: "scanner" }
+        FORMALS:
+        BLOCK:
+            VAR_DECL:
+                int { lineno: 67 }
+                id { lineno: 67, attribute: "ch" }
+            WHILE:
+                while { lineno: 69 }
+                FUNC_CALL:
+                    id { lineno: 69, attribute: "isspace" }
+                    ACTUALS:
+                        = { lineno: 69 }
+                            id { lineno: 69, attribute: "ch" }
+                            FUNC_CALL:
+                                id { lineno: 69, attribute: "getc" }
+                                ACTUALS:
+                nullStmt { lineno: 70 }
+            IF:
+                == { lineno: 72 }
+                    id { lineno: 72, attribute: "ch" }
+                    id { lineno: 72, attribute: "EOF" }
+                return { lineno: 72 }
+                    id { lineno: 72, attribute: "TK_EOF" }
+            IF:
+                == { lineno: 73 }
+                    id { lineno: 73, attribute: "ch" }
+                    id { lineno: 73, attribute: "ASCII_NL" }
+                return { lineno: 73 }
+                    id { lineno: 73, attribute: "TK_EOLN" }
+            IF:
+                == { lineno: 74 }
+                    id { lineno: 74, attribute: "ch" }
+                    id { lineno: 74, attribute: "ASCII_PLUS" }
+                return { lineno: 74 }
+                    id { lineno: 74, attribute: "TK_ADD" }
+            IF:
+                == { lineno: 75 }
+                    id { lineno: 75, attribute: "ch" }
+                    id { lineno: 75, attribute: "ASCII_MINUS" }
+                return { lineno: 75 }
+                    id { lineno: 75, attribute: "TK_SUB" }
+            IF:
+                == { lineno: 76 }
+                    id { lineno: 76, attribute: "ch" }
+                    id { lineno: 76, attribute: "ASCII_STAR" }
+                return { lineno: 76 }
+                    id { lineno: 76, attribute: "TK_MUL" }
+            IF:
+                == { lineno: 77 }
+                    id { lineno: 77, attribute: "ch" }
+                    id { lineno: 77, attribute: "ASCII_SLASH" }
+                return { lineno: 77 }
+                    id { lineno: 77, attribute: "TK_DIV" }
+            IF:
+                == { lineno: 78 }
+                    id { lineno: 78, attribute: "ch" }
+                    id { lineno: 78, attribute: "ASCII_LPAREN" }
+                return { lineno: 78 }
+                    id { lineno: 78, attribute: "TK_LPAREN" }
+            IF:
+                == { lineno: 79 }
+                    id { lineno: 79, attribute: "ch" }
+                    id { lineno: 79, attribute: "ASCII_RPAREN" }
+                return { lineno: 79 }
+                    id { lineno: 79, attribute: "TK_RPAREN" }
+            IF:
+                FUNC_CALL:
+                    id { lineno: 81, attribute: "isdigit" }
+                    ACTUALS:
+                        id { lineno: 81, attribute: "ch" }
+                BLOCK:
+                    STMTEXPR
+                        = { lineno: 82 }
+                            id { lineno: 82, attribute: "attr" }
+                            number { lineno: 82, attribute: "0" }
+                    WHILE:
+                        while { lineno: 83 }
+                        FUNC_CALL:
+                            id { lineno: 83, attribute: "isdigit" }
+                            ACTUALS:
+                                id { lineno: 83, attribute: "ch" }
+                        BLOCK:
+                            STMTEXPR
+                                = { lineno: 84 }
+                                    id { lineno: 84, attribute: "attr" }
+                                    + { lineno: 84 }
+                                        * { lineno: 84 }
+                                            id { lineno: 84, attribute: "attr" }
+                                            number { lineno: 84, attribute: "10" }
+                                        - { lineno: 84 }
+                                            id { lineno: 84, attribute: "ch" }
+                                            id { lineno: 84, attribute: "ASCII_0" }
+                            STMTEXPR
+                                = { lineno: 85 }
+                                    id { lineno: 85, attribute: "ch" }
+                                    FUNC_CALL:
+                                        id { lineno: 85, attribute: "getc" }
+                                        ACTUALS:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 87, attribute: "ungetc" }
+                            ACTUALS:
+                                id { lineno: 87, attribute: "ch" }
+                    return { lineno: 88 }
+                        id { lineno: 88, attribute: "TK_NUMBER" }
+            STMTEXPR
+                FUNC_CALL:
+                    id { lineno: 91, attribute: "prints" }
+                    ACTUALS:
+                        string { lineno: 91, attribute: "rror: invalid character.\n" }
+            STMTEXPR
+                FUNC_CALL:
+                    id { lineno: 92, attribute: "halt" }
+                    ACTUALS:
+    FUNCDEC:
+        boolean { lineno: 95 }
+        id { lineno: 95, attribute: "isdigit" }
+        FORMALS:
+            FORMAL:
+                int { lineno: 95 }
+                id { lineno: 95, attribute: "ch" }
+        BLOCK:
+            return { lineno: 97 }
+                && { lineno: 97 }
+                    >= { lineno: 97 }
+                        id { lineno: 97, attribute: "ch" }
+                        id { lineno: 97, attribute: "ASCII_0" }
+                    <= { lineno: 97 }
+                        id { lineno: 97, attribute: "ch" }
+                        id { lineno: 97, attribute: "ASCII_9" }
+    FUNCDEC:
+        boolean { lineno: 100 }
+        id { lineno: 100, attribute: "isspace" }
+        FORMALS:
+            FORMAL:
+                int { lineno: 100 }
+                id { lineno: 100, attribute: "ch" }
+        BLOCK:
+            return { lineno: 102 }
+                || { lineno: 103 }
+                    || { lineno: 102 }
+                        == { lineno: 102 }
+                            id { lineno: 102, attribute: "ch" }
+                            id { lineno: 102, attribute: "ASCII_SPACE" }
+                        == { lineno: 103 }
+                            id { lineno: 103, attribute: "ch" }
+                            id { lineno: 103, attribute: "ASCII_TAB" }
+                    == { lineno: 104 }
+                        id { lineno: 104, attribute: "ch" }
+                        id { lineno: 104, attribute: "ASCII_CR" }
+    FUNCDEC:
+        void { lineno: 111 }
+        id { lineno: 111, attribute: "parser" }
+        FORMALS:
+        BLOCK:
+            VAR_DECL:
+                int { lineno: 113 }
+                id { lineno: 113, attribute: "result" }
+            WHILE:
+                while { lineno: 115 }
+                != { lineno: 115 }
+                    FUNC_CALL:
+                        id { lineno: 115, attribute: "peek" }
+                        ACTUALS:
+                    id { lineno: 115, attribute: "TK_EOF" }
+                BLOCK:
+                    STMTEXPR
+                        = { lineno: 116 }
+                            id { lineno: 116, attribute: "result" }
+                            FUNC_CALL:
+                                id { lineno: 116, attribute: "E" }
+                                ACTUALS:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 117, attribute: "match" }
+                            ACTUALS:
+                                id { lineno: 117, attribute: "TK_EOLN" }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 119, attribute: "prints" }
+                            ACTUALS:
+                                string { lineno: 119, attribute: " = " }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 120, attribute: "printi" }
+                            ACTUALS:
+                                id { lineno: 120, attribute: "result" }
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 121, attribute: "prints" }
+                            ACTUALS:
+                                string { lineno: 121, attribute: "\n" }
+    FUNCDEC:
+        int { lineno: 125 }
+        id { lineno: 125, attribute: "E" }
+        FORMALS:
+        BLOCK:
+            VAR_DECL:
+                int { lineno: 127 }
+                id { lineno: 127, attribute: "l" }
+            VAR_DECL:
+                int { lineno: 128 }
+                id { lineno: 128, attribute: "r" }
+            VAR_DECL:
+                int { lineno: 129 }
+                id { lineno: 129, attribute: "token" }
+            STMTEXPR
+                = { lineno: 131 }
+                    id { lineno: 131, attribute: "l" }
+                    FUNC_CALL:
+                        id { lineno: 131, attribute: "T" }
+                        ACTUALS:
+            WHILE:
+                while { lineno: 132 }
+                || { lineno: 132 }
+                    == { lineno: 132 }
+                        FUNC_CALL:
+                            id { lineno: 132, attribute: "peek" }
+                            ACTUALS:
+                        id { lineno: 132, attribute: "TK_ADD" }
+                    == { lineno: 132 }
+                        FUNC_CALL:
+                            id { lineno: 132, attribute: "peek" }
+                            ACTUALS:
+                        id { lineno: 132, attribute: "TK_SUB" }
+                BLOCK:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 133, attribute: "match" }
+                            ACTUALS:
+                                = { lineno: 133 }
+                                    id { lineno: 133, attribute: "token" }
+                                    FUNC_CALL:
+                                        id { lineno: 133, attribute: "peek" }
+                                        ACTUALS:
+                    STMTEXPR
+                        = { lineno: 134 }
+                            id { lineno: 134, attribute: "r" }
+                            FUNC_CALL:
+                                id { lineno: 134, attribute: "T" }
+                                ACTUALS:
+                    IF_ELSE:
+                        == { lineno: 136 }
+                            id { lineno: 136, attribute: "token" }
+                            id { lineno: 136, attribute: "TK_ADD" }
+                        STMTEXPR
+                            = { lineno: 137 }
+                                id { lineno: 137, attribute: "l" }
+                                + { lineno: 137 }
+                                    id { lineno: 137, attribute: "l" }
+                                    id { lineno: 137, attribute: "r" }
+                        STMTEXPR
+                            = { lineno: 139 }
+                                id { lineno: 139, attribute: "l" }
+                                - { lineno: 139 }
+                                    id { lineno: 139, attribute: "l" }
+                                    id { lineno: 139, attribute: "r" }
+            return { lineno: 141 }
+                id { lineno: 141, attribute: "l" }
+    FUNCDEC:
+        int { lineno: 144 }
+        id { lineno: 144, attribute: "T" }
+        FORMALS:
+        BLOCK:
+            VAR_DECL:
+                int { lineno: 146 }
+                id { lineno: 146, attribute: "l" }
+            VAR_DECL:
+                int { lineno: 147 }
+                id { lineno: 147, attribute: "r" }
+            VAR_DECL:
+                int { lineno: 148 }
+                id { lineno: 148, attribute: "token" }
+            STMTEXPR
+                = { lineno: 150 }
+                    id { lineno: 150, attribute: "l" }
+                    FUNC_CALL:
+                        id { lineno: 150, attribute: "F" }
+                        ACTUALS:
+            WHILE:
+                while { lineno: 151 }
+                || { lineno: 151 }
+                    == { lineno: 151 }
+                        FUNC_CALL:
+                            id { lineno: 151, attribute: "peek" }
+                            ACTUALS:
+                        id { lineno: 151, attribute: "TK_MUL" }
+                    == { lineno: 151 }
+                        FUNC_CALL:
+                            id { lineno: 151, attribute: "peek" }
+                            ACTUALS:
+                        id { lineno: 151, attribute: "TK_DIV" }
+                BLOCK:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 152, attribute: "match" }
+                            ACTUALS:
+                                = { lineno: 152 }
+                                    id { lineno: 152, attribute: "token" }
+                                    FUNC_CALL:
+                                        id { lineno: 152, attribute: "peek" }
+                                        ACTUALS:
+                    STMTEXPR
+                        = { lineno: 153 }
+                            id { lineno: 153, attribute: "r" }
+                            FUNC_CALL:
+                                id { lineno: 153, attribute: "F" }
+                                ACTUALS:
+                    IF_ELSE:
+                        == { lineno: 155 }
+                            id { lineno: 155, attribute: "token" }
+                            id { lineno: 155, attribute: "TK_MUL" }
+                        STMTEXPR
+                            = { lineno: 156 }
+                                id { lineno: 156, attribute: "l" }
+                                * { lineno: 156 }
+                                    id { lineno: 156, attribute: "l" }
+                                    id { lineno: 156, attribute: "r" }
+                        STMTEXPR
+                            = { lineno: 158 }
+                                id { lineno: 158, attribute: "l" }
+                                / { lineno: 158 }
+                                    id { lineno: 158, attribute: "l" }
+                                    id { lineno: 158, attribute: "r" }
+            return { lineno: 160 }
+                id { lineno: 160, attribute: "l" }
+    FUNCDEC:
+        int { lineno: 163 }
+        id { lineno: 163, attribute: "F" }
+        FORMALS:
+        BLOCK:
+            VAR_DECL:
+                int { lineno: 165 }
+                id { lineno: 165, attribute: "result" }
+            VAR_DECL:
+                int { lineno: 167 }
+                id { lineno: 167, attribute: "token" }
+            STMTEXPR
+                = { lineno: 168 }
+                    id { lineno: 168, attribute: "token" }
+                    FUNC_CALL:
+                        id { lineno: 168, attribute: "peek" }
+                        ACTUALS:
+            IF_ELSE:
+                == { lineno: 170 }
+                    id { lineno: 170, attribute: "token" }
+                    id { lineno: 170, attribute: "TK_LPAREN" }
+                BLOCK:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 171, attribute: "match" }
+                            ACTUALS:
+                                id { lineno: 171, attribute: "TK_LPAREN" }
+                    STMTEXPR
+                        = { lineno: 172 }
+                            id { lineno: 172, attribute: "result" }
+                            FUNC_CALL:
+                                id { lineno: 172, attribute: "E" }
+                                ACTUALS:
+                    STMTEXPR
+                        FUNC_CALL:
+                            id { lineno: 173, attribute: "match" }
+                            ACTUALS:
+                                id { lineno: 173, attribute: "TK_RPAREN" }
+                IF_ELSE:
+                    == { lineno: 175 }
+                        id { lineno: 175, attribute: "token" }
+                        id { lineno: 175, attribute: "TK_SUB" }
+                    BLOCK:
+                        STMTEXPR
+                            FUNC_CALL:
+                                id { lineno: 176, attribute: "match" }
+                                ACTUALS:
+                                    id { lineno: 176, attribute: "TK_SUB" }
+                        STMTEXPR
+                            = { lineno: 177 }
+                                id { lineno: 177, attribute: "result" }
+                                - { lineno: 177 }
+                                    FUNC_CALL:
+                                        id { lineno: 177, attribute: "F" }
+                                        ACTUALS:
+                    IF_ELSE:
+                        == { lineno: 179 }
+                            id { lineno: 179, attribute: "token" }
+                            id { lineno: 179, attribute: "TK_NUMBER" }
+                        BLOCK:
+                            STMTEXPR
+                                FUNC_CALL:
+                                    id { lineno: 180, attribute: "match" }
+                                    ACTUALS:
+                                        id { lineno: 180, attribute: "TK_NUMBER" }
+                            STMTEXPR
+                                = { lineno: 181 }
+                                    id { lineno: 181, attribute: "result" }
+                                    id { lineno: 181, attribute: "attr" }
+                        BLOCK:
+                            STMTEXPR
+                                FUNC_CALL:
+                                    id { lineno: 184, attribute: "prints" }
+                                    ACTUALS:
+                                        string { lineno: 184, attribute: "rror: expected factor.\n" }
+                            STMTEXPR
+                                FUNC_CALL:
+                                    id { lineno: 185, attribute: "halt" }
+                                    ACTUALS:
+            return { lineno: 187 }
+                id { lineno: 187, attribute: "result" }
+    GLOBAL_VAR_DECL
+        int { lineno: 194 }
+        id { lineno: 194, attribute: "EOF" }
+    GLOBAL_VAR_DECL
+        int { lineno: 196 }
+        id { lineno: 196, attribute: "TK_EOF" }
+    GLOBAL_VAR_DECL
+        int { lineno: 197 }
+        id { lineno: 197, attribute: "TK_EOLN" }
+    GLOBAL_VAR_DECL
+        int { lineno: 198 }
+        id { lineno: 198, attribute: "TK_NUMBER" }
+    GLOBAL_VAR_DECL
+        int { lineno: 199 }
+        id { lineno: 199, attribute: "TK_ADD" }
+    GLOBAL_VAR_DECL
+        int { lineno: 200 }
+        id { lineno: 200, attribute: "TK_SUB" }
+    GLOBAL_VAR_DECL
+        int { lineno: 201 }
+        id { lineno: 201, attribute: "TK_MUL" }
+    GLOBAL_VAR_DECL
+        int { lineno: 202 }
+        id { lineno: 202, attribute: "TK_DIV" }
+    GLOBAL_VAR_DECL
+        int { lineno: 203 }
+        id { lineno: 203, attribute: "TK_LPAREN" }
+    GLOBAL_VAR_DECL
+        int { lineno: 204 }
+        id { lineno: 204, attribute: "TK_RPAREN" }
+    GLOBAL_VAR_DECL
+        int { lineno: 206 }
+        id { lineno: 206, attribute: "ASCII_0" }
+    GLOBAL_VAR_DECL
+        int { lineno: 207 }
+        id { lineno: 207, attribute: "ASCII_9" }
+    GLOBAL_VAR_DECL
+        int { lineno: 208 }
+        id { lineno: 208, attribute: "ASCII_PLUS" }
+    GLOBAL_VAR_DECL
+        int { lineno: 209 }
+        id { lineno: 209, attribute: "ASCII_MINUS" }
+    GLOBAL_VAR_DECL
+        int { lineno: 210 }
+        id { lineno: 210, attribute: "ASCII_STAR" }
+    GLOBAL_VAR_DECL
+        int { lineno: 211 }
+        id { lineno: 211, attribute: "ASCII_SLASH" }
+    GLOBAL_VAR_DECL
+        int { lineno: 212 }
+        id { lineno: 212, attribute: "ASCII_LPAREN" }
+    GLOBAL_VAR_DECL
+        int { lineno: 213 }
+        id { lineno: 213, attribute: "ASCII_RPAREN" }
+    GLOBAL_VAR_DECL
+        int { lineno: 214 }
+        id { lineno: 214, attribute: "ASCII_SPACE" }
+    GLOBAL_VAR_DECL
+        int { lineno: 215 }
+        id { lineno: 215, attribute: "ASCII_TAB" }
+    GLOBAL_VAR_DECL
+        int { lineno: 216 }
+        id { lineno: 216, attribute: "ASCII_CR" }
+    GLOBAL_VAR_DECL
+        int { lineno: 217 }
+        id { lineno: 217, attribute: "ASCII_NL" }
+    FUNCDEC:
+        void { lineno: 219 }
+        id { lineno: 219, attribute: "init" }
+        FORMALS:
+        BLOCK:
+            STMTEXPR
+                = { lineno: 221 }
+                    id { lineno: 221, attribute: "EOF" }
+                    - { lineno: 221 }
+                        number { lineno: 221, attribute: "1" }
+            STMTEXPR
+                = { lineno: 223 }
+                    id { lineno: 223, attribute: "ASCII_0" }
+                    number { lineno: 223, attribute: "48" }
+            STMTEXPR
+                = { lineno: 224 }
+                    id { lineno: 224, attribute: "ASCII_9" }
+                    number { lineno: 224, attribute: "57" }
+            STMTEXPR
+                = { lineno: 225 }
+                    id { lineno: 225, attribute: "ASCII_PLUS" }
+                    number { lineno: 225, attribute: "43" }
+            STMTEXPR
+                = { lineno: 226 }
+                    id { lineno: 226, attribute: "ASCII_MINUS" }
+                    number { lineno: 226, attribute: "45" }
+            STMTEXPR
+                = { lineno: 227 }
+                    id { lineno: 227, attribute: "ASCII_STAR" }
+                    number { lineno: 227, attribute: "42" }
+            STMTEXPR
+                = { lineno: 228 }
+                    id { lineno: 228, attribute: "ASCII_SLASH" }
+                    number { lineno: 228, attribute: "47" }
+            STMTEXPR
+                = { lineno: 229 }
+                    id { lineno: 229, attribute: "ASCII_LPAREN" }
+                    number { lineno: 229, attribute: "40" }
+            STMTEXPR
+                = { lineno: 230 }
+                    id { lineno: 230, attribute: "ASCII_RPAREN" }
+                    number { lineno: 230, attribute: "41" }
+            STMTEXPR
+                = { lineno: 231 }
+                    id { lineno: 231, attribute: "ASCII_SPACE" }
+                    number { lineno: 231, attribute: "32" }
+            STMTEXPR
+                = { lineno: 232 }
+                    id { lineno: 232, attribute: "ASCII_TAB" }
+                    number { lineno: 232, attribute: "9" }
+            STMTEXPR
+                = { lineno: 233 }
+                    id { lineno: 233, attribute: "ASCII_CR" }
+                    number { lineno: 233, attribute: "13" }
+            STMTEXPR
+                = { lineno: 234 }
+                    id { lineno: 234, attribute: "ASCII_NL" }
+                    number { lineno: 234, attribute: "10" }
+            STMTEXPR
+                = { lineno: 236 }
+                    id { lineno: 236, attribute: "TK_EOF" }
+                    number { lineno: 236, attribute: "256" }
+            STMTEXPR
+                = { lineno: 237 }
+                    id { lineno: 237, attribute: "TK_NUMBER" }
+                    number { lineno: 237, attribute: "257" }
+            STMTEXPR
+                = { lineno: 238 }
+                    id { lineno: 238, attribute: "TK_ADD" }
+                    id { lineno: 238, attribute: "ASCII_PLUS" }
+            STMTEXPR
+                = { lineno: 239 }
+                    id { lineno: 239, attribute: "TK_SUB" }
+                    id { lineno: 239, attribute: "ASCII_MINUS" }
+            STMTEXPR
+                = { lineno: 240 }
+                    id { lineno: 240, attribute: "TK_MUL" }
+                    id { lineno: 240, attribute: "ASCII_STAR" }
+            STMTEXPR
+                = { lineno: 241 }
+                    id { lineno: 241, attribute: "TK_DIV" }
+                    id { lineno: 241, attribute: "ASCII_SLASH" }
+            STMTEXPR
+                = { lineno: 242 }
+                    id { lineno: 242, attribute: "TK_LPAREN" }
+                    id { lineno: 242, attribute: "ASCII_LPAREN" }
+            STMTEXPR
+                = { lineno: 243 }
+                    id { lineno: 243, attribute: "TK_RPAREN" }
+                    id { lineno: 243, attribute: "ASCII_RPAREN" }
+            STMTEXPR
+                = { lineno: 244 }
+                    id { lineno: 244, attribute: "TK_EOLN" }
+                    id { lineno: 244, attribute: "ASCII_NL" }

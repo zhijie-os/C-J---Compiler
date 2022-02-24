@@ -1,0 +1,12 @@
+PROGRAM:
+    MAINDECL:
+        VOID:
+        id { lineno: 1, attribute: "main" }
+        FORMALS:
+        BLOCK:
+            IF:
+                true { lineno: 2 }
+                IF_ELSE:
+                    true { lineno: 3 }
+                    nullStmt { lineno: 4 }
+                    nullStmt { lineno: 6 }
