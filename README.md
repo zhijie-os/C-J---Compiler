@@ -1,6 +1,6 @@
 # CPSC 411 Project 
 
-## Milestone 1
+## Milestone 1: Flex Scanner 
 
 ### Where is the **scanner**?
 
@@ -18,7 +18,7 @@ A report can be found under `Milestone1/Report`.
 2. run: `./scanner <path to the input file>`.
 
 
-## Milestone 2
+## Milestone 2: Bison Parser
 
 ### Where is the **parser**?
 
@@ -30,4 +30,8 @@ The parser is located in `Milestone2/Parser` direcotry.
 2. run `make clean`
 3. run `make`
 
+### How to use the **parser**?
+
+1. compile the scanner using the above instructions.
+2. run: `./parser <path to the input file>`.
 
