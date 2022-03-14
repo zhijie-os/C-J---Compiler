@@ -4,14 +4,6 @@
 #include <stdarg.h>
 #include "parser.h"
 
-
-// define yyerror for bison
-void yyerror(char const *s)
-{
-    // print out the token that cannot be shifted or reduced and its line number
-    fprintf(stderr, "ERROR: %s, probably at or near \"%s\" on line %d\n", s, yylval->symbol);
-}
-
 // create a new AST node with a single string as the symbol and variable length of childrens
 struct ast *new_ast(const char *symbol, int num_of_children, ...)
 {

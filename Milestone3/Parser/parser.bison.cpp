@@ -125,7 +125,8 @@ enum yysymbol_kind_t
   YYSYMBOL_AND = 20,                       /* AND  */
   YYSYMBOL_OR = 21,                        /* OR  */
   YYSYMBOL_YYACCEPT = 22,                  /* $accept  */
-  YYSYMBOL_dummy_start = 23                /* dummy_start  */
+  YYSYMBOL_dummy_start = 23,               /* dummy_start  */
+  YYSYMBOL_producer = 24                   /* producer  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -451,18 +452,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  3
+#define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   3
+#define YYLAST   9
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  22
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  3
+#define YYNRULES  6
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  5
+#define YYNSTATES  8
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   276
@@ -513,7 +514,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    20,    20,    21
+       0,    20,    20,    21,    24,    25,    26
 };
 #endif
 
@@ -532,7 +533,7 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "STRING_Y",
   "TRUE", "FALSE", "BOOLEAN", "INT", "ID", "VOID", "BREAK", "RETURN", "IF",
   "ELSE", "WHILE", "LE", "GE", "NE", "EQ", "AND", "OR", "$accept",
-  "dummy_start", YY_NULLPTR
+  "dummy_start", "producer", YY_NULLPTR
 };
 
 static const char *
@@ -556,7 +557,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,    -3,     0,    -3,    -3
+      -2,    -3,    -3,    -3,     0,    -3,    -3,    -3
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -564,19 +565,19 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     2,     0,     1,     3
+       0,     4,     6,     5,     0,     2,     1,     3
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -3,    -3
+      -3,    -3,     1
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2
+       0,     4,     5
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -584,31 +585,31 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       3,     1,     0,     4
+       6,     1,     2,     1,     2,     7,     0,     3,     0,     3
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     3,    -1,     3
+       0,     3,     4,     3,     4,     4,    -1,     9,    -1,     9
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    23,     0,     3
+       0,     3,     4,     9,    23,    24,     0,    24
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    22,    23,    23
+       0,    22,    23,    23,    24,    24,    24
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2
+       0,     2,     1,     2,     1,     1,     1
 };
 
 
@@ -1071,20 +1072,20 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* dummy_start: NUMBER  */
+  case 2: /* dummy_start: producer  */
 #line 20 "parser.y"
-                                {yyvsp[0]->PrettyPrint(0);}
-#line 1078 "parser.bison.cpp"
+                                         {yyvsp[0]->PrettyPrint(0);}
+#line 1079 "parser.bison.cpp"
     break;
 
-  case 3: /* dummy_start: dummy_start NUMBER  */
+  case 3: /* dummy_start: dummy_start producer  */
 #line 21 "parser.y"
-                                      {yyvsp[0]->PrettyPrint(0);}
-#line 1084 "parser.bison.cpp"
+                                         {yyvsp[0]->PrettyPrint(0);}
+#line 1085 "parser.bison.cpp"
     break;
 
 
-#line 1088 "parser.bison.cpp"
+#line 1089 "parser.bison.cpp"
 
       default: break;
     }
@@ -1277,4 +1278,15 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 23 "parser.y"
+#line 30 "parser.y"
+
+
+
+
+
+// define yyerror for bison
+void yyerror(char const *s)
+{
+    // print out the token that cannot be shifted or reduced and its line number
+    fprintf(stderr, "ERROR: %s, probably at or near \"%s\" on line %d\n", s, yylval->symbol);
+}

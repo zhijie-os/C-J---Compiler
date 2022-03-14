@@ -1,11 +1,9 @@
 Terminals unused in grammar
 
-    STRING_Y
     TRUE
     FALSE
     BOOLEAN
     INT
-    ID
     VOID
     BREAK
     RETURN
@@ -24,21 +22,25 @@ Grammar
 
     0 $accept: dummy_start $end
 
-    1 dummy_start: NUMBER
-    2            | dummy_start NUMBER
+    1 dummy_start: producer
+    2            | dummy_start producer
+
+    3 producer: NUMBER
+    4         | ID
+    5         | STRING_Y
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    NUMBER (258) 1 2
-    STRING_Y (259)
+    NUMBER (258) 3
+    STRING_Y (259) 5
     TRUE (260)
     FALSE (261)
     BOOLEAN (262)
     INT (263)
-    ID (264)
+    ID (264) 4
     VOID (265)
     BREAK (266)
     RETURN (267)
@@ -60,42 +62,73 @@ Nonterminals, with rules where they appear
     dummy_start (23)
         on left: 1 2
         on right: 0 2
+    producer (24)
+        on left: 3 4 5
+        on right: 1 2
 
 
 State 0
 
     0 $accept: • dummy_start $end
 
-    NUMBER  shift, and go to state 1
+    NUMBER    shift, and go to state 1
+    STRING_Y  shift, and go to state 2
+    ID        shift, and go to state 3
 
-    dummy_start  go to state 2
+    dummy_start  go to state 4
+    producer     go to state 5
 
 
 State 1
 
-    1 dummy_start: NUMBER •
+    3 producer: NUMBER •
 
-    $default  reduce using rule 1 (dummy_start)
+    $default  reduce using rule 3 (producer)
 
 
 State 2
 
-    0 $accept: dummy_start • $end
-    2 dummy_start: dummy_start • NUMBER
+    5 producer: STRING_Y •
 
-    $end    shift, and go to state 3
-    NUMBER  shift, and go to state 4
+    $default  reduce using rule 5 (producer)
 
 
 State 3
+
+    4 producer: ID •
+
+    $default  reduce using rule 4 (producer)
+
+
+State 4
+
+    0 $accept: dummy_start • $end
+    2 dummy_start: dummy_start • producer
+
+    $end      shift, and go to state 6
+    NUMBER    shift, and go to state 1
+    STRING_Y  shift, and go to state 2
+    ID        shift, and go to state 3
+
+    producer  go to state 7
+
+
+State 5
+
+    1 dummy_start: producer •
+
+    $default  reduce using rule 1 (dummy_start)
+
+
+State 6
 
     0 $accept: dummy_start $end •
 
     $default  accept
 
 
-State 4
+State 7
 
-    2 dummy_start: dummy_start NUMBER •
+    2 dummy_start: dummy_start producer •
 
     $default  reduce using rule 2 (dummy_start)

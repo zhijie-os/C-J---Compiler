@@ -6,25 +6,40 @@
 #include <iostream>
 
 
+enum class NodeType  
+{
+    PROGRAM,GLOBAL_VAR_DEC,VAR_DEC,FUNC_DEC,MAIN_DEC,FORMALS,
+    FORMAL,VOID,BLOCK,NULL_STMT,STMT_EXPR,IF,IF_ELSE,TRUE, FALSE,
+    WHILE,FUNC_CALL,BIN_ARITHEMTIC, UN_ARITHMETIC, BIN_LOGIC, UN_LOGIC,
+    ASSIGN,INT,RETURN,BREAK,BOOLEAN,
+    NUMBER,STRING,IDENTIFIER,
+};
+
+
+
+
 class AST
 {
 public:
     AST *parent;
 
-    std::string symbol;
+    NodeType type;
     std::vector<AST *> children;
+    std::string symbol;
+    int line;
 
-    bool isLeaf;
+    AST(NodeType,std::string, int);
 
-    AST(std::string, bool);
+    AST(NodeType,std::string, int, int,...);
 
-    AST(std::string, bool,int,...);
+    void PrettyPrint(int);
 
-    virtual void PrettyPrint(int);
+    void AttachChildren(int ,...);
 
-    virtual void AttachChildren(int ,...);
+    void StealChildren(AST *);
 
-    virtual void StealChildren(AST *);
+    void BecomeSibling(int , ...);
 
-    virtual void BecomeSibling(int , ...);
+    bool isTerminal();
+
 };
