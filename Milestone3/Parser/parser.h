@@ -1,9 +1,11 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "AST.h"
 
 extern FILE *yyin;
 extern int yydebug;
@@ -11,7 +13,7 @@ extern int yylineno;
 void yyerror(char const *s);
 extern int yylex (void);
 extern int yyparse (void);
-extern struct ast* yylval;
+extern AST* yylval;
 
 extern int num_lexer_error;
 

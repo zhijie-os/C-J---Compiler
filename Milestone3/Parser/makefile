@@ -1,11 +1,11 @@
 
 
 
-parser: parser.y scanner.l parser.h main.cpp
+parser: parser.y scanner.l parser.h
 	bison -t -v -d parser.y
-	flex  -o  scanner.lex.cpp scanner.l
-	g++ -g -o $@ parser.tab.c scanner.lex.cpp main.cpp
+	flex  scanner.l
+	g++ -g -o $@ parser.bison.cpp scanner.flex.cpp main.cpp AST.cpp
 
 
 clean:
-	rm *.*.* parser parser.output
+	rm *.*.* parser parser.output parser.hpp
