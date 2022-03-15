@@ -3,6 +3,8 @@
     #include <stdlib.h>
     #include "parser.h"
     #include "AST.h"
+    #include "STab.h"
+
 %}
 
 
@@ -17,7 +19,7 @@
 
 %%
 
-dummy_start     : start                 {$$->PrettyPrint(0);}
+dummy_start     : start                 {CollectGlobal($$);dummy_break_point();}
                 ;
 
 start           : /* empty */
