@@ -1,274 +1,342 @@
-State 127 conflicts: 1 shift/reduce
+State 126 conflicts: 1 shift/reduce
 
 
 Grammar
 
-    0 $accept: dummy_start $end
+    0 $accept: start $end
 
-    1 dummy_start: start
+    1 start: ε
+    2      | globaldeclarations
 
-    2 start: ε
-    3      | globaldeclarations
+    3 literal: NUMBER
+    4        | STRING_Y
+    5        | TRUE
+    6        | FALSE
 
-    4 literal: NUMBER
-    5        | STRING_Y
-    6        | TRUE
-    7        | FALSE
+    7 type: BOOLEAN
+    8     | INT
 
-    8 type: BOOLEAN
-    9     | INT
+    9 globaldeclarations: globaldeclaration
+   10                   | globaldeclarations globaldeclaration
 
-   10 globaldeclarations: globaldeclaration
-   11                   | globaldeclarations globaldeclaration
+   11 globaldeclaration: variabledeclaration
+   12                  | functiondeclaration
+   13                  | mainfunctiondeclaration
 
-   12 globaldeclaration: variabledeclaration
-   13                  | functiondeclaration
-   14                  | mainfunctiondeclaration
+   14 variabledeclaration: type identifier ';'
 
-   15 variabledeclaration: type identifier ';'
+   15 identifier: ID
 
-   16 identifier: ID
+   16 functiondeclaration: functionheader block
 
-   17 functiondeclaration: functionheader block
+   17 functionheader: type functiondeclarator
+   18               | VOID functiondeclarator
 
-   18 functionheader: type functiondeclarator
-   19               | VOID functiondeclarator
+   19 functiondeclarator: identifier '(' formalparameterlist ')'
+   20                   | identifier '(' ')'
 
-   20 functiondeclarator: identifier '(' formalparameterlist ')'
-   21                   | identifier '(' ')'
+   21 formalparameterlist: formalparameter
+   22                    | formalparameterlist ',' formalparameter
 
-   22 formalparameterlist: formalparameter
-   23                    | formalparameterlist ',' formalparameter
+   23 formalparameter: type identifier
 
-   24 formalparameter: type identifier
+   24 mainfunctiondeclaration: mainfunctiondeclarator block
 
-   25 mainfunctiondeclaration: mainfunctiondeclarator block
+   25 mainfunctiondeclarator: identifier '(' ')'
 
-   26 mainfunctiondeclarator: identifier '(' ')'
+   26 block: '{' blockstatements '}'
+   27      | '{' '}'
 
-   27 block: '{' blockstatements '}'
-   28      | '{' '}'
+   28 blockstatements: blockstatement
+   29                | blockstatements blockstatement
 
-   29 blockstatements: blockstatement
-   30                | blockstatements blockstatement
+   30 blockstatement: variabledeclaration
+   31               | statement
 
-   31 blockstatement: variabledeclaration
-   32               | statement
+   32 statement: block
+   33          | ';'
+   34          | statementexpression ';'
+   35          | BREAK ';'
+   36          | RETURN expression ';'
+   37          | RETURN ';'
+   38          | IF '(' expression ')' statement
+   39          | IF '(' expression ')' statement ELSE statement
+   40          | WHILE '(' expression ')' statement
 
-   33 statement: block
-   34          | ';'
-   35          | statementexpression ';'
-   36          | BREAK ';'
-   37          | RETURN expression ';'
-   38          | RETURN ';'
-   39          | IF '(' expression ')' statement
-   40          | IF '(' expression ')' statement ELSE statement
-   41          | WHILE '(' expression ')' statement
+   41 statementexpression: assignment
+   42                    | functioninvocation
 
-   42 statementexpression: assignment
-   43                    | functioninvocation
+   43 primary: literal
+   44        | '(' expression ')'
+   45        | functioninvocation
 
-   44 primary: literal
-   45        | '(' expression ')'
-   46        | functioninvocation
+   46 argumentlist: expression
+   47             | argumentlist ',' expression
 
-   47 argumentlist: expression
-   48             | argumentlist ',' expression
+   48 functioninvocation: identifier '(' argumentlist ')'
+   49                   | identifier '(' ')'
 
-   49 functioninvocation: identifier '(' argumentlist ')'
-   50                   | identifier '(' ')'
+   50 postfixexpression: primary
+   51                  | identifier
 
-   51 postfixexpression: primary
-   52                  | identifier
+   52 unaryexpression: '-' unaryexpression
+   53                | '!' unaryexpression
+   54                | postfixexpression
 
-   53 unaryexpression: '-' unaryexpression
-   54                | '!' unaryexpression
-   55                | postfixexpression
+   55 multiplicativeexpression: unaryexpression
+   56                         | multiplicativeexpression '*' unaryexpression
+   57                         | multiplicativeexpression '/' unaryexpression
+   58                         | multiplicativeexpression '%' unaryexpression
 
-   56 multiplicativeexpression: unaryexpression
-   57                         | multiplicativeexpression '*' unaryexpression
-   58                         | multiplicativeexpression '/' unaryexpression
-   59                         | multiplicativeexpression '%' unaryexpression
+   59 additiveexpression: multiplicativeexpression
+   60                   | additiveexpression '+' multiplicativeexpression
+   61                   | additiveexpression '-' multiplicativeexpression
 
-   60 additiveexpression: multiplicativeexpression
-   61                   | additiveexpression '+' multiplicativeexpression
-   62                   | additiveexpression '-' multiplicativeexpression
+   62 relationalexpression: additiveexpression
+   63                     | relationalexpression '<' additiveexpression
+   64                     | relationalexpression '>' additiveexpression
+   65                     | relationalexpression LE additiveexpression
+   66                     | relationalexpression GE additiveexpression
 
-   63 relationalexpression: additiveexpression
-   64                     | relationalexpression '<' additiveexpression
-   65                     | relationalexpression '>' additiveexpression
-   66                     | relationalexpression LE additiveexpression
-   67                     | relationalexpression GE additiveexpression
+   67 equalityexpression: relationalexpression
+   68                   | equalityexpression EQ relationalexpression
+   69                   | equalityexpression NE relationalexpression
 
-   68 equalityexpression: relationalexpression
-   69                   | equalityexpression EQ relationalexpression
-   70                   | equalityexpression NE relationalexpression
+   70 conditionalandexpression: equalityexpression
+   71                         | conditionalandexpression AND equalityexpression
 
-   71 conditionalandexpression: equalityexpression
-   72                         | conditionalandexpression AND equalityexpression
+   72 conditionalorexpression: conditionalandexpression
+   73                        | conditionalorexpression OR conditionalandexpression
 
-   73 conditionalorexpression: conditionalandexpression
-   74                        | conditionalorexpression OR conditionalandexpression
+   74 assignmentexpression: conditionalorexpression
+   75                     | assignment
 
-   75 assignmentexpression: conditionalorexpression
-   76                     | assignment
+   76 assignment: identifier '=' assignmentexpression
 
-   77 assignment: identifier '=' assignmentexpression
-
-   78 expression: assignmentexpression
+   77 expression: assignmentexpression
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '!' (33) 54
-    '%' (37) 59
-    '(' (40) 20 21 26 39 40 41 45 49 50
-    ')' (41) 20 21 26 39 40 41 45 49 50
-    '*' (42) 57
-    '+' (43) 61
-    ',' (44) 23 48
-    '-' (45) 53 62
-    '/' (47) 58
-    ';' (59) 15 34 35 36 37 38
-    '<' (60) 64
-    '=' (61) 77
-    '>' (62) 65
-    '{' (123) 27 28
-    '}' (125) 27 28
+    '!' (33) 53
+    '%' (37) 58
+    '(' (40) 19 20 25 38 39 40 44 48 49
+    ')' (41) 19 20 25 38 39 40 44 48 49
+    '*' (42) 56
+    '+' (43) 60
+    ',' (44) 22 47
+    '-' (45) 52 61
+    '/' (47) 57
+    ';' (59) 14 33 34 35 36 37
+    '<' (60) 63
+    '=' (61) 76
+    '>' (62) 64
+    '{' (123) 26 27
+    '}' (125) 26 27
     error (256)
-    NUMBER (258) 4
-    STRING_Y (259) 5
-    TRUE (260) 6
-    FALSE (261) 7
-    BOOLEAN (262) 8
-    INT (263) 9
-    ID (264) 16
-    VOID (265) 19
-    BREAK (266) 36
-    RETURN (267) 37 38
-    IF (268) 39 40
-    ELSE (269) 40
-    WHILE (270) 41
-    LE (271) 66
-    GE (272) 67
-    NE (273) 70
-    EQ (274) 69
-    AND (275) 72
-    OR (276) 74
+    NUMBER (258) 3
+    STRING_Y (259) 4
+    TRUE (260) 5
+    FALSE (261) 6
+    BOOLEAN (262) 7
+    INT (263) 8
+    ID (264) 15
+    VOID (265) 18
+    BREAK (266) 35
+    RETURN (267) 36 37
+    IF (268) 38 39
+    ELSE (269) 39
+    WHILE (270) 40
+    LE (271) 65
+    GE (272) 66
+    NE (273) 69
+    EQ (274) 68
+    AND (275) 71
+    OR (276) 73
 
 
 Nonterminals, with rules where they appear
 
     $accept (37)
         on left: 0
-    dummy_start (38)
-        on left: 1
+    start (38)
+        on left: 1 2
         on right: 0
-    start (39)
-        on left: 2 3
-        on right: 1
-    literal (40)
-        on left: 4 5 6 7
-        on right: 44
-    type (41)
-        on left: 8 9
-        on right: 15 18 24
-    globaldeclarations (42)
-        on left: 10 11
-        on right: 3 11
-    globaldeclaration (43)
-        on left: 12 13 14
-        on right: 10 11
-    variabledeclaration (44)
+    literal (39)
+        on left: 3 4 5 6
+        on right: 43
+    type (40)
+        on left: 7 8
+        on right: 14 17 23
+    globaldeclarations (41)
+        on left: 9 10
+        on right: 2 10
+    globaldeclaration (42)
+        on left: 11 12 13
+        on right: 9 10
+    variabledeclaration (43)
+        on left: 14
+        on right: 11 30
+    identifier (44)
         on left: 15
-        on right: 12 31
-    identifier (45)
+        on right: 14 19 20 23 25 48 49 51 76
+    functiondeclaration (45)
         on left: 16
-        on right: 15 20 21 24 26 49 50 52 77
-    functiondeclaration (46)
-        on left: 17
-        on right: 13
-    functionheader (47)
-        on left: 18 19
-        on right: 17
-    functiondeclarator (48)
-        on left: 20 21
-        on right: 18 19
-    formalparameterlist (49)
-        on left: 22 23
-        on right: 20 23
-    formalparameter (50)
+        on right: 12
+    functionheader (46)
+        on left: 17 18
+        on right: 16
+    functiondeclarator (47)
+        on left: 19 20
+        on right: 17 18
+    formalparameterlist (48)
+        on left: 21 22
+        on right: 19 22
+    formalparameter (49)
+        on left: 23
+        on right: 21 22
+    mainfunctiondeclaration (50)
         on left: 24
-        on right: 22 23
-    mainfunctiondeclaration (51)
+        on right: 13
+    mainfunctiondeclarator (51)
         on left: 25
-        on right: 14
-    mainfunctiondeclarator (52)
-        on left: 26
-        on right: 25
-    block (53)
-        on left: 27 28
-        on right: 17 25 33
-    blockstatements (54)
-        on left: 29 30
-        on right: 27 30
-    blockstatement (55)
-        on left: 31 32
-        on right: 29 30
-    statement (56)
-        on left: 33 34 35 36 37 38 39 40 41
-        on right: 32 39 40 41
-    statementexpression (57)
-        on left: 42 43
-        on right: 35
-    primary (58)
-        on left: 44 45 46
-        on right: 51
-    argumentlist (59)
-        on left: 47 48
-        on right: 48 49
-    functioninvocation (60)
-        on left: 49 50
-        on right: 43 46
-    postfixexpression (61)
-        on left: 51 52
-        on right: 55
-    unaryexpression (62)
-        on left: 53 54 55
-        on right: 53 54 56 57 58 59
-    multiplicativeexpression (63)
-        on left: 56 57 58 59
-        on right: 57 58 59 60 61 62
-    additiveexpression (64)
-        on left: 60 61 62
-        on right: 61 62 63 64 65 66 67
-    relationalexpression (65)
-        on left: 63 64 65 66 67
-        on right: 64 65 66 67 68 69 70
-    equalityexpression (66)
-        on left: 68 69 70
-        on right: 69 70 71 72
-    conditionalandexpression (67)
-        on left: 71 72
-        on right: 72 73 74
-    conditionalorexpression (68)
-        on left: 73 74
-        on right: 74 75
-    assignmentexpression (69)
-        on left: 75 76
-        on right: 77 78
-    assignment (70)
+        on right: 24
+    block (52)
+        on left: 26 27
+        on right: 16 24 32
+    blockstatements (53)
+        on left: 28 29
+        on right: 26 29
+    blockstatement (54)
+        on left: 30 31
+        on right: 28 29
+    statement (55)
+        on left: 32 33 34 35 36 37 38 39 40
+        on right: 31 38 39 40
+    statementexpression (56)
+        on left: 41 42
+        on right: 34
+    primary (57)
+        on left: 43 44 45
+        on right: 50
+    argumentlist (58)
+        on left: 46 47
+        on right: 47 48
+    functioninvocation (59)
+        on left: 48 49
+        on right: 42 45
+    postfixexpression (60)
+        on left: 50 51
+        on right: 54
+    unaryexpression (61)
+        on left: 52 53 54
+        on right: 52 53 55 56 57 58
+    multiplicativeexpression (62)
+        on left: 55 56 57 58
+        on right: 56 57 58 59 60 61
+    additiveexpression (63)
+        on left: 59 60 61
+        on right: 60 61 62 63 64 65 66
+    relationalexpression (64)
+        on left: 62 63 64 65 66
+        on right: 63 64 65 66 67 68 69
+    equalityexpression (65)
+        on left: 67 68 69
+        on right: 68 69 70 71
+    conditionalandexpression (66)
+        on left: 70 71
+        on right: 71 72 73
+    conditionalorexpression (67)
+        on left: 72 73
+        on right: 73 74
+    assignmentexpression (68)
+        on left: 74 75
+        on right: 76 77
+    assignment (69)
+        on left: 76
+        on right: 41 75
+    expression (70)
         on left: 77
-        on right: 42 76
-    expression (71)
-        on left: 78
-        on right: 37 39 40 41 45 47 48
+        on right: 36 38 39 40 44 46 47
 
 
 State 0
 
-    0 $accept: • dummy_start $end
+    0 $accept: • start $end
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    ID       shift, and go to state 3
+    VOID     shift, and go to state 4
+
+    $default  reduce using rule 1 (start)
+
+    start                    go to state 5
+    type                     go to state 6
+    globaldeclarations       go to state 7
+    globaldeclaration        go to state 8
+    variabledeclaration      go to state 9
+    identifier               go to state 10
+    functiondeclaration      go to state 11
+    functionheader           go to state 12
+    mainfunctiondeclaration  go to state 13
+    mainfunctiondeclarator   go to state 14
+
+
+State 1
+
+    7 type: BOOLEAN •
+
+    $default  reduce using rule 7 (type)
+
+
+State 2
+
+    8 type: INT •
+
+    $default  reduce using rule 8 (type)
+
+
+State 3
+
+   15 identifier: ID •
+
+    $default  reduce using rule 15 (identifier)
+
+
+State 4
+
+   18 functionheader: VOID • functiondeclarator
+
+    ID  shift, and go to state 3
+
+    identifier          go to state 15
+    functiondeclarator  go to state 16
+
+
+State 5
+
+    0 $accept: start • $end
+
+    $end  shift, and go to state 17
+
+
+State 6
+
+   14 variabledeclaration: type • identifier ';'
+   17 functionheader: type • functiondeclarator
+
+    ID  shift, and go to state 3
+
+    identifier          go to state 18
+    functiondeclarator  go to state 19
+
+
+State 7
+
+    2 start: globaldeclarations •
+   10 globaldeclarations: globaldeclarations • globaldeclaration
 
     BOOLEAN  shift, and go to state 1
     INT      shift, and go to state 2
@@ -277,1573 +345,1492 @@ State 0
 
     $default  reduce using rule 2 (start)
 
-    dummy_start              go to state 5
-    start                    go to state 6
-    type                     go to state 7
-    globaldeclarations       go to state 8
-    globaldeclaration        go to state 9
-    variabledeclaration      go to state 10
-    identifier               go to state 11
-    functiondeclaration      go to state 12
-    functionheader           go to state 13
-    mainfunctiondeclaration  go to state 14
-    mainfunctiondeclarator   go to state 15
-
-
-State 1
-
-    8 type: BOOLEAN •
-
-    $default  reduce using rule 8 (type)
-
-
-State 2
-
-    9 type: INT •
-
-    $default  reduce using rule 9 (type)
-
-
-State 3
-
-   16 identifier: ID •
-
-    $default  reduce using rule 16 (identifier)
-
-
-State 4
-
-   19 functionheader: VOID • functiondeclarator
-
-    ID  shift, and go to state 3
-
-    identifier          go to state 16
-    functiondeclarator  go to state 17
-
-
-State 5
-
-    0 $accept: dummy_start • $end
-
-    $end  shift, and go to state 18
-
-
-State 6
-
-    1 dummy_start: start •
-
-    $default  reduce using rule 1 (dummy_start)
-
-
-State 7
-
-   15 variabledeclaration: type • identifier ';'
-   18 functionheader: type • functiondeclarator
-
-    ID  shift, and go to state 3
-
-    identifier          go to state 19
-    functiondeclarator  go to state 20
+    type                     go to state 6
+    globaldeclaration        go to state 20
+    variabledeclaration      go to state 9
+    identifier               go to state 10
+    functiondeclaration      go to state 11
+    functionheader           go to state 12
+    mainfunctiondeclaration  go to state 13
+    mainfunctiondeclarator   go to state 14
 
 
 State 8
 
-    3 start: globaldeclarations •
-   11 globaldeclarations: globaldeclarations • globaldeclaration
+    9 globaldeclarations: globaldeclaration •
 
-    BOOLEAN  shift, and go to state 1
-    INT      shift, and go to state 2
-    ID       shift, and go to state 3
-    VOID     shift, and go to state 4
-
-    $default  reduce using rule 3 (start)
-
-    type                     go to state 7
-    globaldeclaration        go to state 21
-    variabledeclaration      go to state 10
-    identifier               go to state 11
-    functiondeclaration      go to state 12
-    functionheader           go to state 13
-    mainfunctiondeclaration  go to state 14
-    mainfunctiondeclarator   go to state 15
+    $default  reduce using rule 9 (globaldeclarations)
 
 
 State 9
 
-   10 globaldeclarations: globaldeclaration •
+   11 globaldeclaration: variabledeclaration •
 
-    $default  reduce using rule 10 (globaldeclarations)
+    $default  reduce using rule 11 (globaldeclaration)
 
 
 State 10
 
-   12 globaldeclaration: variabledeclaration •
+   25 mainfunctiondeclarator: identifier • '(' ')'
 
-    $default  reduce using rule 12 (globaldeclaration)
+    '('  shift, and go to state 21
 
 
 State 11
 
-   26 mainfunctiondeclarator: identifier • '(' ')'
+   12 globaldeclaration: functiondeclaration •
 
-    '('  shift, and go to state 22
+    $default  reduce using rule 12 (globaldeclaration)
 
 
 State 12
 
-   13 globaldeclaration: functiondeclaration •
+   16 functiondeclaration: functionheader • block
 
-    $default  reduce using rule 13 (globaldeclaration)
+    '{'  shift, and go to state 22
+
+    block  go to state 23
 
 
 State 13
 
-   17 functiondeclaration: functionheader • block
+   13 globaldeclaration: mainfunctiondeclaration •
 
-    '{'  shift, and go to state 23
-
-    block  go to state 24
+    $default  reduce using rule 13 (globaldeclaration)
 
 
 State 14
 
-   14 globaldeclaration: mainfunctiondeclaration •
+   24 mainfunctiondeclaration: mainfunctiondeclarator • block
 
-    $default  reduce using rule 14 (globaldeclaration)
+    '{'  shift, and go to state 22
+
+    block  go to state 24
 
 
 State 15
 
-   25 mainfunctiondeclaration: mainfunctiondeclarator • block
+   19 functiondeclarator: identifier • '(' formalparameterlist ')'
+   20                   | identifier • '(' ')'
 
-    '{'  shift, and go to state 23
-
-    block  go to state 25
+    '('  shift, and go to state 25
 
 
 State 16
 
-   20 functiondeclarator: identifier • '(' formalparameterlist ')'
-   21                   | identifier • '(' ')'
-
-    '('  shift, and go to state 26
-
-
-State 17
-
-   19 functionheader: VOID functiondeclarator •
-
-    $default  reduce using rule 19 (functionheader)
-
-
-State 18
-
-    0 $accept: dummy_start $end •
-
-    $default  accept
-
-
-State 19
-
-   15 variabledeclaration: type identifier • ';'
-   20 functiondeclarator: identifier • '(' formalparameterlist ')'
-   21                   | identifier • '(' ')'
-
-    ';'  shift, and go to state 27
-    '('  shift, and go to state 26
-
-
-State 20
-
-   18 functionheader: type functiondeclarator •
+   18 functionheader: VOID functiondeclarator •
 
     $default  reduce using rule 18 (functionheader)
 
 
+State 17
+
+    0 $accept: start $end •
+
+    $default  accept
+
+
+State 18
+
+   14 variabledeclaration: type identifier • ';'
+   19 functiondeclarator: identifier • '(' formalparameterlist ')'
+   20                   | identifier • '(' ')'
+
+    ';'  shift, and go to state 26
+    '('  shift, and go to state 25
+
+
+State 19
+
+   17 functionheader: type functiondeclarator •
+
+    $default  reduce using rule 17 (functionheader)
+
+
+State 20
+
+   10 globaldeclarations: globaldeclarations globaldeclaration •
+
+    $default  reduce using rule 10 (globaldeclarations)
+
+
 State 21
 
-   11 globaldeclarations: globaldeclarations globaldeclaration •
+   25 mainfunctiondeclarator: identifier '(' • ')'
 
-    $default  reduce using rule 11 (globaldeclarations)
+    ')'  shift, and go to state 27
 
 
 State 22
 
-   26 mainfunctiondeclarator: identifier '(' • ')'
-
-    ')'  shift, and go to state 28
-
-
-State 23
-
-   27 block: '{' • blockstatements '}'
-   28      | '{' • '}'
+   26 block: '{' • blockstatements '}'
+   27      | '{' • '}'
 
     BOOLEAN  shift, and go to state 1
     INT      shift, and go to state 2
     ID       shift, and go to state 3
-    BREAK    shift, and go to state 29
-    RETURN   shift, and go to state 30
-    IF       shift, and go to state 31
-    WHILE    shift, and go to state 32
-    ';'      shift, and go to state 33
-    '{'      shift, and go to state 23
-    '}'      shift, and go to state 34
+    BREAK    shift, and go to state 28
+    RETURN   shift, and go to state 29
+    IF       shift, and go to state 30
+    WHILE    shift, and go to state 31
+    ';'      shift, and go to state 32
+    '{'      shift, and go to state 22
+    '}'      shift, and go to state 33
 
-    type                 go to state 35
-    variabledeclaration  go to state 36
-    identifier           go to state 37
-    block                go to state 38
-    blockstatements      go to state 39
-    blockstatement       go to state 40
-    statement            go to state 41
-    statementexpression  go to state 42
-    functioninvocation   go to state 43
-    assignment           go to state 44
+    type                 go to state 34
+    variabledeclaration  go to state 35
+    identifier           go to state 36
+    block                go to state 37
+    blockstatements      go to state 38
+    blockstatement       go to state 39
+    statement            go to state 40
+    statementexpression  go to state 41
+    functioninvocation   go to state 42
+    assignment           go to state 43
+
+
+State 23
+
+   16 functiondeclaration: functionheader block •
+
+    $default  reduce using rule 16 (functiondeclaration)
 
 
 State 24
 
-   17 functiondeclaration: functionheader block •
+   24 mainfunctiondeclaration: mainfunctiondeclarator block •
 
-    $default  reduce using rule 17 (functiondeclaration)
+    $default  reduce using rule 24 (mainfunctiondeclaration)
 
 
 State 25
 
-   25 mainfunctiondeclaration: mainfunctiondeclarator block •
+   19 functiondeclarator: identifier '(' • formalparameterlist ')'
+   20                   | identifier '(' • ')'
 
-    $default  reduce using rule 25 (mainfunctiondeclaration)
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    ')'      shift, and go to state 44
+
+    type                 go to state 45
+    formalparameterlist  go to state 46
+    formalparameter      go to state 47
 
 
 State 26
 
-   20 functiondeclarator: identifier '(' • formalparameterlist ')'
-   21                   | identifier '(' • ')'
+   14 variabledeclaration: type identifier ';' •
 
-    BOOLEAN  shift, and go to state 1
-    INT      shift, and go to state 2
-    ')'      shift, and go to state 45
-
-    type                 go to state 46
-    formalparameterlist  go to state 47
-    formalparameter      go to state 48
+    $default  reduce using rule 14 (variabledeclaration)
 
 
 State 27
 
-   15 variabledeclaration: type identifier ';' •
+   25 mainfunctiondeclarator: identifier '(' ')' •
 
-    $default  reduce using rule 15 (variabledeclaration)
+    $default  reduce using rule 25 (mainfunctiondeclarator)
 
 
 State 28
 
-   26 mainfunctiondeclarator: identifier '(' ')' •
+   35 statement: BREAK • ';'
 
-    $default  reduce using rule 26 (mainfunctiondeclarator)
+    ';'  shift, and go to state 48
 
 
 State 29
 
-   36 statement: BREAK • ';'
+   36 statement: RETURN • expression ';'
+   37          | RETURN • ';'
 
-    ';'  shift, and go to state 49
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    ';'       shift, and go to state 53
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
+    expression                go to state 71
 
 
 State 30
 
-   37 statement: RETURN • expression ';'
-   38          | RETURN • ';'
+   38 statement: IF • '(' expression ')' statement
+   39          | IF • '(' expression ')' statement ELSE statement
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    ';'       shift, and go to state 54
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
-
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
-    expression                go to state 72
+    '('  shift, and go to state 72
 
 
 State 31
 
-   39 statement: IF • '(' expression ')' statement
-   40          | IF • '(' expression ')' statement ELSE statement
+   40 statement: WHILE • '(' expression ')' statement
 
     '('  shift, and go to state 73
 
 
 State 32
 
-   41 statement: WHILE • '(' expression ')' statement
-
-    '('  shift, and go to state 74
-
-
-State 33
-
-   34 statement: ';' •
-
-    $default  reduce using rule 34 (statement)
-
-
-State 34
-
-   28 block: '{' '}' •
-
-    $default  reduce using rule 28 (block)
-
-
-State 35
-
-   15 variabledeclaration: type • identifier ';'
-
-    ID  shift, and go to state 3
-
-    identifier  go to state 75
-
-
-State 36
-
-   31 blockstatement: variabledeclaration •
-
-    $default  reduce using rule 31 (blockstatement)
-
-
-State 37
-
-   49 functioninvocation: identifier • '(' argumentlist ')'
-   50                   | identifier • '(' ')'
-   77 assignment: identifier • '=' assignmentexpression
-
-    '('  shift, and go to state 76
-    '='  shift, and go to state 77
-
-
-State 38
-
-   33 statement: block •
+   33 statement: ';' •
 
     $default  reduce using rule 33 (statement)
 
 
-State 39
+State 33
 
-   27 block: '{' blockstatements • '}'
-   30 blockstatements: blockstatements • blockstatement
+   27 block: '{' '}' •
+
+    $default  reduce using rule 27 (block)
+
+
+State 34
+
+   14 variabledeclaration: type • identifier ';'
+
+    ID  shift, and go to state 3
+
+    identifier  go to state 74
+
+
+State 35
+
+   30 blockstatement: variabledeclaration •
+
+    $default  reduce using rule 30 (blockstatement)
+
+
+State 36
+
+   48 functioninvocation: identifier • '(' argumentlist ')'
+   49                   | identifier • '(' ')'
+   76 assignment: identifier • '=' assignmentexpression
+
+    '('  shift, and go to state 75
+    '='  shift, and go to state 76
+
+
+State 37
+
+   32 statement: block •
+
+    $default  reduce using rule 32 (statement)
+
+
+State 38
+
+   26 block: '{' blockstatements • '}'
+   29 blockstatements: blockstatements • blockstatement
 
     BOOLEAN  shift, and go to state 1
     INT      shift, and go to state 2
     ID       shift, and go to state 3
-    BREAK    shift, and go to state 29
-    RETURN   shift, and go to state 30
-    IF       shift, and go to state 31
-    WHILE    shift, and go to state 32
-    ';'      shift, and go to state 33
-    '{'      shift, and go to state 23
-    '}'      shift, and go to state 78
+    BREAK    shift, and go to state 28
+    RETURN   shift, and go to state 29
+    IF       shift, and go to state 30
+    WHILE    shift, and go to state 31
+    ';'      shift, and go to state 32
+    '{'      shift, and go to state 22
+    '}'      shift, and go to state 77
 
-    type                 go to state 35
-    variabledeclaration  go to state 36
-    identifier           go to state 37
-    block                go to state 38
-    blockstatement       go to state 79
-    statement            go to state 41
-    statementexpression  go to state 42
-    functioninvocation   go to state 43
-    assignment           go to state 44
+    type                 go to state 34
+    variabledeclaration  go to state 35
+    identifier           go to state 36
+    block                go to state 37
+    blockstatement       go to state 78
+    statement            go to state 40
+    statementexpression  go to state 41
+    functioninvocation   go to state 42
+    assignment           go to state 43
+
+
+State 39
+
+   28 blockstatements: blockstatement •
+
+    $default  reduce using rule 28 (blockstatements)
 
 
 State 40
 
-   29 blockstatements: blockstatement •
+   31 blockstatement: statement •
 
-    $default  reduce using rule 29 (blockstatements)
+    $default  reduce using rule 31 (blockstatement)
 
 
 State 41
 
-   32 blockstatement: statement •
+   34 statement: statementexpression • ';'
 
-    $default  reduce using rule 32 (blockstatement)
+    ';'  shift, and go to state 79
 
 
 State 42
 
-   35 statement: statementexpression • ';'
-
-    ';'  shift, and go to state 80
-
-
-State 43
-
-   43 statementexpression: functioninvocation •
-
-    $default  reduce using rule 43 (statementexpression)
-
-
-State 44
-
-   42 statementexpression: assignment •
+   42 statementexpression: functioninvocation •
 
     $default  reduce using rule 42 (statementexpression)
 
 
+State 43
+
+   41 statementexpression: assignment •
+
+    $default  reduce using rule 41 (statementexpression)
+
+
+State 44
+
+   20 functiondeclarator: identifier '(' ')' •
+
+    $default  reduce using rule 20 (functiondeclarator)
+
+
 State 45
 
-   21 functiondeclarator: identifier '(' ')' •
+   23 formalparameter: type • identifier
 
-    $default  reduce using rule 21 (functiondeclarator)
+    ID  shift, and go to state 3
+
+    identifier  go to state 80
 
 
 State 46
 
-   24 formalparameter: type • identifier
+   19 functiondeclarator: identifier '(' formalparameterlist • ')'
+   22 formalparameterlist: formalparameterlist • ',' formalparameter
 
-    ID  shift, and go to state 3
-
-    identifier  go to state 81
+    ')'  shift, and go to state 81
+    ','  shift, and go to state 82
 
 
 State 47
 
-   20 functiondeclarator: identifier '(' formalparameterlist • ')'
-   23 formalparameterlist: formalparameterlist • ',' formalparameter
+   21 formalparameterlist: formalparameter •
 
-    ')'  shift, and go to state 82
-    ','  shift, and go to state 83
+    $default  reduce using rule 21 (formalparameterlist)
 
 
 State 48
 
-   22 formalparameterlist: formalparameter •
+   35 statement: BREAK ';' •
 
-    $default  reduce using rule 22 (formalparameterlist)
+    $default  reduce using rule 35 (statement)
 
 
 State 49
 
-   36 statement: BREAK ';' •
+    3 literal: NUMBER •
 
-    $default  reduce using rule 36 (statement)
+    $default  reduce using rule 3 (literal)
 
 
 State 50
 
-    4 literal: NUMBER •
+    4 literal: STRING_Y •
 
     $default  reduce using rule 4 (literal)
 
 
 State 51
 
-    5 literal: STRING_Y •
+    5 literal: TRUE •
 
     $default  reduce using rule 5 (literal)
 
 
 State 52
 
-    6 literal: TRUE •
+    6 literal: FALSE •
 
     $default  reduce using rule 6 (literal)
 
 
 State 53
 
-    7 literal: FALSE •
+   37 statement: RETURN ';' •
 
-    $default  reduce using rule 7 (literal)
+    $default  reduce using rule 37 (statement)
 
 
 State 54
 
-   38 statement: RETURN ';' •
+   44 primary: '(' • expression ')'
 
-    $default  reduce using rule 38 (statement)
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
+    expression                go to state 83
 
 
 State 55
 
-   45 primary: '(' • expression ')'
+   52 unaryexpression: '-' • unaryexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
-    expression                go to state 84
+    literal             go to state 57
+    identifier          go to state 84
+    primary             go to state 59
+    functioninvocation  go to state 60
+    postfixexpression   go to state 61
+    unaryexpression     go to state 85
 
 
 State 56
 
-   53 unaryexpression: '-' • unaryexpression
+   53 unaryexpression: '!' • unaryexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal             go to state 58
-    identifier          go to state 85
-    primary             go to state 60
-    functioninvocation  go to state 61
-    postfixexpression   go to state 62
+    literal             go to state 57
+    identifier          go to state 84
+    primary             go to state 59
+    functioninvocation  go to state 60
+    postfixexpression   go to state 61
     unaryexpression     go to state 86
 
 
 State 57
 
-   54 unaryexpression: '!' • unaryexpression
+   43 primary: literal •
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
-
-    literal             go to state 58
-    identifier          go to state 85
-    primary             go to state 60
-    functioninvocation  go to state 61
-    postfixexpression   go to state 62
-    unaryexpression     go to state 87
+    $default  reduce using rule 43 (primary)
 
 
 State 58
 
-   44 primary: literal •
+   48 functioninvocation: identifier • '(' argumentlist ')'
+   49                   | identifier • '(' ')'
+   51 postfixexpression: identifier •
+   76 assignment: identifier • '=' assignmentexpression
 
-    $default  reduce using rule 44 (primary)
-
-
-State 59
-
-   49 functioninvocation: identifier • '(' argumentlist ')'
-   50                   | identifier • '(' ')'
-   52 postfixexpression: identifier •
-   77 assignment: identifier • '=' assignmentexpression
-
-    '('  shift, and go to state 76
-    '='  shift, and go to state 77
-
-    $default  reduce using rule 52 (postfixexpression)
-
-
-State 60
-
-   51 postfixexpression: primary •
+    '('  shift, and go to state 75
+    '='  shift, and go to state 76
 
     $default  reduce using rule 51 (postfixexpression)
 
 
+State 59
+
+   50 postfixexpression: primary •
+
+    $default  reduce using rule 50 (postfixexpression)
+
+
+State 60
+
+   45 primary: functioninvocation •
+
+    $default  reduce using rule 45 (primary)
+
+
 State 61
 
-   46 primary: functioninvocation •
+   54 unaryexpression: postfixexpression •
 
-    $default  reduce using rule 46 (primary)
+    $default  reduce using rule 54 (unaryexpression)
 
 
 State 62
 
-   55 unaryexpression: postfixexpression •
+   55 multiplicativeexpression: unaryexpression •
 
-    $default  reduce using rule 55 (unaryexpression)
+    $default  reduce using rule 55 (multiplicativeexpression)
 
 
 State 63
 
-   56 multiplicativeexpression: unaryexpression •
+   56 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
+   57                         | multiplicativeexpression • '/' unaryexpression
+   58                         | multiplicativeexpression • '%' unaryexpression
+   59 additiveexpression: multiplicativeexpression •
 
-    $default  reduce using rule 56 (multiplicativeexpression)
+    '*'  shift, and go to state 87
+    '/'  shift, and go to state 88
+    '%'  shift, and go to state 89
+
+    $default  reduce using rule 59 (additiveexpression)
 
 
 State 64
 
-   57 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
-   58                         | multiplicativeexpression • '/' unaryexpression
-   59                         | multiplicativeexpression • '%' unaryexpression
-   60 additiveexpression: multiplicativeexpression •
+   60 additiveexpression: additiveexpression • '+' multiplicativeexpression
+   61                   | additiveexpression • '-' multiplicativeexpression
+   62 relationalexpression: additiveexpression •
 
-    '*'  shift, and go to state 88
-    '/'  shift, and go to state 89
-    '%'  shift, and go to state 90
+    '-'  shift, and go to state 90
+    '+'  shift, and go to state 91
 
-    $default  reduce using rule 60 (additiveexpression)
+    $default  reduce using rule 62 (relationalexpression)
 
 
 State 65
 
-   61 additiveexpression: additiveexpression • '+' multiplicativeexpression
-   62                   | additiveexpression • '-' multiplicativeexpression
-   63 relationalexpression: additiveexpression •
+   63 relationalexpression: relationalexpression • '<' additiveexpression
+   64                     | relationalexpression • '>' additiveexpression
+   65                     | relationalexpression • LE additiveexpression
+   66                     | relationalexpression • GE additiveexpression
+   67 equalityexpression: relationalexpression •
 
-    '-'  shift, and go to state 91
-    '+'  shift, and go to state 92
+    LE   shift, and go to state 92
+    GE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '>'  shift, and go to state 95
 
-    $default  reduce using rule 63 (relationalexpression)
+    $default  reduce using rule 67 (equalityexpression)
 
 
 State 66
 
-   64 relationalexpression: relationalexpression • '<' additiveexpression
-   65                     | relationalexpression • '>' additiveexpression
-   66                     | relationalexpression • LE additiveexpression
-   67                     | relationalexpression • GE additiveexpression
-   68 equalityexpression: relationalexpression •
+   68 equalityexpression: equalityexpression • EQ relationalexpression
+   69                   | equalityexpression • NE relationalexpression
+   70 conditionalandexpression: equalityexpression •
 
-    LE   shift, and go to state 93
-    GE   shift, and go to state 94
-    '<'  shift, and go to state 95
-    '>'  shift, and go to state 96
+    NE  shift, and go to state 96
+    EQ  shift, and go to state 97
 
-    $default  reduce using rule 68 (equalityexpression)
+    $default  reduce using rule 70 (conditionalandexpression)
 
 
 State 67
 
-   69 equalityexpression: equalityexpression • EQ relationalexpression
-   70                   | equalityexpression • NE relationalexpression
-   71 conditionalandexpression: equalityexpression •
+   71 conditionalandexpression: conditionalandexpression • AND equalityexpression
+   72 conditionalorexpression: conditionalandexpression •
 
-    NE  shift, and go to state 97
-    EQ  shift, and go to state 98
+    AND  shift, and go to state 98
 
-    $default  reduce using rule 71 (conditionalandexpression)
+    $default  reduce using rule 72 (conditionalorexpression)
 
 
 State 68
 
-   72 conditionalandexpression: conditionalandexpression • AND equalityexpression
-   73 conditionalorexpression: conditionalandexpression •
+   73 conditionalorexpression: conditionalorexpression • OR conditionalandexpression
+   74 assignmentexpression: conditionalorexpression •
 
-    AND  shift, and go to state 99
+    OR  shift, and go to state 99
 
-    $default  reduce using rule 73 (conditionalorexpression)
+    $default  reduce using rule 74 (assignmentexpression)
 
 
 State 69
 
-   74 conditionalorexpression: conditionalorexpression • OR conditionalandexpression
-   75 assignmentexpression: conditionalorexpression •
+   77 expression: assignmentexpression •
 
-    OR  shift, and go to state 100
-
-    $default  reduce using rule 75 (assignmentexpression)
+    $default  reduce using rule 77 (expression)
 
 
 State 70
 
-   78 expression: assignmentexpression •
+   75 assignmentexpression: assignment •
 
-    $default  reduce using rule 78 (expression)
+    $default  reduce using rule 75 (assignmentexpression)
 
 
 State 71
 
-   76 assignmentexpression: assignment •
+   36 statement: RETURN expression • ';'
 
-    $default  reduce using rule 76 (assignmentexpression)
+    ';'  shift, and go to state 100
 
 
 State 72
 
-   37 statement: RETURN expression • ';'
+   38 statement: IF '(' • expression ')' statement
+   39          | IF '(' • expression ')' statement ELSE statement
 
-    ';'  shift, and go to state 101
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
+    expression                go to state 101
 
 
 State 73
 
-   39 statement: IF '(' • expression ')' statement
-   40          | IF '(' • expression ')' statement ELSE statement
+   40 statement: WHILE '(' • expression ')' statement
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
     expression                go to state 102
 
 
 State 74
 
-   41 statement: WHILE '(' • expression ')' statement
+   14 variabledeclaration: type identifier • ';'
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
-
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
-    expression                go to state 103
+    ';'  shift, and go to state 26
 
 
 State 75
 
-   15 variabledeclaration: type identifier • ';'
+   48 functioninvocation: identifier '(' • argumentlist ')'
+   49                   | identifier '(' • ')'
 
-    ';'  shift, and go to state 27
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    '('       shift, and go to state 54
+    ')'       shift, and go to state 103
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    argumentlist              go to state 104
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
+    expression                go to state 105
 
 
 State 76
 
-   49 functioninvocation: identifier '(' • argumentlist ')'
-   50                   | identifier '(' • ')'
+   76 assignment: identifier '=' • assignmentexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    ')'       shift, and go to state 104
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    argumentlist              go to state 105
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
-    expression                go to state 106
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 106
+    assignment                go to state 70
 
 
 State 77
 
-   77 assignment: identifier '=' • assignmentexpression
+   26 block: '{' blockstatements '}' •
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
-
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 107
-    assignment                go to state 71
+    $default  reduce using rule 26 (block)
 
 
 State 78
 
-   27 block: '{' blockstatements '}' •
+   29 blockstatements: blockstatements blockstatement •
 
-    $default  reduce using rule 27 (block)
+    $default  reduce using rule 29 (blockstatements)
 
 
 State 79
 
-   30 blockstatements: blockstatements blockstatement •
+   34 statement: statementexpression ';' •
 
-    $default  reduce using rule 30 (blockstatements)
+    $default  reduce using rule 34 (statement)
 
 
 State 80
 
-   35 statement: statementexpression ';' •
+   23 formalparameter: type identifier •
 
-    $default  reduce using rule 35 (statement)
+    $default  reduce using rule 23 (formalparameter)
 
 
 State 81
 
-   24 formalparameter: type identifier •
+   19 functiondeclarator: identifier '(' formalparameterlist ')' •
 
-    $default  reduce using rule 24 (formalparameter)
+    $default  reduce using rule 19 (functiondeclarator)
 
 
 State 82
 
-   20 functiondeclarator: identifier '(' formalparameterlist ')' •
-
-    $default  reduce using rule 20 (functiondeclarator)
-
-
-State 83
-
-   23 formalparameterlist: formalparameterlist ',' • formalparameter
+   22 formalparameterlist: formalparameterlist ',' • formalparameter
 
     BOOLEAN  shift, and go to state 1
     INT      shift, and go to state 2
 
-    type             go to state 46
-    formalparameter  go to state 108
+    type             go to state 45
+    formalparameter  go to state 107
+
+
+State 83
+
+   44 primary: '(' expression • ')'
+
+    ')'  shift, and go to state 108
 
 
 State 84
 
-   45 primary: '(' expression • ')'
+   48 functioninvocation: identifier • '(' argumentlist ')'
+   49                   | identifier • '(' ')'
+   51 postfixexpression: identifier •
 
-    ')'  shift, and go to state 109
+    '('  shift, and go to state 75
+
+    $default  reduce using rule 51 (postfixexpression)
 
 
 State 85
 
-   49 functioninvocation: identifier • '(' argumentlist ')'
-   50                   | identifier • '(' ')'
-   52 postfixexpression: identifier •
+   52 unaryexpression: '-' unaryexpression •
 
-    '('  shift, and go to state 76
-
-    $default  reduce using rule 52 (postfixexpression)
+    $default  reduce using rule 52 (unaryexpression)
 
 
 State 86
 
-   53 unaryexpression: '-' unaryexpression •
+   53 unaryexpression: '!' unaryexpression •
 
     $default  reduce using rule 53 (unaryexpression)
 
 
 State 87
 
-   54 unaryexpression: '!' unaryexpression •
+   56 multiplicativeexpression: multiplicativeexpression '*' • unaryexpression
 
-    $default  reduce using rule 54 (unaryexpression)
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal             go to state 57
+    identifier          go to state 84
+    primary             go to state 59
+    functioninvocation  go to state 60
+    postfixexpression   go to state 61
+    unaryexpression     go to state 109
 
 
 State 88
 
-   57 multiplicativeexpression: multiplicativeexpression '*' • unaryexpression
+   57 multiplicativeexpression: multiplicativeexpression '/' • unaryexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal             go to state 58
-    identifier          go to state 85
-    primary             go to state 60
-    functioninvocation  go to state 61
-    postfixexpression   go to state 62
+    literal             go to state 57
+    identifier          go to state 84
+    primary             go to state 59
+    functioninvocation  go to state 60
+    postfixexpression   go to state 61
     unaryexpression     go to state 110
 
 
 State 89
 
-   58 multiplicativeexpression: multiplicativeexpression '/' • unaryexpression
+   58 multiplicativeexpression: multiplicativeexpression '%' • unaryexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal             go to state 58
-    identifier          go to state 85
-    primary             go to state 60
-    functioninvocation  go to state 61
-    postfixexpression   go to state 62
+    literal             go to state 57
+    identifier          go to state 84
+    primary             go to state 59
+    functioninvocation  go to state 60
+    postfixexpression   go to state 61
     unaryexpression     go to state 111
 
 
 State 90
 
-   59 multiplicativeexpression: multiplicativeexpression '%' • unaryexpression
+   61 additiveexpression: additiveexpression '-' • multiplicativeexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal             go to state 58
-    identifier          go to state 85
-    primary             go to state 60
-    functioninvocation  go to state 61
-    postfixexpression   go to state 62
-    unaryexpression     go to state 112
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 112
 
 
 State 91
 
-   62 additiveexpression: additiveexpression '-' • multiplicativeexpression
+   60 additiveexpression: additiveexpression '+' • multiplicativeexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
     multiplicativeexpression  go to state 113
 
 
 State 92
 
-   61 additiveexpression: additiveexpression '+' • multiplicativeexpression
+   65 relationalexpression: relationalexpression LE • additiveexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 114
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 114
 
 
 State 93
 
-   66 relationalexpression: relationalexpression LE • additiveexpression
+   66 relationalexpression: relationalexpression GE • additiveexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
     additiveexpression        go to state 115
 
 
 State 94
 
-   67 relationalexpression: relationalexpression GE • additiveexpression
+   63 relationalexpression: relationalexpression '<' • additiveexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
     additiveexpression        go to state 116
 
 
 State 95
 
-   64 relationalexpression: relationalexpression '<' • additiveexpression
+   64 relationalexpression: relationalexpression '>' • additiveexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
     additiveexpression        go to state 117
 
 
 State 96
 
-   65 relationalexpression: relationalexpression '>' • additiveexpression
+   69 equalityexpression: equalityexpression NE • relationalexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 118
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 118
 
 
 State 97
 
-   70 equalityexpression: equalityexpression NE • relationalexpression
+   68 equalityexpression: equalityexpression EQ • relationalexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
     relationalexpression      go to state 119
 
 
 State 98
 
-   69 equalityexpression: equalityexpression EQ • relationalexpression
+   71 conditionalandexpression: conditionalandexpression AND • equalityexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 120
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 120
 
 
 State 99
 
-   72 conditionalandexpression: conditionalandexpression AND • equalityexpression
+   73 conditionalorexpression: conditionalorexpression OR • conditionalandexpression
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
     ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
 
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 121
+    literal                   go to state 57
+    identifier                go to state 84
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 121
 
 
 State 100
 
-   74 conditionalorexpression: conditionalorexpression OR • conditionalandexpression
+   36 statement: RETURN expression ';' •
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
-
-    literal                   go to state 58
-    identifier                go to state 85
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 122
+    $default  reduce using rule 36 (statement)
 
 
 State 101
 
-   37 statement: RETURN expression ';' •
+   38 statement: IF '(' expression • ')' statement
+   39          | IF '(' expression • ')' statement ELSE statement
 
-    $default  reduce using rule 37 (statement)
+    ')'  shift, and go to state 122
 
 
 State 102
 
-   39 statement: IF '(' expression • ')' statement
-   40          | IF '(' expression • ')' statement ELSE statement
+   40 statement: WHILE '(' expression • ')' statement
 
     ')'  shift, and go to state 123
 
 
 State 103
 
-   41 statement: WHILE '(' expression • ')' statement
+   49 functioninvocation: identifier '(' ')' •
 
-    ')'  shift, and go to state 124
+    $default  reduce using rule 49 (functioninvocation)
 
 
 State 104
 
-   50 functioninvocation: identifier '(' ')' •
+   47 argumentlist: argumentlist • ',' expression
+   48 functioninvocation: identifier '(' argumentlist • ')'
 
-    $default  reduce using rule 50 (functioninvocation)
+    ')'  shift, and go to state 124
+    ','  shift, and go to state 125
 
 
 State 105
 
-   48 argumentlist: argumentlist • ',' expression
-   49 functioninvocation: identifier '(' argumentlist • ')'
+   46 argumentlist: expression •
 
-    ')'  shift, and go to state 125
-    ','  shift, and go to state 126
+    $default  reduce using rule 46 (argumentlist)
 
 
 State 106
 
-   47 argumentlist: expression •
+   76 assignment: identifier '=' assignmentexpression •
 
-    $default  reduce using rule 47 (argumentlist)
+    $default  reduce using rule 76 (assignment)
 
 
 State 107
 
-   77 assignment: identifier '=' assignmentexpression •
+   22 formalparameterlist: formalparameterlist ',' formalparameter •
 
-    $default  reduce using rule 77 (assignment)
+    $default  reduce using rule 22 (formalparameterlist)
 
 
 State 108
 
-   23 formalparameterlist: formalparameterlist ',' formalparameter •
+   44 primary: '(' expression ')' •
 
-    $default  reduce using rule 23 (formalparameterlist)
+    $default  reduce using rule 44 (primary)
 
 
 State 109
 
-   45 primary: '(' expression ')' •
+   56 multiplicativeexpression: multiplicativeexpression '*' unaryexpression •
 
-    $default  reduce using rule 45 (primary)
+    $default  reduce using rule 56 (multiplicativeexpression)
 
 
 State 110
 
-   57 multiplicativeexpression: multiplicativeexpression '*' unaryexpression •
+   57 multiplicativeexpression: multiplicativeexpression '/' unaryexpression •
 
     $default  reduce using rule 57 (multiplicativeexpression)
 
 
 State 111
 
-   58 multiplicativeexpression: multiplicativeexpression '/' unaryexpression •
+   58 multiplicativeexpression: multiplicativeexpression '%' unaryexpression •
 
     $default  reduce using rule 58 (multiplicativeexpression)
 
 
 State 112
 
-   59 multiplicativeexpression: multiplicativeexpression '%' unaryexpression •
+   56 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
+   57                         | multiplicativeexpression • '/' unaryexpression
+   58                         | multiplicativeexpression • '%' unaryexpression
+   61 additiveexpression: additiveexpression '-' multiplicativeexpression •
 
-    $default  reduce using rule 59 (multiplicativeexpression)
-
-
-State 113
-
-   57 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
-   58                         | multiplicativeexpression • '/' unaryexpression
-   59                         | multiplicativeexpression • '%' unaryexpression
-   62 additiveexpression: additiveexpression '-' multiplicativeexpression •
-
-    '*'  shift, and go to state 88
-    '/'  shift, and go to state 89
-    '%'  shift, and go to state 90
-
-    $default  reduce using rule 62 (additiveexpression)
-
-
-State 114
-
-   57 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
-   58                         | multiplicativeexpression • '/' unaryexpression
-   59                         | multiplicativeexpression • '%' unaryexpression
-   61 additiveexpression: additiveexpression '+' multiplicativeexpression •
-
-    '*'  shift, and go to state 88
-    '/'  shift, and go to state 89
-    '%'  shift, and go to state 90
+    '*'  shift, and go to state 87
+    '/'  shift, and go to state 88
+    '%'  shift, and go to state 89
 
     $default  reduce using rule 61 (additiveexpression)
 
 
+State 113
+
+   56 multiplicativeexpression: multiplicativeexpression • '*' unaryexpression
+   57                         | multiplicativeexpression • '/' unaryexpression
+   58                         | multiplicativeexpression • '%' unaryexpression
+   60 additiveexpression: additiveexpression '+' multiplicativeexpression •
+
+    '*'  shift, and go to state 87
+    '/'  shift, and go to state 88
+    '%'  shift, and go to state 89
+
+    $default  reduce using rule 60 (additiveexpression)
+
+
+State 114
+
+   60 additiveexpression: additiveexpression • '+' multiplicativeexpression
+   61                   | additiveexpression • '-' multiplicativeexpression
+   65 relationalexpression: relationalexpression LE additiveexpression •
+
+    '-'  shift, and go to state 90
+    '+'  shift, and go to state 91
+
+    $default  reduce using rule 65 (relationalexpression)
+
+
 State 115
 
-   61 additiveexpression: additiveexpression • '+' multiplicativeexpression
-   62                   | additiveexpression • '-' multiplicativeexpression
-   66 relationalexpression: relationalexpression LE additiveexpression •
+   60 additiveexpression: additiveexpression • '+' multiplicativeexpression
+   61                   | additiveexpression • '-' multiplicativeexpression
+   66 relationalexpression: relationalexpression GE additiveexpression •
 
-    '-'  shift, and go to state 91
-    '+'  shift, and go to state 92
+    '-'  shift, and go to state 90
+    '+'  shift, and go to state 91
 
     $default  reduce using rule 66 (relationalexpression)
 
 
 State 116
 
-   61 additiveexpression: additiveexpression • '+' multiplicativeexpression
-   62                   | additiveexpression • '-' multiplicativeexpression
-   67 relationalexpression: relationalexpression GE additiveexpression •
+   60 additiveexpression: additiveexpression • '+' multiplicativeexpression
+   61                   | additiveexpression • '-' multiplicativeexpression
+   63 relationalexpression: relationalexpression '<' additiveexpression •
 
-    '-'  shift, and go to state 91
-    '+'  shift, and go to state 92
+    '-'  shift, and go to state 90
+    '+'  shift, and go to state 91
 
-    $default  reduce using rule 67 (relationalexpression)
+    $default  reduce using rule 63 (relationalexpression)
 
 
 State 117
 
-   61 additiveexpression: additiveexpression • '+' multiplicativeexpression
-   62                   | additiveexpression • '-' multiplicativeexpression
-   64 relationalexpression: relationalexpression '<' additiveexpression •
+   60 additiveexpression: additiveexpression • '+' multiplicativeexpression
+   61                   | additiveexpression • '-' multiplicativeexpression
+   64 relationalexpression: relationalexpression '>' additiveexpression •
 
-    '-'  shift, and go to state 91
-    '+'  shift, and go to state 92
+    '-'  shift, and go to state 90
+    '+'  shift, and go to state 91
 
     $default  reduce using rule 64 (relationalexpression)
 
 
 State 118
 
-   61 additiveexpression: additiveexpression • '+' multiplicativeexpression
-   62                   | additiveexpression • '-' multiplicativeexpression
-   65 relationalexpression: relationalexpression '>' additiveexpression •
+   63 relationalexpression: relationalexpression • '<' additiveexpression
+   64                     | relationalexpression • '>' additiveexpression
+   65                     | relationalexpression • LE additiveexpression
+   66                     | relationalexpression • GE additiveexpression
+   69 equalityexpression: equalityexpression NE relationalexpression •
 
-    '-'  shift, and go to state 91
-    '+'  shift, and go to state 92
-
-    $default  reduce using rule 65 (relationalexpression)
-
-
-State 119
-
-   64 relationalexpression: relationalexpression • '<' additiveexpression
-   65                     | relationalexpression • '>' additiveexpression
-   66                     | relationalexpression • LE additiveexpression
-   67                     | relationalexpression • GE additiveexpression
-   70 equalityexpression: equalityexpression NE relationalexpression •
-
-    LE   shift, and go to state 93
-    GE   shift, and go to state 94
-    '<'  shift, and go to state 95
-    '>'  shift, and go to state 96
-
-    $default  reduce using rule 70 (equalityexpression)
-
-
-State 120
-
-   64 relationalexpression: relationalexpression • '<' additiveexpression
-   65                     | relationalexpression • '>' additiveexpression
-   66                     | relationalexpression • LE additiveexpression
-   67                     | relationalexpression • GE additiveexpression
-   69 equalityexpression: equalityexpression EQ relationalexpression •
-
-    LE   shift, and go to state 93
-    GE   shift, and go to state 94
-    '<'  shift, and go to state 95
-    '>'  shift, and go to state 96
+    LE   shift, and go to state 92
+    GE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '>'  shift, and go to state 95
 
     $default  reduce using rule 69 (equalityexpression)
 
 
+State 119
+
+   63 relationalexpression: relationalexpression • '<' additiveexpression
+   64                     | relationalexpression • '>' additiveexpression
+   65                     | relationalexpression • LE additiveexpression
+   66                     | relationalexpression • GE additiveexpression
+   68 equalityexpression: equalityexpression EQ relationalexpression •
+
+    LE   shift, and go to state 92
+    GE   shift, and go to state 93
+    '<'  shift, and go to state 94
+    '>'  shift, and go to state 95
+
+    $default  reduce using rule 68 (equalityexpression)
+
+
+State 120
+
+   68 equalityexpression: equalityexpression • EQ relationalexpression
+   69                   | equalityexpression • NE relationalexpression
+   71 conditionalandexpression: conditionalandexpression AND equalityexpression •
+
+    NE  shift, and go to state 96
+    EQ  shift, and go to state 97
+
+    $default  reduce using rule 71 (conditionalandexpression)
+
+
 State 121
 
-   69 equalityexpression: equalityexpression • EQ relationalexpression
-   70                   | equalityexpression • NE relationalexpression
-   72 conditionalandexpression: conditionalandexpression AND equalityexpression •
+   71 conditionalandexpression: conditionalandexpression • AND equalityexpression
+   73 conditionalorexpression: conditionalorexpression OR conditionalandexpression •
 
-    NE  shift, and go to state 97
-    EQ  shift, and go to state 98
+    AND  shift, and go to state 98
 
-    $default  reduce using rule 72 (conditionalandexpression)
+    $default  reduce using rule 73 (conditionalorexpression)
 
 
 State 122
 
-   72 conditionalandexpression: conditionalandexpression • AND equalityexpression
-   74 conditionalorexpression: conditionalorexpression OR conditionalandexpression •
+   38 statement: IF '(' expression ')' • statement
+   39          | IF '(' expression ')' • statement ELSE statement
 
-    AND  shift, and go to state 99
+    ID      shift, and go to state 3
+    BREAK   shift, and go to state 28
+    RETURN  shift, and go to state 29
+    IF      shift, and go to state 30
+    WHILE   shift, and go to state 31
+    ';'     shift, and go to state 32
+    '{'     shift, and go to state 22
 
-    $default  reduce using rule 74 (conditionalorexpression)
+    identifier           go to state 36
+    block                go to state 37
+    statement            go to state 126
+    statementexpression  go to state 41
+    functioninvocation   go to state 42
+    assignment           go to state 43
 
 
 State 123
 
-   39 statement: IF '(' expression ')' • statement
-   40          | IF '(' expression ')' • statement ELSE statement
+   40 statement: WHILE '(' expression ')' • statement
 
     ID      shift, and go to state 3
-    BREAK   shift, and go to state 29
-    RETURN  shift, and go to state 30
-    IF      shift, and go to state 31
-    WHILE   shift, and go to state 32
-    ';'     shift, and go to state 33
-    '{'     shift, and go to state 23
+    BREAK   shift, and go to state 28
+    RETURN  shift, and go to state 29
+    IF      shift, and go to state 30
+    WHILE   shift, and go to state 31
+    ';'     shift, and go to state 32
+    '{'     shift, and go to state 22
 
-    identifier           go to state 37
-    block                go to state 38
+    identifier           go to state 36
+    block                go to state 37
     statement            go to state 127
-    statementexpression  go to state 42
-    functioninvocation   go to state 43
-    assignment           go to state 44
+    statementexpression  go to state 41
+    functioninvocation   go to state 42
+    assignment           go to state 43
 
 
 State 124
 
-   41 statement: WHILE '(' expression ')' • statement
+   48 functioninvocation: identifier '(' argumentlist ')' •
 
-    ID      shift, and go to state 3
-    BREAK   shift, and go to state 29
-    RETURN  shift, and go to state 30
-    IF      shift, and go to state 31
-    WHILE   shift, and go to state 32
-    ';'     shift, and go to state 33
-    '{'     shift, and go to state 23
-
-    identifier           go to state 37
-    block                go to state 38
-    statement            go to state 128
-    statementexpression  go to state 42
-    functioninvocation   go to state 43
-    assignment           go to state 44
+    $default  reduce using rule 48 (functioninvocation)
 
 
 State 125
 
-   49 functioninvocation: identifier '(' argumentlist ')' •
+   47 argumentlist: argumentlist ',' • expression
 
-    $default  reduce using rule 49 (functioninvocation)
+    NUMBER    shift, and go to state 49
+    STRING_Y  shift, and go to state 50
+    TRUE      shift, and go to state 51
+    FALSE     shift, and go to state 52
+    ID        shift, and go to state 3
+    '('       shift, and go to state 54
+    '-'       shift, and go to state 55
+    '!'       shift, and go to state 56
+
+    literal                   go to state 57
+    identifier                go to state 58
+    primary                   go to state 59
+    functioninvocation        go to state 60
+    postfixexpression         go to state 61
+    unaryexpression           go to state 62
+    multiplicativeexpression  go to state 63
+    additiveexpression        go to state 64
+    relationalexpression      go to state 65
+    equalityexpression        go to state 66
+    conditionalandexpression  go to state 67
+    conditionalorexpression   go to state 68
+    assignmentexpression      go to state 69
+    assignment                go to state 70
+    expression                go to state 128
 
 
 State 126
 
-   48 argumentlist: argumentlist ',' • expression
+   38 statement: IF '(' expression ')' statement •
+   39          | IF '(' expression ')' statement • ELSE statement
 
-    NUMBER    shift, and go to state 50
-    STRING_Y  shift, and go to state 51
-    TRUE      shift, and go to state 52
-    FALSE     shift, and go to state 53
-    ID        shift, and go to state 3
-    '('       shift, and go to state 55
-    '-'       shift, and go to state 56
-    '!'       shift, and go to state 57
+    ELSE  shift, and go to state 129
 
-    literal                   go to state 58
-    identifier                go to state 59
-    primary                   go to state 60
-    functioninvocation        go to state 61
-    postfixexpression         go to state 62
-    unaryexpression           go to state 63
-    multiplicativeexpression  go to state 64
-    additiveexpression        go to state 65
-    relationalexpression      go to state 66
-    equalityexpression        go to state 67
-    conditionalandexpression  go to state 68
-    conditionalorexpression   go to state 69
-    assignmentexpression      go to state 70
-    assignment                go to state 71
-    expression                go to state 129
+    ELSE      [reduce using rule 38 (statement)]
+    $default  reduce using rule 38 (statement)
 
 
 State 127
 
-   39 statement: IF '(' expression ')' statement •
-   40          | IF '(' expression ')' statement • ELSE statement
+   40 statement: WHILE '(' expression ')' statement •
 
-    ELSE  shift, and go to state 130
-
-    ELSE      [reduce using rule 39 (statement)]
-    $default  reduce using rule 39 (statement)
+    $default  reduce using rule 40 (statement)
 
 
 State 128
 
-   41 statement: WHILE '(' expression ')' statement •
+   47 argumentlist: argumentlist ',' expression •
 
-    $default  reduce using rule 41 (statement)
+    $default  reduce using rule 47 (argumentlist)
 
 
 State 129
 
-   48 argumentlist: argumentlist ',' expression •
+   39 statement: IF '(' expression ')' statement ELSE • statement
 
-    $default  reduce using rule 48 (argumentlist)
+    ID      shift, and go to state 3
+    BREAK   shift, and go to state 28
+    RETURN  shift, and go to state 29
+    IF      shift, and go to state 30
+    WHILE   shift, and go to state 31
+    ';'     shift, and go to state 32
+    '{'     shift, and go to state 22
+
+    identifier           go to state 36
+    block                go to state 37
+    statement            go to state 130
+    statementexpression  go to state 41
+    functioninvocation   go to state 42
+    assignment           go to state 43
 
 
 State 130
 
-   40 statement: IF '(' expression ')' statement ELSE • statement
+   39 statement: IF '(' expression ')' statement ELSE statement •
 
-    ID      shift, and go to state 3
-    BREAK   shift, and go to state 29
-    RETURN  shift, and go to state 30
-    IF      shift, and go to state 31
-    WHILE   shift, and go to state 32
-    ';'     shift, and go to state 33
-    '{'     shift, and go to state 23
-
-    identifier           go to state 37
-    block                go to state 38
-    statement            go to state 131
-    statementexpression  go to state 42
-    functioninvocation   go to state 43
-    assignment           go to state 44
-
-
-State 131
-
-   40 statement: IF '(' expression ')' statement ELSE statement •
-
-    $default  reduce using rule 40 (statement)
+    $default  reduce using rule 39 (statement)

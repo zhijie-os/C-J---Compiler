@@ -142,40 +142,39 @@ enum yysymbol_kind_t
   YYSYMBOL_35_ = 35,                       /* '>'  */
   YYSYMBOL_36_ = 36,                       /* '='  */
   YYSYMBOL_YYACCEPT = 37,                  /* $accept  */
-  YYSYMBOL_dummy_start = 38,               /* dummy_start  */
-  YYSYMBOL_start = 39,                     /* start  */
-  YYSYMBOL_literal = 40,                   /* literal  */
-  YYSYMBOL_type = 41,                      /* type  */
-  YYSYMBOL_globaldeclarations = 42,        /* globaldeclarations  */
-  YYSYMBOL_globaldeclaration = 43,         /* globaldeclaration  */
-  YYSYMBOL_variabledeclaration = 44,       /* variabledeclaration  */
-  YYSYMBOL_identifier = 45,                /* identifier  */
-  YYSYMBOL_functiondeclaration = 46,       /* functiondeclaration  */
-  YYSYMBOL_functionheader = 47,            /* functionheader  */
-  YYSYMBOL_functiondeclarator = 48,        /* functiondeclarator  */
-  YYSYMBOL_formalparameterlist = 49,       /* formalparameterlist  */
-  YYSYMBOL_formalparameter = 50,           /* formalparameter  */
-  YYSYMBOL_mainfunctiondeclaration = 51,   /* mainfunctiondeclaration  */
-  YYSYMBOL_mainfunctiondeclarator = 52,    /* mainfunctiondeclarator  */
-  YYSYMBOL_block = 53,                     /* block  */
-  YYSYMBOL_blockstatements = 54,           /* blockstatements  */
-  YYSYMBOL_blockstatement = 55,            /* blockstatement  */
-  YYSYMBOL_statement = 56,                 /* statement  */
-  YYSYMBOL_statementexpression = 57,       /* statementexpression  */
-  YYSYMBOL_primary = 58,                   /* primary  */
-  YYSYMBOL_argumentlist = 59,              /* argumentlist  */
-  YYSYMBOL_functioninvocation = 60,        /* functioninvocation  */
-  YYSYMBOL_postfixexpression = 61,         /* postfixexpression  */
-  YYSYMBOL_unaryexpression = 62,           /* unaryexpression  */
-  YYSYMBOL_multiplicativeexpression = 63,  /* multiplicativeexpression  */
-  YYSYMBOL_additiveexpression = 64,        /* additiveexpression  */
-  YYSYMBOL_relationalexpression = 65,      /* relationalexpression  */
-  YYSYMBOL_equalityexpression = 66,        /* equalityexpression  */
-  YYSYMBOL_conditionalandexpression = 67,  /* conditionalandexpression  */
-  YYSYMBOL_conditionalorexpression = 68,   /* conditionalorexpression  */
-  YYSYMBOL_assignmentexpression = 69,      /* assignmentexpression  */
-  YYSYMBOL_assignment = 70,                /* assignment  */
-  YYSYMBOL_expression = 71                 /* expression  */
+  YYSYMBOL_start = 38,                     /* start  */
+  YYSYMBOL_literal = 39,                   /* literal  */
+  YYSYMBOL_type = 40,                      /* type  */
+  YYSYMBOL_globaldeclarations = 41,        /* globaldeclarations  */
+  YYSYMBOL_globaldeclaration = 42,         /* globaldeclaration  */
+  YYSYMBOL_variabledeclaration = 43,       /* variabledeclaration  */
+  YYSYMBOL_identifier = 44,                /* identifier  */
+  YYSYMBOL_functiondeclaration = 45,       /* functiondeclaration  */
+  YYSYMBOL_functionheader = 46,            /* functionheader  */
+  YYSYMBOL_functiondeclarator = 47,        /* functiondeclarator  */
+  YYSYMBOL_formalparameterlist = 48,       /* formalparameterlist  */
+  YYSYMBOL_formalparameter = 49,           /* formalparameter  */
+  YYSYMBOL_mainfunctiondeclaration = 50,   /* mainfunctiondeclaration  */
+  YYSYMBOL_mainfunctiondeclarator = 51,    /* mainfunctiondeclarator  */
+  YYSYMBOL_block = 52,                     /* block  */
+  YYSYMBOL_blockstatements = 53,           /* blockstatements  */
+  YYSYMBOL_blockstatement = 54,            /* blockstatement  */
+  YYSYMBOL_statement = 55,                 /* statement  */
+  YYSYMBOL_statementexpression = 56,       /* statementexpression  */
+  YYSYMBOL_primary = 57,                   /* primary  */
+  YYSYMBOL_argumentlist = 58,              /* argumentlist  */
+  YYSYMBOL_functioninvocation = 59,        /* functioninvocation  */
+  YYSYMBOL_postfixexpression = 60,         /* postfixexpression  */
+  YYSYMBOL_unaryexpression = 61,           /* unaryexpression  */
+  YYSYMBOL_multiplicativeexpression = 62,  /* multiplicativeexpression  */
+  YYSYMBOL_additiveexpression = 63,        /* additiveexpression  */
+  YYSYMBOL_relationalexpression = 64,      /* relationalexpression  */
+  YYSYMBOL_equalityexpression = 65,        /* equalityexpression  */
+  YYSYMBOL_conditionalandexpression = 66,  /* conditionalandexpression  */
+  YYSYMBOL_conditionalorexpression = 67,   /* conditionalorexpression  */
+  YYSYMBOL_assignmentexpression = 68,      /* assignmentexpression  */
+  YYSYMBOL_assignment = 69,                /* assignment  */
+  YYSYMBOL_expression = 70                 /* expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -501,18 +500,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  18
+#define YYFINAL  17
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   165
+#define YYLAST   174
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  37
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  35
+#define YYNNTS  34
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  79
+#define YYNRULES  78
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  132
+#define YYNSTATES  131
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   276
@@ -563,14 +562,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    22,    22,    25,    26,    29,    30,    31,    32,    35,
-      36,    39,    40,    43,    44,    45,    48,    51,    54,    57,
-      58,    61,    62,    65,    66,    69,    72,    75,    78,    79,
-      82,    83,    86,    87,    90,    91,    92,    93,    94,    95,
-      96,    97,    98,   104,   105,   108,   109,   110,   113,   114,
-     117,   118,   121,   122,   125,   126,   127,   130,   131,   132,
-     133,   136,   137,   138,   141,   142,   143,   144,   145,   148,
-     149,   150,   153,   154,   157,   158,   163,   164,   167,   170
+       0,    24,    24,    25,    28,    29,    30,    31,    34,    35,
+      38,    39,    42,    43,    44,    47,    50,    53,    56,    57,
+      60,    61,    64,    65,    68,    71,    74,    77,    78,    81,
+      82,    85,    86,    89,    90,    91,    92,    93,    94,    95,
+      96,    97,   103,   104,   107,   108,   109,   112,   113,   116,
+     117,   120,   121,   124,   125,   126,   129,   130,   131,   132,
+     135,   136,   137,   140,   141,   142,   143,   144,   147,   148,
+     149,   152,   153,   156,   157,   162,   163,   166,   169
 };
 #endif
 
@@ -590,8 +589,8 @@ static const char *const yytname[] =
   "TRUE", "FALSE", "BOOLEAN", "INT", "ID", "VOID", "BREAK", "RETURN", "IF",
   "ELSE", "WHILE", "LE", "GE", "NE", "EQ", "AND", "OR", "';'", "'('",
   "')'", "','", "'{'", "'}'", "'-'", "'!'", "'*'", "'/'", "'%'", "'+'",
-  "'<'", "'>'", "'='", "$accept", "dummy_start", "start", "literal",
-  "type", "globaldeclarations", "globaldeclaration", "variabledeclaration",
+  "'<'", "'>'", "'='", "$accept", "start", "literal", "type",
+  "globaldeclarations", "globaldeclaration", "variabledeclaration",
   "identifier", "functiondeclaration", "functionheader",
   "functiondeclarator", "formalparameterlist", "formalparameter",
   "mainfunctiondeclaration", "mainfunctiondeclarator", "block",
@@ -624,20 +623,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      77,   -91,   -91,   -91,    18,    41,   -91,    18,    77,   -91,
-     -91,     9,   -91,    33,   -91,    33,    38,   -91,   -91,   -11,
-     -91,   -91,    44,    45,   -91,   -91,    13,   -91,   -91,    53,
-      60,    47,    67,   -91,   -91,    18,   -91,   -10,   -91,   120,
-     -91,   -91,    78,   -91,   -91,   -91,    18,    20,   -91,   -91,
-     -91,   -91,   -91,   -91,   -91,   116,   116,   116,   -91,   -10,
-     -91,   -91,   -91,   -91,    48,   -19,     8,    32,    87,    94,
-     -91,   -91,    96,   116,   116,   112,    88,   116,   -91,   -91,
-     -91,   -91,   -91,    91,    85,   113,   -91,   -91,   116,   116,
-     116,   116,   116,   116,   116,   116,   116,   116,   116,   116,
-     116,   -91,   114,   117,   -91,    71,   -91,   -91,   -91,   -91,
-     -91,   -91,   -91,    48,    48,   -19,   -19,   -19,   -19,     8,
-       8,    32,    87,   139,   139,   -91,   116,   123,   -91,   -91,
-     139,   -91
+      42,   -91,   -91,   -91,    -1,    31,    -1,    42,   -91,   -91,
+     -10,   -91,    14,   -91,    14,    30,   -91,   -91,    47,   -91,
+     -91,    39,   119,   -91,   -91,    13,   -91,   -91,    52,    55,
+      59,    66,   -91,   -91,    -1,   -91,   -11,   -91,   140,   -91,
+     -91,    83,   -91,   -91,   -91,    -1,    11,   -91,   -91,   -91,
+     -91,   -91,   -91,   -91,    89,    89,    89,   -91,   -11,   -91,
+     -91,   -91,   -91,    25,   -17,     7,    69,    91,    88,   -91,
+     -91,    97,    89,    89,    98,    62,    89,   -91,   -91,   -91,
+     -91,   -91,    36,   100,   110,   -91,   -91,    89,    89,    89,
+      89,    89,    89,    89,    89,    89,    89,    89,    89,    89,
+     -91,   111,   112,   -91,    72,   -91,   -91,   -91,   -91,   -91,
+     -91,   -91,    25,    25,   -17,   -17,   -17,   -17,     7,     7,
+      69,    91,   148,   148,   -91,    89,   107,   -91,   -91,   148,
+     -91
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -645,38 +644,38 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     9,    10,    17,     0,     0,     2,     0,     4,    11,
-      13,     0,    14,     0,    15,     0,     0,    20,     1,     0,
-      19,    12,     0,     0,    18,    26,     0,    16,    27,     0,
-       0,     0,     0,    35,    29,     0,    32,     0,    34,     0,
-      30,    33,     0,    44,    43,    22,     0,     0,    23,    37,
-       5,     6,     7,     8,    39,     0,     0,     0,    45,    53,
-      52,    47,    56,    57,    61,    64,    69,    72,    74,    76,
-      79,    77,     0,     0,     0,     0,     0,     0,    28,    31,
-      36,    25,    21,     0,     0,    53,    54,    55,     0,     0,
+       2,     8,     9,    16,     0,     0,     0,     3,    10,    12,
+       0,    13,     0,    14,     0,     0,    19,     1,     0,    18,
+      11,     0,     0,    17,    25,     0,    15,    26,     0,     0,
+       0,     0,    34,    28,     0,    31,     0,    33,     0,    29,
+      32,     0,    43,    42,    21,     0,     0,    22,    36,     4,
+       5,     6,     7,    38,     0,     0,     0,    44,    52,    51,
+      46,    55,    56,    60,    63,    68,    71,    73,    75,    78,
+      76,     0,     0,     0,     0,     0,     0,    27,    30,    35,
+      24,    20,     0,     0,    52,    53,    54,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    38,     0,     0,    51,     0,    48,    78,    24,    46,
-      58,    59,    60,    63,    62,    67,    68,    65,    66,    71,
-      70,    73,    75,     0,     0,    50,     0,    40,    42,    49,
-       0,    41
+      37,     0,     0,    50,     0,    47,    77,    23,    45,    57,
+      58,    59,    62,    61,    66,    67,    64,    65,    70,    69,
+      72,    74,     0,     0,    49,     0,    39,    41,    48,     0,
+      40
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -91,   -91,   -91,   -91,   -21,   -91,   132,   -17,     0,   -91,
-     -91,   136,   -91,    66,   -91,   -91,    23,   -91,   121,   -90,
-     -91,   -91,   -91,   -22,   -91,   -41,    14,    62,    16,    54,
-      59,   -91,    86,   -20,   -45
+     -91,   -91,   -91,   -20,   -91,   130,   -12,     0,   -91,   -91,
+     132,   -91,    57,   -91,   -91,    67,   -91,   102,   -90,   -91,
+     -91,   -91,   -21,   -91,   -41,     9,    21,    10,    44,    45,
+     -91,    74,   -19,   -45
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     5,     6,    58,     7,     8,     9,    10,    85,    12,
-      13,    17,    47,    48,    14,    15,    38,    39,    40,    41,
-      42,    60,   105,    61,    62,    63,    64,    65,    66,    67,
-      68,    69,    70,    71,    72
+       0,     5,    57,     6,     7,     8,     9,    84,    11,    12,
+      16,    46,    47,    13,    14,    37,    38,    39,    40,    41,
+      59,   104,    60,    61,    62,    63,    64,    65,    66,    67,
+      68,    69,    70,    71
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -684,90 +683,92 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      11,    43,    35,    44,    16,    46,    36,    19,    11,    91,
-      84,    27,    26,    76,    92,    86,    87,    43,    35,    44,
-       1,     2,    36,    37,    93,    94,    77,     3,   102,   103,
-      59,   106,    22,   127,   128,    75,    24,    45,    25,    37,
-     131,    18,    95,    96,    82,    83,    81,   110,   111,   112,
-      97,    98,     1,     2,     3,    59,    29,    30,    31,    23,
-      32,    26,    46,    50,    51,    52,    53,    33,    28,     3,
-      73,    23,    34,    59,    59,    49,    59,    59,    88,    89,
-      90,   129,    54,    55,     1,     2,     3,     4,    56,    57,
-      74,    50,    51,    52,    53,   125,   126,     3,     1,     2,
-      80,    43,    43,    44,    44,   113,   114,    99,    43,   109,
-      44,    55,   104,   119,   120,   100,    56,    57,   101,    50,
-      51,    52,    53,    37,    37,     3,    59,     1,     2,     3,
-      37,    29,    30,    31,    27,    32,    76,   130,   123,    55,
-      21,   124,    33,    20,    56,    57,    23,    78,     3,   108,
-      29,    30,    31,   121,    32,   115,   116,   117,   118,   122,
-      79,    33,     0,   107,     0,    23
+      10,    42,    34,    43,    15,    45,    18,    10,     3,    83,
+      35,    90,    75,    21,    85,    86,    91,    42,    34,    43,
+       1,     2,    36,    92,    93,    76,    35,   101,   102,    58,
+     105,    17,   126,   127,    74,    81,    82,    44,    36,   130,
+      22,    94,    95,     1,     2,    80,   109,   110,   111,     1,
+       2,     3,     4,    25,    58,    87,    88,    89,    49,    50,
+      51,    52,    45,    27,     3,    49,    50,    51,    52,    26,
+      25,     3,    58,    58,    48,    58,    58,    53,    54,    23,
+     128,    24,    72,    55,    56,    54,   103,    96,    97,    73,
+      55,    56,    49,    50,    51,    52,   124,   125,     3,   112,
+     113,    42,    42,    43,    43,    79,   118,   119,    42,    99,
+      43,    98,    54,   114,   115,   116,   117,    55,    56,   100,
+      26,   129,    36,    36,   108,    58,     1,     2,     3,    36,
+      28,    29,    30,    75,    31,   122,   123,    20,    19,   107,
+      78,    32,   120,     0,   121,    22,    33,     1,     2,     3,
+     106,    28,    29,    30,     0,    31,     0,     3,     0,    28,
+      29,    30,    32,    31,     0,     0,    22,    77,     0,     0,
+      32,     0,     0,     0,    22
 };
 
 static const yytype_int16 yycheck[] =
 {
-       0,    23,    23,    23,     4,    26,    23,     7,     8,    28,
-      55,    22,    23,    23,    33,    56,    57,    39,    39,    39,
-       7,     8,    39,    23,    16,    17,    36,     9,    73,    74,
-      30,    76,    23,   123,   124,    35,    13,    24,    15,    39,
-     130,     0,    34,    35,    24,    25,    46,    88,    89,    90,
-      18,    19,     7,     8,     9,    55,    11,    12,    13,    26,
-      15,    23,    83,     3,     4,     5,     6,    22,    24,     9,
-      23,    26,    27,    73,    74,    22,    76,    77,    30,    31,
-      32,   126,    22,    23,     7,     8,     9,    10,    28,    29,
-      23,     3,     4,     5,     6,    24,    25,     9,     7,     8,
-      22,   123,   124,   123,   124,    91,    92,    20,   130,    24,
-     130,    23,    24,    97,    98,    21,    28,    29,    22,     3,
-       4,     5,     6,   123,   124,     9,   126,     7,     8,     9,
-     130,    11,    12,    13,    22,    15,    23,    14,    24,    23,
-       8,    24,    22,     7,    28,    29,    26,    27,     9,    83,
-      11,    12,    13,    99,    15,    93,    94,    95,    96,   100,
-      39,    22,    -1,    77,    -1,    26
+       0,    22,    22,    22,     4,    25,     6,     7,     9,    54,
+      22,    28,    23,    23,    55,    56,    33,    38,    38,    38,
+       7,     8,    22,    16,    17,    36,    38,    72,    73,    29,
+      75,     0,   122,   123,    34,    24,    25,    24,    38,   129,
+      26,    34,    35,     7,     8,    45,    87,    88,    89,     7,
+       8,     9,    10,    23,    54,    30,    31,    32,     3,     4,
+       5,     6,    82,    24,     9,     3,     4,     5,     6,    22,
+      23,     9,    72,    73,    22,    75,    76,    22,    23,    12,
+     125,    14,    23,    28,    29,    23,    24,    18,    19,    23,
+      28,    29,     3,     4,     5,     6,    24,    25,     9,    90,
+      91,   122,   123,   122,   123,    22,    96,    97,   129,    21,
+     129,    20,    23,    92,    93,    94,    95,    28,    29,    22,
+      22,    14,   122,   123,    24,   125,     7,     8,     9,   129,
+      11,    12,    13,    23,    15,    24,    24,     7,     6,    82,
+      38,    22,    98,    -1,    99,    26,    27,     7,     8,     9,
+      76,    11,    12,    13,    -1,    15,    -1,     9,    -1,    11,
+      12,    13,    22,    15,    -1,    -1,    26,    27,    -1,    -1,
+      22,    -1,    -1,    -1,    26
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     7,     8,     9,    10,    38,    39,    41,    42,    43,
-      44,    45,    46,    47,    51,    52,    45,    48,     0,    45,
-      48,    43,    23,    26,    53,    53,    23,    22,    24,    11,
-      12,    13,    15,    22,    27,    41,    44,    45,    53,    54,
-      55,    56,    57,    60,    70,    24,    41,    49,    50,    22,
-       3,     4,     5,     6,    22,    23,    28,    29,    40,    45,
-      58,    60,    61,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    71,    23,    23,    45,    23,    36,    27,    55,
-      22,    45,    24,    25,    71,    45,    62,    62,    30,    31,
-      32,    28,    33,    16,    17,    34,    35,    18,    19,    20,
-      21,    22,    71,    71,    24,    59,    71,    69,    50,    24,
-      62,    62,    62,    63,    63,    64,    64,    64,    64,    65,
-      65,    66,    67,    24,    24,    24,    25,    56,    56,    71,
-      14,    56
+       0,     7,     8,     9,    10,    38,    40,    41,    42,    43,
+      44,    45,    46,    50,    51,    44,    47,     0,    44,    47,
+      42,    23,    26,    52,    52,    23,    22,    24,    11,    12,
+      13,    15,    22,    27,    40,    43,    44,    52,    53,    54,
+      55,    56,    59,    69,    24,    40,    48,    49,    22,     3,
+       4,     5,     6,    22,    23,    28,    29,    39,    44,    57,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
+      69,    70,    23,    23,    44,    23,    36,    27,    54,    22,
+      44,    24,    25,    70,    44,    61,    61,    30,    31,    32,
+      28,    33,    16,    17,    34,    35,    18,    19,    20,    21,
+      22,    70,    70,    24,    58,    70,    68,    49,    24,    61,
+      61,    61,    62,    62,    63,    63,    63,    63,    64,    64,
+      65,    66,    24,    24,    24,    25,    55,    55,    70,    14,
+      55
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    37,    38,    39,    39,    40,    40,    40,    40,    41,
-      41,    42,    42,    43,    43,    43,    44,    45,    46,    47,
-      47,    48,    48,    49,    49,    50,    51,    52,    53,    53,
-      54,    54,    55,    55,    56,    56,    56,    56,    56,    56,
-      56,    56,    56,    57,    57,    58,    58,    58,    59,    59,
-      60,    60,    61,    61,    62,    62,    62,    63,    63,    63,
-      63,    64,    64,    64,    65,    65,    65,    65,    65,    66,
-      66,    66,    67,    67,    68,    68,    69,    69,    70,    71
+       0,    37,    38,    38,    39,    39,    39,    39,    40,    40,
+      41,    41,    42,    42,    42,    43,    44,    45,    46,    46,
+      47,    47,    48,    48,    49,    50,    51,    52,    52,    53,
+      53,    54,    54,    55,    55,    55,    55,    55,    55,    55,
+      55,    55,    56,    56,    57,    57,    57,    58,    58,    59,
+      59,    60,    60,    61,    61,    61,    62,    62,    62,    62,
+      63,    63,    63,    64,    64,    64,    64,    64,    65,    65,
+      65,    66,    66,    67,    67,    68,    68,    69,    70
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     0,     1,     1,     1,     1,     1,     1,
-       1,     1,     2,     1,     1,     1,     3,     1,     2,     2,
-       2,     4,     3,     1,     3,     2,     2,     3,     3,     2,
-       1,     2,     1,     1,     1,     1,     2,     2,     3,     2,
-       5,     7,     5,     1,     1,     1,     3,     1,     1,     3,
-       4,     3,     1,     1,     2,     2,     1,     1,     3,     3,
-       3,     1,     3,     3,     1,     3,     3,     3,     3,     1,
-       3,     3,     1,     3,     1,     3,     1,     1,     3,     1
+       0,     2,     0,     1,     1,     1,     1,     1,     1,     1,
+       1,     2,     1,     1,     1,     3,     1,     2,     2,     2,
+       4,     3,     1,     3,     2,     2,     3,     3,     2,     1,
+       2,     1,     1,     1,     1,     2,     2,     3,     2,     5,
+       7,     5,     1,     1,     1,     3,     1,     1,     3,     4,
+       3,     1,     1,     2,     2,     1,     1,     3,     3,     3,
+       1,     3,     3,     1,     3,     3,     3,     3,     1,     3,
+       3,     1,     3,     1,     3,     1,     1,     3,     1
 };
 
 
@@ -1230,470 +1231,464 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* dummy_start: start  */
-#line 22 "parser.y"
-                                        {CollectGlobal(yyval);BuildSymbolTable(yyval,"");dummy_break_point();}
-#line 1237 "parser.bison.cpp"
+  case 3: /* start: globaldeclarations  */
+#line 25 "parser.y"
+                                        {yyval=yyvsp[0];CollectGlobal(yyval);BuildSymbolTable(yyval,"");}
+#line 1238 "parser.bison.cpp"
     break;
 
-  case 4: /* start: globaldeclarations  */
-#line 26 "parser.y"
+  case 4: /* literal: NUMBER  */
+#line 28 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1243 "parser.bison.cpp"
+#line 1244 "parser.bison.cpp"
     break;
 
-  case 5: /* literal: NUMBER  */
+  case 5: /* literal: STRING_Y  */
 #line 29 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1249 "parser.bison.cpp"
+#line 1250 "parser.bison.cpp"
     break;
 
-  case 6: /* literal: STRING_Y  */
+  case 6: /* literal: TRUE  */
 #line 30 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1255 "parser.bison.cpp"
+#line 1256 "parser.bison.cpp"
     break;
 
-  case 7: /* literal: TRUE  */
+  case 7: /* literal: FALSE  */
 #line 31 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1261 "parser.bison.cpp"
+#line 1262 "parser.bison.cpp"
     break;
 
-  case 8: /* literal: FALSE  */
-#line 32 "parser.y"
+  case 8: /* type: BOOLEAN  */
+#line 34 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1267 "parser.bison.cpp"
+#line 1268 "parser.bison.cpp"
     break;
 
-  case 9: /* type: BOOLEAN  */
+  case 9: /* type: INT  */
 #line 35 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1273 "parser.bison.cpp"
+#line 1274 "parser.bison.cpp"
     break;
 
-  case 10: /* type: INT  */
-#line 36 "parser.y"
-                                        {yyval=yyvsp[0];}
-#line 1279 "parser.bison.cpp"
-    break;
-
-  case 11: /* globaldeclarations: globaldeclaration  */
-#line 39 "parser.y"
+  case 10: /* globaldeclarations: globaldeclaration  */
+#line 38 "parser.y"
                                                                         {yyval=new AST(NodeType::PROGRAM, "PROGRAM",yyvsp[0]);}
-#line 1285 "parser.bison.cpp"
+#line 1280 "parser.bison.cpp"
     break;
 
-  case 12: /* globaldeclarations: globaldeclarations globaldeclaration  */
-#line 40 "parser.y"
+  case 11: /* globaldeclarations: globaldeclarations globaldeclaration  */
+#line 39 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1291 "parser.bison.cpp"
+#line 1286 "parser.bison.cpp"
     break;
 
-  case 13: /* globaldeclaration: variabledeclaration  */
-#line 43 "parser.y"
+  case 12: /* globaldeclaration: variabledeclaration  */
+#line 42 "parser.y"
                                                                         {yyvsp[0]->type=NodeType::GLOBAL_VAR_DEC;yyvsp[0]->symbol="GLOBAL_VAR_DEC";yyval=yyvsp[0];}
-#line 1297 "parser.bison.cpp"
+#line 1292 "parser.bison.cpp"
     break;
 
-  case 14: /* globaldeclaration: functiondeclaration  */
+  case 13: /* globaldeclaration: functiondeclaration  */
+#line 43 "parser.y"
+                                                                        {yyval=yyvsp[0];}
+#line 1298 "parser.bison.cpp"
+    break;
+
+  case 14: /* globaldeclaration: mainfunctiondeclaration  */
 #line 44 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1303 "parser.bison.cpp"
+#line 1304 "parser.bison.cpp"
     break;
 
-  case 15: /* globaldeclaration: mainfunctiondeclaration  */
-#line 45 "parser.y"
-                                                                        {yyval=yyvsp[0];}
-#line 1309 "parser.bison.cpp"
-    break;
-
-  case 16: /* variabledeclaration: type identifier ';'  */
-#line 48 "parser.y"
+  case 15: /* variabledeclaration: type identifier ';'  */
+#line 47 "parser.y"
                                                                         {yyval=new AST(NodeType::VAR_DEC,"VAR_DEC",yyvsp[-2],yyvsp[-1]);}
-#line 1315 "parser.bison.cpp"
+#line 1310 "parser.bison.cpp"
     break;
 
-  case 17: /* identifier: ID  */
-#line 51 "parser.y"
+  case 16: /* identifier: ID  */
+#line 50 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1321 "parser.bison.cpp"
+#line 1316 "parser.bison.cpp"
     break;
 
-  case 18: /* functiondeclaration: functionheader block  */
-#line 54 "parser.y"
+  case 17: /* functiondeclaration: functionheader block  */
+#line 53 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1327 "parser.bison.cpp"
+#line 1322 "parser.bison.cpp"
     break;
 
-  case 19: /* functionheader: type functiondeclarator  */
-#line 57 "parser.y"
+  case 18: /* functionheader: type functiondeclarator  */
+#line 56 "parser.y"
                                                                         {yyvsp[0]->children.insert(yyvsp[0]->children.begin(),yyvsp[-1]);yyval=yyvsp[0];}
-#line 1333 "parser.bison.cpp"
+#line 1328 "parser.bison.cpp"
     break;
 
-  case 20: /* functionheader: VOID functiondeclarator  */
-#line 58 "parser.y"
+  case 19: /* functionheader: VOID functiondeclarator  */
+#line 57 "parser.y"
                                                                         {yyvsp[0]->children.insert(yyvsp[0]->children.begin(), new AST(NodeType::VOID,"VOID"));yyval=yyvsp[0];}
-#line 1339 "parser.bison.cpp"
+#line 1334 "parser.bison.cpp"
     break;
 
-  case 21: /* functiondeclarator: identifier '(' formalparameterlist ')'  */
-#line 61 "parser.y"
+  case 20: /* functiondeclarator: identifier '(' formalparameterlist ')'  */
+#line 60 "parser.y"
                                                                         {yyval=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  yyvsp[-3], yyvsp[-1]);}
-#line 1345 "parser.bison.cpp"
+#line 1340 "parser.bison.cpp"
     break;
 
-  case 22: /* functiondeclarator: identifier '(' ')'  */
-#line 62 "parser.y"
+  case 21: /* functiondeclarator: identifier '(' ')'  */
+#line 61 "parser.y"
                                                                         {yyval=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  yyvsp[-2], new AST(NodeType::FORMALS,"FORMALS"));}
-#line 1351 "parser.bison.cpp"
+#line 1346 "parser.bison.cpp"
     break;
 
-  case 23: /* formalparameterlist: formalparameter  */
-#line 65 "parser.y"
+  case 22: /* formalparameterlist: formalparameter  */
+#line 64 "parser.y"
                                                                         {yyval=new AST(NodeType::FORMALS,"FORMALS",yyvsp[0]);}
-#line 1357 "parser.bison.cpp"
+#line 1352 "parser.bison.cpp"
     break;
 
-  case 24: /* formalparameterlist: formalparameterlist ',' formalparameter  */
-#line 66 "parser.y"
+  case 23: /* formalparameterlist: formalparameterlist ',' formalparameter  */
+#line 65 "parser.y"
                                                                         {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
-#line 1363 "parser.bison.cpp"
+#line 1358 "parser.bison.cpp"
     break;
 
-  case 25: /* formalparameter: type identifier  */
-#line 69 "parser.y"
+  case 24: /* formalparameter: type identifier  */
+#line 68 "parser.y"
                                                                         {yyval=new AST(NodeType::FORMAL, "FORMAL",yyvsp[-1], yyvsp[0]);}
-#line 1369 "parser.bison.cpp"
+#line 1364 "parser.bison.cpp"
     break;
 
-  case 26: /* mainfunctiondeclaration: mainfunctiondeclarator block  */
-#line 72 "parser.y"
+  case 25: /* mainfunctiondeclaration: mainfunctiondeclarator block  */
+#line 71 "parser.y"
                                                                         {yyval=new AST(NodeType::MAIN_DEC, "MAIN_DEC", new AST(NodeType::VOID, "VOID"),yyvsp[-1],new AST(NodeType::FORMALS,"FORMALS"),yyvsp[0]);}
-#line 1375 "parser.bison.cpp"
+#line 1370 "parser.bison.cpp"
     break;
 
-  case 27: /* mainfunctiondeclarator: identifier '(' ')'  */
-#line 75 "parser.y"
+  case 26: /* mainfunctiondeclarator: identifier '(' ')'  */
+#line 74 "parser.y"
                                                                         {yyval=yyvsp[-2];}
-#line 1381 "parser.bison.cpp"
+#line 1376 "parser.bison.cpp"
     break;
 
-  case 28: /* block: '{' blockstatements '}'  */
-#line 78 "parser.y"
+  case 27: /* block: '{' blockstatements '}'  */
+#line 77 "parser.y"
                                                                         {yyval=yyvsp[-1];}
-#line 1387 "parser.bison.cpp"
+#line 1382 "parser.bison.cpp"
     break;
 
-  case 29: /* block: '{' '}'  */
-#line 79 "parser.y"
+  case 28: /* block: '{' '}'  */
+#line 78 "parser.y"
                                                                         {yyval=new AST(NodeType::BLOCK,"BLOCK");}
-#line 1393 "parser.bison.cpp"
+#line 1388 "parser.bison.cpp"
     break;
 
-  case 30: /* blockstatements: blockstatement  */
-#line 82 "parser.y"
+  case 29: /* blockstatements: blockstatement  */
+#line 81 "parser.y"
                                                                         {yyval=new AST(NodeType::BLOCK, "BLOCK",yyvsp[0]);}
-#line 1399 "parser.bison.cpp"
+#line 1394 "parser.bison.cpp"
     break;
 
-  case 31: /* blockstatements: blockstatements blockstatement  */
-#line 83 "parser.y"
+  case 30: /* blockstatements: blockstatements blockstatement  */
+#line 82 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1405 "parser.bison.cpp"
+#line 1400 "parser.bison.cpp"
     break;
 
-  case 32: /* blockstatement: variabledeclaration  */
+  case 31: /* blockstatement: variabledeclaration  */
+#line 85 "parser.y"
+                                                                        {yyval=yyvsp[0];}
+#line 1406 "parser.bison.cpp"
+    break;
+
+  case 32: /* blockstatement: statement  */
 #line 86 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1411 "parser.bison.cpp"
+#line 1412 "parser.bison.cpp"
     break;
 
-  case 33: /* blockstatement: statement  */
-#line 87 "parser.y"
-                                                                        {yyval=yyvsp[0];}
-#line 1417 "parser.bison.cpp"
-    break;
-
-  case 34: /* statement: block  */
-#line 90 "parser.y"
+  case 33: /* statement: block  */
+#line 89 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1423 "parser.bison.cpp"
+#line 1418 "parser.bison.cpp"
     break;
 
-  case 35: /* statement: ';'  */
-#line 91 "parser.y"
+  case 34: /* statement: ';'  */
+#line 90 "parser.y"
                                                                             {yyval=new AST(NodeType::NULL_STMT,"nullStmt");}
-#line 1429 "parser.bison.cpp"
+#line 1424 "parser.bison.cpp"
     break;
 
-  case 36: /* statement: statementexpression ';'  */
-#line 92 "parser.y"
+  case 35: /* statement: statementexpression ';'  */
+#line 91 "parser.y"
                                                                             {yyval=new AST(NodeType::STMT_EXPR,"STMTEXPR",yyvsp[-1]);}
-#line 1435 "parser.bison.cpp"
+#line 1430 "parser.bison.cpp"
     break;
 
-  case 37: /* statement: BREAK ';'  */
+  case 36: /* statement: BREAK ';'  */
+#line 92 "parser.y"
+                                                                            {yyval=yyvsp[-1];}
+#line 1436 "parser.bison.cpp"
+    break;
+
+  case 37: /* statement: RETURN expression ';'  */
 #line 93 "parser.y"
-                                                                            {yyval=yyvsp[-1];}
-#line 1441 "parser.bison.cpp"
-    break;
-
-  case 38: /* statement: RETURN expression ';'  */
-#line 94 "parser.y"
                                                                             {yyvsp[-2]->AttachChildren(yyvsp[-1]); yyval=yyvsp[-2];}
-#line 1447 "parser.bison.cpp"
+#line 1442 "parser.bison.cpp"
     break;
 
-  case 39: /* statement: RETURN ';'  */
-#line 95 "parser.y"
+  case 38: /* statement: RETURN ';'  */
+#line 94 "parser.y"
                                                                             {yyval=yyvsp[-1];}
-#line 1453 "parser.bison.cpp"
+#line 1448 "parser.bison.cpp"
     break;
 
-  case 40: /* statement: IF '(' expression ')' statement  */
+  case 39: /* statement: IF '(' expression ')' statement  */
+#line 95 "parser.y"
+                                                                            {yyval=new AST(NodeType::IF, "IF",new ATR(yyvsp[-2]->line), yyvsp[-2], yyvsp[0]);}
+#line 1454 "parser.bison.cpp"
+    break;
+
+  case 40: /* statement: IF '(' expression ')' statement ELSE statement  */
 #line 96 "parser.y"
-                                                                            {yyval=new AST(NodeType::IF, "IF", yyvsp[-2], yyvsp[0]);}
-#line 1459 "parser.bison.cpp"
+                                                                            {yyval=new AST(NodeType::IF_ELSE,"IF_ELSE",new ATR(yyvsp[-4]->line),yyvsp[-4], yyvsp[-2], yyvsp[0]);}
+#line 1460 "parser.bison.cpp"
     break;
 
-  case 41: /* statement: IF '(' expression ')' statement ELSE statement  */
+  case 41: /* statement: WHILE '(' expression ')' statement  */
 #line 97 "parser.y"
-                                                                            {yyval=new AST(NodeType::IF_ELSE,"IF_ELSE",yyvsp[-4], yyvsp[-2], yyvsp[0]);}
-#line 1465 "parser.bison.cpp"
-    break;
-
-  case 42: /* statement: WHILE '(' expression ')' statement  */
-#line 98 "parser.y"
                                                                             {yyval=new AST(NodeType::WHILE,"WHILE", yyvsp[-2], yyvsp[0]); }
-#line 1471 "parser.bison.cpp"
+#line 1466 "parser.bison.cpp"
     break;
 
-  case 43: /* statementexpression: assignment  */
+  case 42: /* statementexpression: assignment  */
+#line 103 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1472 "parser.bison.cpp"
+    break;
+
+  case 43: /* statementexpression: functioninvocation  */
 #line 104 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1477 "parser.bison.cpp"
+#line 1478 "parser.bison.cpp"
     break;
 
-  case 44: /* statementexpression: functioninvocation  */
-#line 105 "parser.y"
+  case 44: /* primary: literal  */
+#line 107 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1483 "parser.bison.cpp"
+#line 1484 "parser.bison.cpp"
     break;
 
-  case 45: /* primary: literal  */
+  case 45: /* primary: '(' expression ')'  */
 #line 108 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1489 "parser.bison.cpp"
-    break;
-
-  case 46: /* primary: '(' expression ')'  */
-#line 109 "parser.y"
                                                                             {yyval=yyvsp[-1];}
-#line 1495 "parser.bison.cpp"
+#line 1490 "parser.bison.cpp"
     break;
 
-  case 47: /* primary: functioninvocation  */
-#line 110 "parser.y"
+  case 46: /* primary: functioninvocation  */
+#line 109 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1501 "parser.bison.cpp"
+#line 1496 "parser.bison.cpp"
     break;
 
-  case 48: /* argumentlist: expression  */
-#line 113 "parser.y"
+  case 47: /* argumentlist: expression  */
+#line 112 "parser.y"
                                                                             {yyval=new AST(NodeType::ACTUALS,"ACTUALS",yyvsp[0]);}
-#line 1507 "parser.bison.cpp"
+#line 1502 "parser.bison.cpp"
     break;
 
-  case 49: /* argumentlist: argumentlist ',' expression  */
-#line 114 "parser.y"
+  case 48: /* argumentlist: argumentlist ',' expression  */
+#line 113 "parser.y"
                                                                             {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
-#line 1513 "parser.bison.cpp"
+#line 1508 "parser.bison.cpp"
     break;
 
-  case 50: /* functioninvocation: identifier '(' argumentlist ')'  */
-#line 117 "parser.y"
+  case 49: /* functioninvocation: identifier '(' argumentlist ')'  */
+#line 116 "parser.y"
                                                                             {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-3], yyvsp[-1]);;}
-#line 1519 "parser.bison.cpp"
+#line 1514 "parser.bison.cpp"
     break;
 
-  case 51: /* functioninvocation: identifier '(' ')'  */
-#line 118 "parser.y"
+  case 50: /* functioninvocation: identifier '(' ')'  */
+#line 117 "parser.y"
                                                                             {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-2], new AST(NodeType::ACTUALS,"ACTUALS"));}
-#line 1525 "parser.bison.cpp"
+#line 1520 "parser.bison.cpp"
     break;
 
-  case 52: /* postfixexpression: primary  */
+  case 51: /* postfixexpression: primary  */
+#line 120 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1526 "parser.bison.cpp"
+    break;
+
+  case 52: /* postfixexpression: identifier  */
 #line 121 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1531 "parser.bison.cpp"
+#line 1532 "parser.bison.cpp"
     break;
 
-  case 53: /* postfixexpression: identifier  */
-#line 122 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1537 "parser.bison.cpp"
+  case 53: /* unaryexpression: '-' unaryexpression  */
+#line 124 "parser.y"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
+#line 1538 "parser.bison.cpp"
     break;
 
-  case 54: /* unaryexpression: '-' unaryexpression  */
+  case 54: /* unaryexpression: '!' unaryexpression  */
 #line 125 "parser.y"
-                                                                            {yyval=new AST(NodeType::UN_ARITHMETIC,"-",yyvsp[0]);}
-#line 1543 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
+#line 1544 "parser.bison.cpp"
     break;
 
-  case 55: /* unaryexpression: '!' unaryexpression  */
+  case 55: /* unaryexpression: postfixexpression  */
 #line 126 "parser.y"
-                                                                            {yyval=new AST(NodeType::UN_LOGIC,"!",yyvsp[0]);}
-#line 1549 "parser.bison.cpp"
-    break;
-
-  case 56: /* unaryexpression: postfixexpression  */
-#line 127 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1555 "parser.bison.cpp"
+#line 1550 "parser.bison.cpp"
     break;
 
-  case 57: /* multiplicativeexpression: unaryexpression  */
+  case 56: /* multiplicativeexpression: unaryexpression  */
+#line 129 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1556 "parser.bison.cpp"
+    break;
+
+  case 57: /* multiplicativeexpression: multiplicativeexpression '*' unaryexpression  */
 #line 130 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1561 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1562 "parser.bison.cpp"
     break;
 
-  case 58: /* multiplicativeexpression: multiplicativeexpression '*' unaryexpression  */
+  case 58: /* multiplicativeexpression: multiplicativeexpression '/' unaryexpression  */
 #line 131 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_ARITHMETIC,"+",yyvsp[-2], yyvsp[0]);}
-#line 1567 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1568 "parser.bison.cpp"
     break;
 
-  case 59: /* multiplicativeexpression: multiplicativeexpression '/' unaryexpression  */
+  case 59: /* multiplicativeexpression: multiplicativeexpression '%' unaryexpression  */
 #line 132 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_ARITHMETIC,"/",yyvsp[-2], yyvsp[0]);}
-#line 1573 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1574 "parser.bison.cpp"
     break;
 
-  case 60: /* multiplicativeexpression: multiplicativeexpression '%' unaryexpression  */
-#line 133 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_ARITHMETIC,"%",yyvsp[-2], yyvsp[0]);}
-#line 1579 "parser.bison.cpp"
+  case 60: /* additiveexpression: multiplicativeexpression  */
+#line 135 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1580 "parser.bison.cpp"
     break;
 
-  case 61: /* additiveexpression: multiplicativeexpression  */
+  case 61: /* additiveexpression: additiveexpression '+' multiplicativeexpression  */
 #line 136 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1585 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1586 "parser.bison.cpp"
     break;
 
-  case 62: /* additiveexpression: additiveexpression '+' multiplicativeexpression  */
+  case 62: /* additiveexpression: additiveexpression '-' multiplicativeexpression  */
 #line 137 "parser.y"
-                                                                            {yyval= new AST(NodeType::BIN_ARITHMETIC,"+",yyvsp[-2], yyvsp[0]);}
-#line 1591 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1592 "parser.bison.cpp"
     break;
 
-  case 63: /* additiveexpression: additiveexpression '-' multiplicativeexpression  */
-#line 138 "parser.y"
-                                                                            {yyval= new AST(NodeType::BIN_ARITHMETIC,"-",yyvsp[-2], yyvsp[0]);}
-#line 1597 "parser.bison.cpp"
+  case 63: /* relationalexpression: additiveexpression  */
+#line 140 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1598 "parser.bison.cpp"
     break;
 
-  case 64: /* relationalexpression: additiveexpression  */
+  case 64: /* relationalexpression: relationalexpression '<' additiveexpression  */
 #line 141 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1603 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1604 "parser.bison.cpp"
     break;
 
-  case 65: /* relationalexpression: relationalexpression '<' additiveexpression  */
+  case 65: /* relationalexpression: relationalexpression '>' additiveexpression  */
 #line 142 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"<", yyvsp[-2], yyvsp[0]);;}
-#line 1609 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1610 "parser.bison.cpp"
     break;
 
-  case 66: /* relationalexpression: relationalexpression '>' additiveexpression  */
+  case 66: /* relationalexpression: relationalexpression LE additiveexpression  */
 #line 143 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,">", yyvsp[-2], yyvsp[0]);}
-#line 1615 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1616 "parser.bison.cpp"
     break;
 
-  case 67: /* relationalexpression: relationalexpression LE additiveexpression  */
+  case 67: /* relationalexpression: relationalexpression GE additiveexpression  */
 #line 144 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"<=", yyvsp[-2], yyvsp[0]);}
-#line 1621 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1622 "parser.bison.cpp"
     break;
 
-  case 68: /* relationalexpression: relationalexpression GE additiveexpression  */
-#line 145 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,">=", yyvsp[-2], yyvsp[0]);}
-#line 1627 "parser.bison.cpp"
+  case 68: /* equalityexpression: relationalexpression  */
+#line 147 "parser.y"
+                                                                            {yyval=yyvsp[0];}
+#line 1628 "parser.bison.cpp"
     break;
 
-  case 69: /* equalityexpression: relationalexpression  */
+  case 69: /* equalityexpression: equalityexpression EQ relationalexpression  */
 #line 148 "parser.y"
-                                                                            {yyval=yyvsp[0];}
-#line 1633 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1634 "parser.bison.cpp"
     break;
 
-  case 70: /* equalityexpression: equalityexpression EQ relationalexpression  */
+  case 70: /* equalityexpression: equalityexpression NE relationalexpression  */
 #line 149 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"==", yyvsp[-2], yyvsp[0]);}
-#line 1639 "parser.bison.cpp"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1640 "parser.bison.cpp"
     break;
 
-  case 71: /* equalityexpression: equalityexpression NE relationalexpression  */
-#line 150 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"!=", yyvsp[-2], yyvsp[0]);}
-#line 1645 "parser.bison.cpp"
-    break;
-
-  case 72: /* conditionalandexpression: equalityexpression  */
-#line 153 "parser.y"
+  case 71: /* conditionalandexpression: equalityexpression  */
+#line 152 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1651 "parser.bison.cpp"
+#line 1646 "parser.bison.cpp"
     break;
 
-  case 73: /* conditionalandexpression: conditionalandexpression AND equalityexpression  */
-#line 154 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"&&", yyvsp[-2], yyvsp[0]);}
-#line 1657 "parser.bison.cpp"
+  case 72: /* conditionalandexpression: conditionalandexpression AND equalityexpression  */
+#line 153 "parser.y"
+                                                                            {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1652 "parser.bison.cpp"
     break;
 
-  case 74: /* conditionalorexpression: conditionalandexpression  */
-#line 157 "parser.y"
+  case 73: /* conditionalorexpression: conditionalandexpression  */
+#line 156 "parser.y"
                                                                                 {yyval=yyvsp[0];}
-#line 1663 "parser.bison.cpp"
+#line 1658 "parser.bison.cpp"
     break;
 
-  case 75: /* conditionalorexpression: conditionalorexpression OR conditionalandexpression  */
-#line 158 "parser.y"
-                                                                                {yyval=new AST(NodeType::BIN_LOGIC,"||", yyvsp[-2], yyvsp[0]);}
-#line 1669 "parser.bison.cpp"
+  case 74: /* conditionalorexpression: conditionalorexpression OR conditionalandexpression  */
+#line 157 "parser.y"
+                                                                                {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1664 "parser.bison.cpp"
     break;
 
-  case 76: /* assignmentexpression: conditionalorexpression  */
+  case 75: /* assignmentexpression: conditionalorexpression  */
+#line 162 "parser.y"
+                                                            {yyval=yyvsp[0];}
+#line 1670 "parser.bison.cpp"
+    break;
+
+  case 76: /* assignmentexpression: assignment  */
 #line 163 "parser.y"
                                                             {yyval=yyvsp[0];}
-#line 1675 "parser.bison.cpp"
+#line 1676 "parser.bison.cpp"
     break;
 
-  case 77: /* assignmentexpression: assignment  */
-#line 164 "parser.y"
+  case 77: /* assignment: identifier '=' assignmentexpression  */
+#line 166 "parser.y"
+                                                                {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
+#line 1682 "parser.bison.cpp"
+    break;
+
+  case 78: /* expression: assignmentexpression  */
+#line 169 "parser.y"
                                                             {yyval=yyvsp[0];}
-#line 1681 "parser.bison.cpp"
-    break;
-
-  case 78: /* assignment: identifier '=' assignmentexpression  */
-#line 167 "parser.y"
-                                                                {yyval=new AST(NodeType::ASSIGN, "=" ,yyvsp[-2], yyvsp[0]);}
-#line 1687 "parser.bison.cpp"
-    break;
-
-  case 79: /* expression: assignmentexpression  */
-#line 170 "parser.y"
-                                                            {yyval=yyvsp[0];}
-#line 1693 "parser.bison.cpp"
+#line 1688 "parser.bison.cpp"
     break;
 
 
-#line 1697 "parser.bison.cpp"
+#line 1692 "parser.bison.cpp"
 
       default: break;
     }
@@ -1886,9 +1881,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 174 "parser.y"
-
-
+#line 173 "parser.y"
 
 
 
@@ -1896,5 +1889,5 @@ yyreturnlab:
 void yyerror(char const *s)
 {
     // print out the token that cannot be shifted or reduced and its line number
-    fprintf(stderr, "ERROR: %s, probably at or near \"%s\" on line %d\n", s, yylval->symbol);
+    fprintf(stderr, "Syntax Error around:  %s, at or near %d", yytext, yylineno);
 }

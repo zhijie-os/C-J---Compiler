@@ -14,7 +14,7 @@ void yyerror(char const *s);
 extern int yylex (void);
 extern int yyparse (void);
 extern AST* yylval;
-
+extern char* yytext;
 extern int num_lexer_error;
 
 

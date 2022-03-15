@@ -1,0 +1,7 @@
+main()
+{
+	boolean x;
+	int y;
+	boolean z;
+	x && y;
+}

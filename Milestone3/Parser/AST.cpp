@@ -4,7 +4,7 @@
 ATR::ATR(int l)
 {
     line = l;
-    literal = "None";
+    literal = "";
 }
 
 ATR::ATR(int l, std::string s)
@@ -102,7 +102,12 @@ void AST::PrettyPrint(int level)
 
     if(attribute)
     {
-        std::cout << " { line: " << attribute->line <<" ," <<"literal: " << attribute->literal << " }";
+        std::cout << " { line: " << attribute->line ;
+        if(!attribute->literal.empty())
+        {
+            std::cout<<" ,"<<"literal: " << attribute->literal;
+        }
+        std::cout << " }";
     }
 
     std::cout << std::endl;

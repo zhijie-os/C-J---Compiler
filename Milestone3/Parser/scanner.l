@@ -53,24 +53,24 @@ int         {yylval=new AST(NodeType::INT, "int",new ATR(yylineno)); return INT;
 void        {yylval=new AST(NodeType::VOID, "void",new ATR(yylineno)); return VOID;}
 if          {return IF;}
 else        {return ELSE;}
-while       {return WHILE;}
+while       {yylval=new AST(NodeType::WHILE,"while", new ATR(yylineno));return WHILE;}
 break       {yylval=new AST(NodeType::BREAK, "break",new ATR(yylineno)); return BREAK;}
 return      {yylval=new AST(NodeType::RETURN, "return",new ATR(yylineno)); return RETURN;}
-"+"         {return '+';}
-"-"         {return '-';}
-"*"         {return '*';}
-"/"         {return '/';}
-"%"         {return '%';}
-"<"         {return '<';}
-">"         {return '>';}
-"<="        {return LE;}
-">="        {return GE;}
-"=="        {return EQ;}
-"!="        {return NE;}
-"="         {return '=';}
-"!"         {return '!';}
-"&&"        {return AND;}
-"||"        {return OR;}
+"+"         {yylval=new AST(NodeType::BIN_ARITHMETIC,"+", new ATR(yylineno));return '+';}
+"-"         {yylval=new AST(NodeType::BIN_ARITHMETIC,"-", new ATR(yylineno));return '-';}
+"*"         {yylval=new AST(NodeType::BIN_ARITHMETIC,"*", new ATR(yylineno));return '*';}
+"/"         {yylval=new AST(NodeType::BIN_ARITHMETIC,"/", new ATR(yylineno));return '/';}
+"%"         {yylval=new AST(NodeType::BIN_ARITHMETIC,"%", new ATR(yylineno));return '%';}
+"<"         {yylval=new AST(NodeType::BIN_RELATION,"<", new ATR(yylineno));return '<';}
+">"         {yylval=new AST(NodeType::BIN_RELATION,">", new ATR(yylineno));return '>';}
+"<="        {yylval=new AST(NodeType::BIN_RELATION,"<=", new ATR(yylineno));return LE;}
+">="        {yylval=new AST(NodeType::BIN_RELATION,">=", new ATR(yylineno));return GE;}
+"=="        {yylval=new AST(NodeType::BIN_RELATION,"==", new ATR(yylineno));return EQ;}
+"!="        {yylval=new AST(NodeType::BIN_RELATION,"!=", new ATR(yylineno));return NE;}
+"="         {yylval=new AST(NodeType::ASSIGN,"=", new ATR(yylineno));return '=';}
+"!"         {yylval=new AST(NodeType::UN_LOGIC,"!", new ATR(yylineno));return '!';}
+"&&"        {yylval=new AST(NodeType::BIN_LOGIC,"&&", new ATR(yylineno));return AND;}
+"||"        {yylval=new AST(NodeType::BIN_LOGIC,"||", new ATR(yylineno));return OR;}
 "("         {return '(';}
 ")"         {return ')';}
 "{"         {return '{';}

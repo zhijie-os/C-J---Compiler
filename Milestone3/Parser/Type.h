@@ -22,6 +22,7 @@ enum class NodeType
     WHILE,
     FUNC_CALL,
     BIN_ARITHMETIC,
+    BIN_RELATION,
     UN_ARITHMETIC,
     BIN_LOGIC,
     UN_LOGIC,
@@ -33,6 +34,7 @@ enum class NodeType
     NUMBER,
     STRING,
     IDENTIFIER,
+    DUMMY,
 };
 
 

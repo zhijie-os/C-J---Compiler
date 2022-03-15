@@ -19,11 +19,10 @@
 
 %%
 
-dummy_start     : start                 {CollectGlobal($$);BuildSymbolTable($$,"");dummy_break_point();}
-                ;
+
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;}
+                | globaldeclarations    {$$=$1;CollectGlobal($$);BuildSymbolTable($$,"");}
                 ;
 
 literal         : NUMBER                {$$=$1;}
@@ -93,8 +92,8 @@ statement               : block                                             {$$=
                         | BREAK ';'                                         {$$=$1;}
                         | RETURN expression ';'                             {$1->AttachChildren($2); $$=$1;}
                         | RETURN ';'                                        {$$=$1;}
-                        | IF '(' expression ')' statement                   {$$=new AST(NodeType::IF, "IF", $3, $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new AST(NodeType::IF_ELSE,"IF_ELSE",$3, $5, $7);}
+                        | IF '(' expression ')' statement                   {$$=new AST(NodeType::IF, "IF",new ATR($3->line), $3, $5);}
+                        | IF '(' expression ')' statement ELSE statement    {$$=new AST(NodeType::IF_ELSE,"IF_ELSE",new ATR($3->line),$3, $5, $7);}
                         | WHILE '(' expression ')' statement                {$$=new AST(NodeType::WHILE,"WHILE", $3, $5); }
                         ;
 
@@ -122,40 +121,40 @@ postfixexpression       : primary                                           {$$=
                         | identifier                                        {$$=$1;}
                         ;
 
-unaryexpression         : '-' unaryexpression                               {$$=new AST(NodeType::UN_ARITHMETIC,"-",$2);}
-                        | '!' unaryexpression                               {$$=new AST(NodeType::UN_LOGIC,"!",$2);}
+unaryexpression         : '-' unaryexpression                               {$1->AttachChildren($2);$$=$1;}
+                        | '!' unaryexpression                               {$1->AttachChildren($2);$$=$1;}
                         | postfixexpression                                 {$$=$1;}
                         ;
 
 multiplicativeexpression: unaryexpression                                   {$$=$1;}
-                        | multiplicativeexpression '*' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"+",$1, $3);}
-                        | multiplicativeexpression '/' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"/",$1, $3);}
-                        | multiplicativeexpression '%' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"%",$1, $3);}
+                        | multiplicativeexpression '*' unaryexpression      {$2->AttachChildren($1,$3);$$=$2;}
+                        | multiplicativeexpression '/' unaryexpression      {$2->AttachChildren($1,$3);$$=$2;}
+                        | multiplicativeexpression '%' unaryexpression      {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 additiveexpression      : multiplicativeexpression                          {$$=$1;}
-                        | additiveexpression '+' multiplicativeexpression   {$$= new AST(NodeType::BIN_ARITHMETIC,"+",$1, $3);}
-                        | additiveexpression '-' multiplicativeexpression   {$$= new AST(NodeType::BIN_ARITHMETIC,"-",$1, $3);}
+                        | additiveexpression '+' multiplicativeexpression   {$2->AttachChildren($1,$3);$$=$2;}
+                        | additiveexpression '-' multiplicativeexpression   {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 relationalexpression    : additiveexpression                                {$$=$1;}
-                        | relationalexpression '<' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,"<", $1, $3);;}
-                        | relationalexpression '>' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,">", $1, $3);}
-                        | relationalexpression LE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,"<=", $1, $3);}
-                        | relationalexpression GE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,">=", $1, $3);}
+                        | relationalexpression '<' additiveexpression       {$2->AttachChildren($1,$3);$$=$2;}
+                        | relationalexpression '>' additiveexpression       {$2->AttachChildren($1,$3);$$=$2;}
+                        | relationalexpression LE additiveexpression        {$2->AttachChildren($1,$3);$$=$2;}
+                        | relationalexpression GE additiveexpression        {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 equalityexpression      : relationalexpression                              {$$=$1;}
-                        | equalityexpression EQ relationalexpression        {$$=new AST(NodeType::BIN_LOGIC,"==", $1, $3);}
-                        | equalityexpression NE relationalexpression        {$$=new AST(NodeType::BIN_LOGIC,"!=", $1, $3);}
+                        | equalityexpression EQ relationalexpression        {$2->AttachChildren($1,$3);$$=$2;}
+                        | equalityexpression NE relationalexpression        {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 conditionalandexpression: equalityexpression                                {$$=$1;}
-                        | conditionalandexpression AND equalityexpression   {$$=new AST(NodeType::BIN_LOGIC,"&&", $1, $3);}
+                        | conditionalandexpression AND equalityexpression   {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 conditionalorexpression : conditionalandexpression                              {$$=$1;}
-                        | conditionalorexpression OR conditionalandexpression   {$$=new AST(NodeType::BIN_LOGIC,"||", $1, $3);}
+                        | conditionalorexpression OR conditionalandexpression   {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 
@@ -164,7 +163,7 @@ assignmentexpression    : conditionalorexpression           {$$=$1;}
                         | assignment                        {$$=$1;}
                         ;       
 
-assignment              : identifier '=' assignmentexpression   {$$=new AST(NodeType::ASSIGN, "=" ,$1, $3);}
+assignment              : identifier '=' assignmentexpression   {$2->AttachChildren($1,$3);$$=$2;}
                         ;
 
 expression              : assignmentexpression              {$$=$1;}
@@ -174,11 +173,9 @@ expression              : assignmentexpression              {$$=$1;}
 %%
 
 
-
-
 // define yyerror for bison
 void yyerror(char const *s)
 {
     // print out the token that cannot be shifted or reduced and its line number
-    fprintf(stderr, "ERROR: %s, probably at or near \"%s\" on line %d\n", s, yylval->symbol);
+    fprintf(stderr, "Syntax Error around:  %s, at or near %d", yytext, yylineno);
 }

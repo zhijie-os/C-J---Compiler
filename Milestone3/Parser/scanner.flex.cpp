@@ -941,7 +941,7 @@ YY_RULE_SETUP
 case 19:
 YY_RULE_SETUP
 #line 56 "scanner.l"
-{return WHILE;}
+{yylval=new AST(NodeType::WHILE,"while", new ATR(yylineno));return WHILE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
@@ -956,77 +956,77 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 59 "scanner.l"
-{return '+';}
+{yylval=new AST(NodeType::BIN_ARITHMETIC,"+", new ATR(yylineno));return '+';}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 60 "scanner.l"
-{return '-';}
+{yylval=new AST(NodeType::BIN_ARITHMETIC,"-", new ATR(yylineno));return '-';}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 61 "scanner.l"
-{return '*';}
+{yylval=new AST(NodeType::BIN_ARITHMETIC,"*", new ATR(yylineno));return '*';}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 62 "scanner.l"
-{return '/';}
+{yylval=new AST(NodeType::BIN_ARITHMETIC,"/", new ATR(yylineno));return '/';}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 63 "scanner.l"
-{return '%';}
+{yylval=new AST(NodeType::BIN_ARITHMETIC,"%", new ATR(yylineno));return '%';}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 64 "scanner.l"
-{return '<';}
+{yylval=new AST(NodeType::BIN_RELATION,"<", new ATR(yylineno));return '<';}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 65 "scanner.l"
-{return '>';}
+{yylval=new AST(NodeType::BIN_RELATION,">", new ATR(yylineno));return '>';}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 66 "scanner.l"
-{return LE;}
+{yylval=new AST(NodeType::BIN_RELATION,"<=", new ATR(yylineno));return LE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 67 "scanner.l"
-{return GE;}
+{yylval=new AST(NodeType::BIN_RELATION,">=", new ATR(yylineno));return GE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 68 "scanner.l"
-{return EQ;}
+{yylval=new AST(NodeType::BIN_RELATION,"==", new ATR(yylineno));return EQ;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 69 "scanner.l"
-{return NE;}
+{yylval=new AST(NodeType::BIN_RELATION,"!=", new ATR(yylineno));return NE;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 70 "scanner.l"
-{return '=';}
+{yylval=new AST(NodeType::ASSIGN,"=", new ATR(yylineno));return '=';}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 71 "scanner.l"
-{return '!';}
+{yylval=new AST(NodeType::UN_LOGIC,"!", new ATR(yylineno));return '!';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 72 "scanner.l"
-{return AND;}
+{yylval=new AST(NodeType::BIN_LOGIC,"&&", new ATR(yylineno));return AND;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 73 "scanner.l"
-{return OR;}
+{yylval=new AST(NodeType::BIN_LOGIC,"||", new ATR(yylineno));return OR;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
