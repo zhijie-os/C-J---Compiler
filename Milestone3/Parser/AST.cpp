@@ -1,103 +1,164 @@
 #include "AST.h"
 
 
+ATR::ATR(int l)
+{
+    line = l;
+    literal = "None";
+}
 
+ATR::ATR(int l, std::string s)
+{
+    line = l;
+    literal = s;
+}
 
-AST::AST(NodeType t, std::string s, int l)
+AST::AST(NodeType t, std::string str)
 {
     type = t;
-    line = l;
-    symbol = s;
+    symbol = str;
 }
 
-AST::AST(NodeType t, std::string s, int l, int num_of_children, ...)
-{
-
-    AST(t, s, l);
-
-    va_list ptr;
-    va_start(ptr, num_of_children);
-
-    for (int i = 0; i < num_of_children; i++)
-    {
-        children.push_back(va_arg(ptr, AST *));
-    }
-    va_end(ptr);
-}
-
-
-AST::AST(NodeType t, std::string s, int l)
+AST::AST(NodeType t,std::string str, ATR* atr)
 {
     type = t;
-    line = l;
-    symbol = s;
+    attribute = atr;
+    symbol = str;
 }
 
-AST::AST(NodeType t, std::string s, int l, int num_of_children, ...)
+AST::AST(NodeType t,std::string str, AST *a)
 {
+    type = t;
 
-    AST(t, s, l);
-
-    va_list ptr;
-    va_start(ptr, num_of_children);
-
-    for (int i = 0; i < num_of_children; i++)
-    {
-        children.push_back(va_arg(ptr, AST *));
-    }
-    va_end(ptr);
+    symbol = str;
+    AttachChildren(a);
 }
 
-void AST::AttachChildren(int num_of_children, ...)
+AST::AST(NodeType t,std::string str, AST *a, AST *b)
 {
-    va_list ptr;
-    va_start(ptr, num_of_children);
+    type = t ;
 
-    for (int i = 0; i < num_of_children; i++)
-    {
-        children.push_back(va_arg(ptr, AST *));
-    }
-    va_end(ptr);
+    symbol = str;
+    AttachChildren(a,b);
 }
 
-void AST::StealChildren(AST *b)
+AST::AST(NodeType t,std::string str, AST *a, AST *b, AST *c)
 {
-    for (auto c : b->children)
-    {
-        children.push_back(c);
-        c->parent = parent;
-    }
+
+    type = t ;
+
+    symbol = str;
+    AttachChildren(a,b,c);
 }
 
-void AST::BecomeSibling(int num, ...)
-{
-    va_list ptr;
-    va_start(ptr, num);
 
-    for (int i = 0; i < num; i++)
-    {
-        AST *b = va_arg(ptr, AST *);
-        b->parent = parent;
-        children.push_back(b);
-    }
-    va_end(ptr);
+AST::AST(NodeType t,std::string str, AST *a, AST *b, AST *c, AST*d)
+{
+
+    type = t ;
+
+    symbol = str;
+    AttachChildren(a,b,c);
+    AttachChildren(d);
+}
+
+AST::AST(NodeType t,std::string str, ATR* atr, AST *a)
+{
+    type = t;
+    attribute = atr;
+
+    symbol = str;
+    AttachChildren(a);
+}
+
+AST::AST(NodeType t,std::string str, ATR* atr, AST *a, AST *b)
+{
+
+    type = t;
+    attribute = atr;
+
+    symbol = str;
+    AttachChildren(a,b);
+}
+
+AST::AST(NodeType t,std::string str, ATR* atr, AST *a, AST *b, AST *c)
+{
+
+    type = t;
+    attribute = atr;
+
+    symbol = str;
+    AttachChildren(a,b,c);
 }
 
 void AST::PrettyPrint(int level)
 {
-    for (int i = 0; i < level; i++)
+    for(int i=0;i<level;i++)
     {
         std::cout << "    ";
     }
 
     std::cout << symbol;
+
+    if(attribute)
+    {
+        std::cout << "{ line: " << attribute->line <<" ," <<"literal: " << attribute->literal << " }";
+    }
+
+    std::cout << std::endl;
+
+    for(auto c:children)
+    {
+        c->PrettyPrint(level+1);
+    }
 }
 
-bool AST::isTerminal()
+void AST::AttachChildren(AST *a)
 {
-    if(type==NodeType::NUMBER||type==NodeType::STRING||type==NodeType::IDENTIFIER)
+    children.push_back(a);
+    a->parent = this;
+}
+
+void AST::AttachChildren(AST *a, AST *b)
+{
+    AttachChildren(a);
+    AttachChildren(b);
+}
+
+void AST::AttachChildren(AST *a, AST *b, AST *c)
+{
+
+    AttachChildren(a, b);
+    AttachChildren(c);
+}
+
+void AST::StealChildren(AST *a)
+{
+    for (auto c : a->children)
     {
-        return true;
+        children.push_back(c);
+        c->parent = this->parent;
     }
-    return false;
+}
+
+void AST::BecomeSibling(AST *a)
+{
+    this->parent->AttachChildren(a);
+}
+
+void AST::BecomeSibling(AST *a, AST *b)
+{
+
+    this->parent->AttachChildren(a, b);
+}
+
+void AST::BecomeSibling(AST *a, AST *b, AST *c)
+{
+
+    this->parent->AttachChildren(a, b, c);
+}
+
+bool AST::isLeaf()
+{
+    return children.size()==0;
 }

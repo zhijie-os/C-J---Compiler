@@ -8,7 +8,7 @@
 
 %defines "parser.bison.h"
 %output "parser.bison.cpp"
-%expect 0
+%expect 1
 %define api.value.type {AST *}
 
 %token  NUMBER STRING_Y TRUE FALSE BOOLEAN INT ID VOID BREAK RETURN IF ELSE WHILE LE GE NE EQ AND OR
@@ -17,11 +17,11 @@
 
 %%
 
-dummy_start     : start 
+dummy_start     : start                 {$$->PrettyPrint(0);}
                 ;
 
 start           : /* empty */
-                | globaldeclarations    {$$=new AST(NodeType::PROGRAM,"PROGRAM",-1,1,$1);}
+                | globaldeclarations    {$$=$1;}
                 ;
 
 literal         : NUMBER                {$$=$1;}
@@ -34,51 +34,51 @@ type            : BOOLEAN               {$$=$1;}
                 | INT                   {$$=$1;}
                 ;
 
-globaldeclarations      : globaldeclaration                             {$$=fold_ast_base($1);}
-                        | globaldeclarations globaldeclaration          {$$=fold_ast($1, $2);}
+globaldeclarations      : globaldeclaration                             {$$=new AST(NodeType::PROGRAM, "PROGRAM",$1);}
+                        | globaldeclarations globaldeclaration          {$1->StealChildren($2);$$=$1;}
                         ;
 
-globaldeclaration       : variabledeclaration                           {$$=rename_ast("GLOBAL_VAR_DECL",$1);}
+globaldeclaration       : variabledeclaration                           {$1->type=NodeType::GLOBAL_VAR_DEC;$1->symbol="GLOBAL_VAR_DEC";$$=$1;}
                         | functiondeclaration                           {$$=$1;}
                         | mainfunctiondeclaration                       {$$=$1;}
                         ;
 
-variabledeclaration     : type identifier ';'                           {$$=new_ast("VAR_DECL:", 2,$1,$2);}
+variabledeclaration     : type identifier ';'                           {$$=new AST(NodeType::VAR_DEC,"VAR_DEC",$1,$2);}
                         ;
 
 identifier              : ID                                            {$$=$1;}
                         ;
 
-functiondeclaration     : functionheader block                          {$$=rename_ast("FUNCDEC:", attach_new_children($1,1,$2));}
+functiondeclaration     : functionheader block                          {$1->AttachChildren($2);$$=$1;}
                         ;
 
-functionheader          : type functiondeclarator                       {$$=steal_children(new_ast("FUNCTIONHEADER:",1,$1),$2);}
-                        | VOID functiondeclarator                       {$$=steal_children(new_ast("FUNCTIONHEADER:",1,$1),$2);}
+functionheader          : type functiondeclarator                       {$2->children.insert($2->children.begin(),$1);$$=$2;}
+                        | VOID functiondeclarator                       {$2->children.insert($2->children.begin(), new AST(NodeType::VOID,"VOID"));$$=$2;}
                         ;
 
-functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new_ast("FUNCTIONDECLARATOR:", 2, $1,rename_ast("FORMALS:",$3));}
-                        | identifier '(' ')'                            {$$=new_ast("FUNCTIONDECLARATOR:", 2, $1, new_ast("FORMALS:",0));}
+functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  $1, $3);}
+                        | identifier '(' ')'                            {$$=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  $1, new AST(NodeType::FORMALS,"FORMALS"));}
                         ;
 
-formalparameterlist     : formalparameter                               {$$=fold_ast_base($1);}
-                        | formalparameterlist ',' formalparameter       {$$=fold_ast($1,$3);}
+formalparameterlist     : formalparameter                               {$$=new AST(NodeType::FORMALS,"FORMALS",$1);}
+                        | formalparameterlist ',' formalparameter       {$1->StealChildren($3);$$=$1;}
                         ;
 
-formalparameter         : type identifier                               {$$=new_ast("FORMAL:", 2, $1, $2);}
+formalparameter         : type identifier                               {$$=new AST(NodeType::FORMAL, "FORMAL",$1, $2);}
                         ;
 
-mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new_ast("MAINDECL:", 4, new_ast("VOID:",0),$1,new_ast("FORMALS:",0) ,$2);}
+mainfunctiondeclaration : mainfunctiondeclarator block                  {$$=new AST(NodeType::MAIN_DEC, "MAIN_DEC", new AST(NodeType::VOID, "VOID"),$1,new AST(NodeType::FORMALS,"FORMALS"),$2);}
                         ;
 
 mainfunctiondeclarator  : identifier '(' ')'                            {$$=$1;}
                         ;
 
-block                   : '{' blockstatements '}'                       {$$=rename_ast("BLOCK:",$2);}
-                        | '{' '}'                                       {$$=new_ast("BLOCK:",0);}
+block                   : '{' blockstatements '}'                       {$$=$2;}
+                        | '{' '}'                                       {$$=new AST(NodeType::BLOCK,"BLOCK");}
                         ;
 
-blockstatements         : blockstatement                                {$$=fold_ast_base($1);}
-                        | blockstatements blockstatement                {$$=fold_ast($1, $2);}
+blockstatements         : blockstatement                                {$$=new AST(NodeType::BLOCK, "BLOCK",$1);}
+                        | blockstatements blockstatement                {$1->StealChildren($2);$$=$1;};
                         ;
 
 blockstatement          : variabledeclaration                           {$$=$1;}
@@ -86,14 +86,14 @@ blockstatement          : variabledeclaration                           {$$=$1;}
                         ;
 
 statement               : block                                             {$$=$1;}
-                        | ';'                                               {$$=atomic_ast("nullStmt",$1->line_num,"None");}
-                        | statementexpression ';'                           {$$=new_ast("STMTEXPR",1,$1);}
+                        | ';'                                               {$$=new AST(NodeType::NULL_STMT,"nullStmt");}
+                        | statementexpression ';'                           {$$=new AST(NodeType::STMT_EXPR,"STMTEXPR",$1);}
                         | BREAK ';'                                         {$$=$1;}
-                        | RETURN expression ';'                             {$$=attach_new_children($1,1,$2);}
+                        | RETURN expression ';'                             {$1->AttachChildren($2); $$=$1;}
                         | RETURN ';'                                        {$$=$1;}
-                        | IF '(' expression ')' statement                   {$$=new_ast("IF:", 2,  $3, $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new_ast("IF_ELSE:", 3, $3, $5, $7);}
-                        | WHILE '(' expression ')' statement                {$$=new_ast("WHILE:", 3, $1, $3, $5); }
+                        | IF '(' expression ')' statement                   {$$=new AST(NodeType::IF, "IF", $3, $5);}
+                        | IF '(' expression ')' statement ELSE statement    {$$=new AST(NodeType::IF_ELSE,"IF_ELSE",$3, $5, $7);}
+                        | WHILE '(' expression ')' statement                {$$=new AST(NodeType::WHILE,"WHILE", $1, $3, $5); }
                         ;
 
 
@@ -108,52 +108,52 @@ primary                 : literal                                           {$$=
                         | functioninvocation                                {$$=$1;}
                         ;
 
-argumentlist            : expression                                        {$$=fold_ast_base($1);}
-                        | argumentlist ',' expression                       {$$=fold_ast($1, $3);}
+argumentlist            : expression                                        {$$=new AST(NodeType::ACTUALS,"ACTUALS",$1);}
+                        | argumentlist ',' expression                       {$1->StealChildren($3);$$=$1;}
                         ;
 
-functioninvocation      : identifier '(' argumentlist ')'                   {$$=new_ast("FUNC_CALL:", 2, $1, rename_ast("ACTUALS:",$3));}
-                        | identifier '(' ')'                                {$$=new_ast("FUNC_CALL:", 2, $1, new_ast("ACTUALS:",0));}
+functioninvocation      : identifier '(' argumentlist ')'                   {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL", $3);;}
+                        | identifier '(' ')'                                {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL", new AST(NodeType::ACTUALS,"ACTUALS"));}
                         ;
 
 postfixexpression       : primary                                           {$$=$1;}
                         | identifier                                        {$$=$1;}
                         ;
 
-unaryexpression         : '-' unaryexpression                               {$$=attach_new_children($1, 1, $2);}
-                        | '!' unaryexpression                               {$$=attach_new_children($1, 1, $2);}
+unaryexpression         : '-' unaryexpression                               {$$=new AST(NodeType::UN_ARITHMETIC,"-",$2);}
+                        | '!' unaryexpression                               {$$=new AST(NodeType::UN_LOGIC,"!",$2);}
                         | postfixexpression                                 {$$=$1;}
                         ;
 
 multiplicativeexpression: unaryexpression                                   {$$=$1;}
-                        | multiplicativeexpression '*' unaryexpression      {$$=attach_new_children($2, 2, $1, $3);}
-                        | multiplicativeexpression '/' unaryexpression      {$$=attach_new_children($2, 2, $1, $3);}
-                        | multiplicativeexpression '%' unaryexpression      {$$=attach_new_children($2, 2, $1, $3);}
+                        | multiplicativeexpression '*' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"+",$1, $3);}
+                        | multiplicativeexpression '/' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"/",$1, $3);}
+                        | multiplicativeexpression '%' unaryexpression      {$$=new AST(NodeType::BIN_ARITHMETIC,"%",$1, $3);}
                         ;
 
 additiveexpression      : multiplicativeexpression                          {$$=$1;}
-                        | additiveexpression '+' multiplicativeexpression   {$$=attach_new_children($2, 2, $1, $3);}
-                        | additiveexpression '-' multiplicativeexpression   {$$=attach_new_children($2, 2, $1, $3);}
+                        | additiveexpression '+' multiplicativeexpression   {$$= new AST(NodeType::BIN_ARITHMETIC,"+",$1, $3);}
+                        | additiveexpression '-' multiplicativeexpression   {$$= new AST(NodeType::BIN_ARITHMETIC,"-",$1, $3);}
                         ;
 
 relationalexpression    : additiveexpression                                {$$=$1;}
-                        | relationalexpression '<' additiveexpression       {$$=attach_new_children($2, 2, $1, $3);}
-                        | relationalexpression '>' additiveexpression       {$$=attach_new_children($2, 2, $1, $3);}
-                        | relationalexpression LE additiveexpression        {$$=attach_new_children($2, 2, $1, $3);}
-                        | relationalexpression GE additiveexpression        {$$=attach_new_children($2, 2, $1, $3);}
+                        | relationalexpression '<' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,"<", $1, $3);;}
+                        | relationalexpression '>' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,">", $1, $3);}
+                        | relationalexpression LE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,">=", $1, $3);}
+                        | relationalexpression GE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,"<=", $1, $3);}
                         ;
 
 equalityexpression      : relationalexpression                              {$$=$1;}
-                        | equalityexpression EQ relationalexpression        {$$=attach_new_children($2, 2, $1, $3);}
-                        | equalityexpression NE relationalexpression        {$$=attach_new_children($2, 2, $1, $3);}
+                        | equalityexpression EQ relationalexpression        {$$=new AST(NodeType::BIN_LOGIC,"==", $1, $3);}
+                        | equalityexpression NE relationalexpression        {$$=new AST(NodeType::BIN_LOGIC,"!=", $1, $3);}
                         ;
 
 conditionalandexpression: equalityexpression                                {$$=$1;}
-                        | conditionalandexpression AND equalityexpression   {$$=attach_new_children($2, 2, $1, $3);}
+                        | conditionalandexpression AND equalityexpression   {$$=new AST(NodeType::BIN_LOGIC,"&&", $1, $3);}
                         ;
 
 conditionalorexpression : conditionalandexpression                              {$$=$1;}
-                        | conditionalorexpression OR conditionalandexpression   {$$=attach_new_children($2, 2, $1, $3);}
+                        | conditionalorexpression OR conditionalandexpression   {$$=new AST(NodeType::BIN_LOGIC,"||", $1, $3);}
                         ;
 
 
@@ -162,7 +162,7 @@ assignmentexpression    : conditionalorexpression           {$$=$1;}
                         | assignment                        {$$=$1;}
                         ;       
 
-assignment              : identifier '=' assignmentexpression   {$$=attach_new_children($2, 2, $1, $3);}
+assignment              : identifier '=' assignmentexpression   {$$=new AST(NodeType::ASSIGN, "=" ,$1, $3);}
                         ;
 
 expression              : assignmentexpression              {$$=$1;}

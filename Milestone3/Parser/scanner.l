@@ -30,7 +30,7 @@ number  {digit}+
 %% 
 
 "\""                                                    {BEGIN(STRING_L);}
-<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {yylval=new AST(NodeType::STRING,yytext,yylineno); return STRING_Y;}
+<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {yylval=new AST(NodeType::STRING, "string" ,new ATR(yylineno,yytext)); return STRING_Y;}
 <STRING_L>"\""                                        {BEGIN(0);}
 <STRING_L>\\[^bftrn'"\\]                              {lexer_string_error("unsupported escape character");}
 <STRING_L>\n                                          {lexer_string_error("newline in string literal");}
@@ -46,16 +46,16 @@ number  {digit}+
 
 \n          {}
 {ws}        {/* ignore whitespaces */}
-true        {yylval=new AST(NodeType::TRUE, "true",yylineno); return TRUE;}
-false       {yylval=new AST(NodeType::FALSE, "false",yylineno); return FALSE;}
-boolean     {yylval=new AST(NodeType::BOOLEAN, "bool",yylineno); return BOOLEAN;}
-int         {yylval=new AST(NodeType::INT, "int",yylineno); return INT;}
-void        {yylval=new AST(NodeType::VOID, "void",yylineno); return VOID;}
+true        {yylval=new AST(NodeType::TRUE, "true",new ATR(yylineno)); return TRUE;}
+false       {yylval=new AST(NodeType::FALSE, "false",new ATR(yylineno)); return FALSE;}
+boolean     {yylval=new AST(NodeType::BOOLEAN, "bool",new ATR(yylineno)); return BOOLEAN;}
+int         {yylval=new AST(NodeType::INT, "int",new ATR(yylineno)); return INT;}
+void        {yylval=new AST(NodeType::VOID, "void",new ATR(yylineno)); return VOID;}
 if          {return IF;}
 else        {return ELSE;}
 while       {return WHILE;}
-break       {yylval=new AST(NodeType::BREAK, "break",yylineno); return BREAK;}
-return      {yylval=new AST(NodeType::RETURN, "return",yylineno); return RETURN;}
+break       {yylval=new AST(NodeType::BREAK, "break",new ATR(yylineno)); return BREAK;}
+return      {yylval=new AST(NodeType::RETURN, "return",new ATR(yylineno)); return RETURN;}
 "+"         {return '+';}
 "-"         {return '-';}
 "*"         {return '*';}
@@ -77,8 +77,8 @@ return      {yylval=new AST(NodeType::RETURN, "return",yylineno); return RETURN;
 "}"         {return '}';}
 ";"         {return ';';}
 ","         {return ',';}
-{number}    {yylval=new AST(NodeType::NUMBER, yytext, yylineno); return NUMBER;}
-{id}        {yylval=new AST(NodeType::IDENTIFIER,yytext, yylineno); return ID;}
+{number}    {yylval=new AST(NodeType::NUMBER,"number", new ATR(yylineno,yytext)); return NUMBER;}
+{id}        {yylval=new AST(NodeType::IDENTIFIER, "identifier",new ATR(yylineno,yytext)); return ID;}
 
 .           {lexer_general_error();}
 
