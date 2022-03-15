@@ -35,7 +35,7 @@ type            : BOOLEAN               {$$=$1;}
                 ;
 
 globaldeclarations      : globaldeclaration                             {$$=new AST(NodeType::PROGRAM, "PROGRAM",$1);}
-                        | globaldeclarations globaldeclaration          {$1->StealChildren($2);$$=$1;}
+                        | globaldeclarations globaldeclaration          {$1->AttachChildren($2);$$=$1;}
                         ;
 
 globaldeclaration       : variabledeclaration                           {$1->type=NodeType::GLOBAL_VAR_DEC;$1->symbol="GLOBAL_VAR_DEC";$$=$1;}
@@ -61,7 +61,7 @@ functiondeclarator      : identifier '(' formalparameterlist ')'        {$$=new 
                         ;
 
 formalparameterlist     : formalparameter                               {$$=new AST(NodeType::FORMALS,"FORMALS",$1);}
-                        | formalparameterlist ',' formalparameter       {$1->StealChildren($3);$$=$1;}
+                        | formalparameterlist ',' formalparameter       {$1->AttachChildren($3);$$=$1;}
                         ;
 
 formalparameter         : type identifier                               {$$=new AST(NodeType::FORMAL, "FORMAL",$1, $2);}
@@ -78,7 +78,7 @@ block                   : '{' blockstatements '}'                       {$$=$2;}
                         ;
 
 blockstatements         : blockstatement                                {$$=new AST(NodeType::BLOCK, "BLOCK",$1);}
-                        | blockstatements blockstatement                {$1->StealChildren($2);$$=$1;};
+                        | blockstatements blockstatement                {$1->AttachChildren($2);$$=$1;};
                         ;
 
 blockstatement          : variabledeclaration                           {$$=$1;}
@@ -93,7 +93,7 @@ statement               : block                                             {$$=
                         | RETURN ';'                                        {$$=$1;}
                         | IF '(' expression ')' statement                   {$$=new AST(NodeType::IF, "IF", $3, $5);}
                         | IF '(' expression ')' statement ELSE statement    {$$=new AST(NodeType::IF_ELSE,"IF_ELSE",$3, $5, $7);}
-                        | WHILE '(' expression ')' statement                {$$=new AST(NodeType::WHILE,"WHILE", $1, $3, $5); }
+                        | WHILE '(' expression ')' statement                {$$=new AST(NodeType::WHILE,"WHILE", $3, $5); }
                         ;
 
 
@@ -109,11 +109,11 @@ primary                 : literal                                           {$$=
                         ;
 
 argumentlist            : expression                                        {$$=new AST(NodeType::ACTUALS,"ACTUALS",$1);}
-                        | argumentlist ',' expression                       {$1->StealChildren($3);$$=$1;}
+                        | argumentlist ',' expression                       {$1->AttachChildren($3);$$=$1;}
                         ;
 
-functioninvocation      : identifier '(' argumentlist ')'                   {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL", $3);;}
-                        | identifier '(' ')'                                {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL", new AST(NodeType::ACTUALS,"ACTUALS"));}
+functioninvocation      : identifier '(' argumentlist ')'                   {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL",$1, $3);;}
+                        | identifier '(' ')'                                {$$=new AST(NodeType::FUNC_CALL, "FUNC_CALL",$1, new AST(NodeType::ACTUALS,"ACTUALS"));}
                         ;
 
 postfixexpression       : primary                                           {$$=$1;}
@@ -139,8 +139,8 @@ additiveexpression      : multiplicativeexpression                          {$$=
 relationalexpression    : additiveexpression                                {$$=$1;}
                         | relationalexpression '<' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,"<", $1, $3);;}
                         | relationalexpression '>' additiveexpression       {$$=new AST(NodeType::BIN_LOGIC,">", $1, $3);}
-                        | relationalexpression LE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,">=", $1, $3);}
-                        | relationalexpression GE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,"<=", $1, $3);}
+                        | relationalexpression LE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,"<=", $1, $3);}
+                        | relationalexpression GE additiveexpression        {$$=new AST(NodeType::BIN_LOGIC,">=", $1, $3);}
                         ;
 
 equalityexpression      : relationalexpression                              {$$=$1;}

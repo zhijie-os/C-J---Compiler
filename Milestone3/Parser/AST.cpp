@@ -102,7 +102,7 @@ void AST::PrettyPrint(int level)
 
     if(attribute)
     {
-        std::cout << "{ line: " << attribute->line <<" ," <<"literal: " << attribute->literal << " }";
+        std::cout << " { line: " << attribute->line <<" ," <<"literal: " << attribute->literal << " }";
     }
 
     std::cout << std::endl;

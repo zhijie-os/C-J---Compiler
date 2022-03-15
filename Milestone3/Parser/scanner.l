@@ -29,8 +29,8 @@ number  {digit}+
 
 %% 
 
-"\""                                                    {BEGIN(STRING_L);}
-<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n<<EOF>>])*          {yylval=new AST(NodeType::STRING, "string" ,new ATR(yylineno,yytext)); return STRING_Y;}
+"\""                                                  {BEGIN(STRING_L);}
+<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n])*                 {yylval=new AST(NodeType::STRING, "string" ,new ATR(yylineno,yytext)); return STRING_Y;}
 <STRING_L>"\""                                        {BEGIN(0);}
 <STRING_L>\\[^bftrn'"\\]                              {lexer_string_error("unsupported escape character");}
 <STRING_L>\n                                          {lexer_string_error("newline in string literal");}

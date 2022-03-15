@@ -1284,7 +1284,7 @@ yyreduce:
 
   case 12: /* globaldeclarations: globaldeclarations globaldeclaration  */
 #line 38 "parser.y"
-                                                                        {yyvsp[-1]->StealChildren(yyvsp[0]);yyval=yyvsp[-1];}
+                                                                        {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
 #line 1289 "parser.bison.cpp"
     break;
 
@@ -1356,7 +1356,7 @@ yyreduce:
 
   case 24: /* formalparameterlist: formalparameterlist ',' formalparameter  */
 #line 64 "parser.y"
-                                                                        {yyvsp[-2]->StealChildren(yyvsp[0]);yyval=yyvsp[-2];}
+                                                                        {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
 #line 1361 "parser.bison.cpp"
     break;
 
@@ -1398,7 +1398,7 @@ yyreduce:
 
   case 31: /* blockstatements: blockstatements blockstatement  */
 #line 81 "parser.y"
-                                                                        {yyvsp[-1]->StealChildren(yyvsp[0]);yyval=yyvsp[-1];}
+                                                                        {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
 #line 1403 "parser.bison.cpp"
     break;
 
@@ -1464,7 +1464,7 @@ yyreduce:
 
   case 42: /* statement: WHILE '(' expression ')' statement  */
 #line 96 "parser.y"
-                                                                            {yyval=new AST(NodeType::WHILE,"WHILE", yyvsp[-4], yyvsp[-2], yyvsp[0]); }
+                                                                            {yyval=new AST(NodeType::WHILE,"WHILE", yyvsp[-2], yyvsp[0]); }
 #line 1469 "parser.bison.cpp"
     break;
 
@@ -1506,19 +1506,19 @@ yyreduce:
 
   case 49: /* argumentlist: argumentlist ',' expression  */
 #line 112 "parser.y"
-                                                                            {yyvsp[-2]->StealChildren(yyvsp[0]);yyval=yyvsp[-2];}
+                                                                            {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
 #line 1511 "parser.bison.cpp"
     break;
 
   case 50: /* functioninvocation: identifier '(' argumentlist ')'  */
 #line 115 "parser.y"
-                                                                            {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL", yyvsp[-1]);;}
+                                                                            {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-3], yyvsp[-1]);;}
 #line 1517 "parser.bison.cpp"
     break;
 
   case 51: /* functioninvocation: identifier '(' ')'  */
 #line 116 "parser.y"
-                                                                            {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL", new AST(NodeType::ACTUALS,"ACTUALS"));}
+                                                                            {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-2], new AST(NodeType::ACTUALS,"ACTUALS"));}
 #line 1523 "parser.bison.cpp"
     break;
 
@@ -1614,13 +1614,13 @@ yyreduce:
 
   case 67: /* relationalexpression: relationalexpression LE additiveexpression  */
 #line 142 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,">=", yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"<=", yyvsp[-2], yyvsp[0]);}
 #line 1619 "parser.bison.cpp"
     break;
 
   case 68: /* relationalexpression: relationalexpression GE additiveexpression  */
 #line 143 "parser.y"
-                                                                            {yyval=new AST(NodeType::BIN_LOGIC,"<=", yyvsp[-2], yyvsp[0]);}
+                                                                            {yyval=new AST(NodeType::BIN_LOGIC,">=", yyvsp[-2], yyvsp[0]);}
 #line 1625 "parser.bison.cpp"
     break;
 
