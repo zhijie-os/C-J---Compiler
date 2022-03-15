@@ -35,10 +35,9 @@ std::vector<DataType> ParseFormals(AST *root)
     return toReturn;
 }
 
-#define ChildType(p,i)  p->children[i]->type
-#define ChildLiteral(p,i) p->children[i]->attribute->literal
+#define ChildType(p, i) p->children[i]->type
+#define ChildLiteral(p, i) p->children[i]->attribute->literal
 #define NodeToData(x) NodeTypeToDataType.find(x)->second
-
 
 // should be the 1st pass
 void CollectGlobal(AST *root)
@@ -48,8 +47,8 @@ void CollectGlobal(AST *root)
     {
         // insert into global var table, second child's literal would be the identifier (key),
         // the first child would be the type of the identifier
-        GLOBAL_VAR.insert({ChildLiteral(root,1),
-                           NodeToData(ChildType(root,0))});
+        GLOBAL_VAR.insert({ChildLiteral(root, 1),
+                           NodeToData(ChildType(root, 0))});
     }
     else if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
     {
@@ -57,8 +56,8 @@ void CollectGlobal(AST *root)
         // second child's literal would be the identifier (key)
         // the first child would be the return type
         // the formals would be the children of third child
-        GLOBAL_FUNC.insert({ChildLiteral(root,1),
-                            {NodeToData(ChildType(root,0)), ParseFormals(root)}});
+        GLOBAL_FUNC.insert({ChildLiteral(root, 1),
+                            {NodeToData(ChildType(root, 0)), ParseFormals(root)}});
     }
 
     for (auto c : root->children)
@@ -82,17 +81,14 @@ void BuildSymbolTable(AST *root, std::string current_scope)
 
         CreateScope(current_scope);
 
-
         // for each formal of formals
         for (auto c : root->children[2]->children)
         {
             // find the table of current_scope
-            SYMBOL_TABLE.find(current_scope)->second.insert(
-                {c->children[1]->attribute->literal, // formal's 2nd child is the identifier
-                NodeTypeToDataType.find(c->children[0]->type)->second}); // formal's 1st child has the type
+            SYMBOL_TABLE.find(current_scope)->second.insert({c->children[1]->attribute->literal,                      // formal's 2nd child is the identifier
+                                                             NodeTypeToDataType.find(c->children[0]->type)->second}); // formal's 1st child has the type
         }
     }
-
 
     // if the node is a varaiable, add into scope
     if (root->type == NodeType::VAR_DEC)
@@ -106,19 +102,18 @@ void BuildSymbolTable(AST *root, std::string current_scope)
         BuildSymbolTable(c, current_scope);
     }
 
-
     // postorder, check if a identifier already defined before using
     if (root->type == NodeType::IDENTIFIER)
     {
         // find the scope of the identifier, if any
         auto current_table = SYMBOL_TABLE.find(current_scope)->second;
-        
+
         if (current_table.find(root->attribute->literal) == current_table.end())
         {
             // if there is no scope for the identifier as local variable, try global
-            if (GLOBAL_VAR.find(root->attribute->literal) == GLOBAL_VAR.end()  // if it is global variable
-            && GLOBAL_FUNC.find(root->attribute->literal) == GLOBAL_FUNC.end() // if it is global function
-            && LIB.find(root->attribute->literal) == LIB.end()) // if it is predefined
+            if (GLOBAL_VAR.find(root->attribute->literal) == GLOBAL_VAR.end()      // if it is global variable
+                && GLOBAL_FUNC.find(root->attribute->literal) == GLOBAL_FUNC.end() // if it is global function
+                && LIB.find(root->attribute->literal) == LIB.end())                // if it is predefined
             {
                 // otherwise, the identifier is not defined!
                 std::cerr << "Identifier: " << root->attribute->literal << " at or near line " << root->attribute->line
@@ -130,45 +125,54 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     }
 }
 
-DataType StabLookup(AST *root, std::string scope)
+#define isEqual(x, y) x->type == NodeType::y
+
+DataType TypeLookup(AST *root, std::string scope)
 {
-    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::UN_ARITHMETIC || root->type == NodeType::NUMBER)
+    if (isEqual(root, BIN_ARITHMETIC) || isEqual(root, UN_ARITHMETIC) || isEqual(root, NUMBER))
     {
         return DataType::INT;
     }
 
-    if (root->type == NodeType::BIN_LOGIC || root->type == NodeType::UN_LOGIC 
-    || root->type == NodeType::BOOLEAN || root->type == NodeType::TRUE || root->type == NodeType::FALSE)
+    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || isEqual(root, BIN_RELATION))
     {
         return DataType::BOOL;
     }
 
-    if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
+    // if it is Function Call
+    if (isEqual(root, FUNC_CALL))
     {
-        return GLOBAL_FUNC.find(root->children[1]->attribute->literal)->second.returnType;
+        // find the return type of the function in the function table
+        return GLOBAL_FUNC.find(ChildLiteral(root, 0))->second.returnType;
     }
 
+    // if it is simply an Identifier, look it up in the scope
     if (root->type == NodeType::IDENTIFIER)
     {
-
+        // grab the literal
         std::string id = root->attribute->literal;
 
+        // if the scope is not null
         if (SYMBOL_TABLE.find(scope) != SYMBOL_TABLE.end())
         {
+            // try to find the identifier in the scope
             if (SYMBOL_TABLE.find(scope)->second.find(id) != SYMBOL_TABLE.find(scope)->second.end())
             {
+                // if found, return the type
                 return SYMBOL_TABLE.find(scope)->second.find(id)->second;
             }
         }
 
+        // otherwise, try to find in the global scope
         if (GLOBAL_VAR.find(id) != GLOBAL_VAR.end())
         {
+            // if found, return
             return GLOBAL_VAR.find(id)->second;
         }
     }
 
     // not found
-    std::cerr << "Identifier: " << root->attribute->literal << " at or near line " << root->attribute->line
+    std::cerr << root->symbol << " at or near line " << root->attribute->line
               << " is undefined in current scope.\n"
               << std::endl;
     exit(EXIT_FAILURE);
@@ -177,81 +181,103 @@ DataType StabLookup(AST *root, std::string scope)
 void TypeCheck(AST *root, std::string current_scope)
 {
 
-    if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
+    if (isEqual(root, FUNC_DEC) || isEqual(root, MAIN_DEC))
     {
+        // change into a local scope
         current_scope = root->children[1]->attribute->literal;
     }
 
-    // bottom up, i.e, postorder
+    // bottom up, i.e, postorder for soundness
     for (auto c : root->children)
     {
         TypeCheck(c, current_scope);
     }
 
-    if (root->type == NodeType::ASSIGN)
+    // check if assignment match the pair
+    if (isEqual(root, ASSIGN))
     {
-        DataType lhs = StabLookup(root->children[0], current_scope);
-        DataType rhs = StabLookup(root->children[1], current_scope);
+        DataType lhs = TypeLookup(root->children[0], current_scope);
+        DataType rhs = TypeLookup(root->children[1], current_scope);
         if (lhs != rhs)
         {
-            std::cerr << "Failed to match " << root->children[0]->attribute->literal 
-            << " with RHS at or near line " <<  root->children[0]->attribute->line
+            std::cerr << "Failed to Type Assignment "
+                      << " for " << root->children[0]->attribute->literal
+                      << " and "
+                      << root->children[1]->symbol
+                      << " at or near line " << root->attribute->line
                       << std::endl;
             exit(EXIT_FAILURE);
         }
     }
 
-    if (root->type == NodeType::BIN_ARITHMETIC)
+    if (isEqual(root, BIN_ARITHMETIC))
     {
-        DataType lhs = StabLookup(root->children[0], current_scope);
-        DataType rhs = StabLookup(root->children[0], current_scope);
+        DataType lhs = TypeLookup(root->children[0], current_scope);
+        DataType rhs = TypeLookup(root->children[1], current_scope);
 
-        if(lhs!=DataType::INT||rhs!=DataType::INT)
+        if (lhs != DataType::INT || rhs != DataType::INT)
         {
-            std::cerr << "Fail to Type Binary Arithmetic" 
+            std::cerr << "Fail to Type Binary Arithmetic "
+                      << root->symbol
+                      << " for "
+                      << root->children[0]->symbol
+                      << " and "
+                      << root->children[1]->symbol
+                      << " at or near line " << root->attribute->line
                       << std::endl;
             exit(EXIT_FAILURE);
         }
     }
 
-    if (root->type == NodeType::UN_ARITHMETIC)
+    if (isEqual(root, UN_ARITHMETIC))
     {
-        DataType lhs = StabLookup(root->children[0], current_scope);
+        DataType c = TypeLookup(root->children[0], current_scope);
 
-        if(lhs!=DataType::INT)
+        if (c != DataType::INT)
         {
-            std::cerr << "Fail to Type Binary Arithmetic" 
+            std::cerr << "Fail to Type Unary Arithmetic "
+                      << root->symbol
+                      << " for "
+                      << root->children[0]->symbol
+                      << " at or near line " << root->attribute->line
                       << std::endl;
             exit(EXIT_FAILURE);
         }
     }
 
-     if (root->type == NodeType::BIN_LOGIC)
+    if (isEqual(root, BIN_LOGIC))
     {
-        DataType lhs = StabLookup(root->children[0], current_scope);
-        DataType rhs = StabLookup(root->children[0], current_scope);
+        DataType lhs = TypeLookup(root->children[0], current_scope);
+        DataType rhs = TypeLookup(root->children[1], current_scope);
 
-        if(lhs!=DataType::BOOL||rhs!=DataType::BOOL)
+        if (lhs != DataType::BOOL || rhs != DataType::BOOL)
         {
-            std::cerr << "Fail to Type Binary LOGIC" 
+            std::cerr << "Fail to Type Binary LOGIC "
+                      << root->symbol
+                      << " for "
+                      << root->children[0]->symbol
+                      << " and "
+                      << root->children[1]->symbol
+                      << " at or near line " << root->attribute->line
                       << std::endl;
             exit(EXIT_FAILURE);
         }
     }
 
-    if (root->type == NodeType::UN_LOGIC)
+    if (isEqual(root, UN_LOGIC))
     {
-        DataType lhs = StabLookup(root->children[0], current_scope);
+        DataType c = TypeLookup(root->children[0], current_scope);
 
-        if(lhs!=DataType::BOOL)
+        if (c != DataType::BOOL)
         {
-            std::cerr << "Fail to Type Binary LOGIC" 
+            std::cerr << "Fail to Type Un LOGIC "
+                      << " for "
+                      << root->children[0]->symbol
+                      << " at or near line " << root->attribute->line
                       << std::endl;
             exit(EXIT_FAILURE);
         }
     }
-
-
 }
 
 void dummy_break_point()

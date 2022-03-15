@@ -22,7 +22,7 @@
 
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;CollectGlobal($$);BuildSymbolTable($$,"");}
+                | globaldeclarations    {$$=$1;CollectGlobal($$);BuildSymbolTable($$,""); TypeCheck($$,"");}
                 ;
 
 literal         : NUMBER                {$$=$1;}

@@ -1233,7 +1233,7 @@ yyreduce:
     {
   case 3: /* start: globaldeclarations  */
 #line 25 "parser.y"
-                                        {yyval=yyvsp[0];CollectGlobal(yyval);BuildSymbolTable(yyval,"");}
+                                        {yyval=yyvsp[0];CollectGlobal(yyval);BuildSymbolTable(yyval,""); TypeCheck(yyval,"");}
 #line 1238 "parser.bison.cpp"
     break;
 

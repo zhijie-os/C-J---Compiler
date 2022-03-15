@@ -20,8 +20,8 @@ std::vector<DataType> ParseFormals(AST *root);
 
 void CollectGlobal(AST *root);
 void BuildSymbolTable(AST *root, std::string current_scope);
-void TypeCheck(AST* root);
-DataType StabLookup(AST* root, std::string);
+void TypeCheck(AST* root, std::string current_scope);
+DataType TypeLookup(AST* root, std::string);
 void dummy_break_point();
 extern std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC;
 extern std::unordered_map<std::string, DataType> GLOBAL_VAR;
