@@ -1232,7 +1232,7 @@ yyreduce:
     {
   case 2: /* dummy_start: start  */
 #line 22 "parser.y"
-                                        {CollectGlobal(yyval);dummy_break_point();}
+                                        {CollectGlobal(yyval);BuildSymbolTable(yyval,"");dummy_break_point();}
 #line 1237 "parser.bison.cpp"
     break;
 

@@ -19,7 +19,7 @@
 
 %%
 
-dummy_start     : start                 {CollectGlobal($$);dummy_break_point();}
+dummy_start     : start                 {CollectGlobal($$);BuildSymbolTable($$,"");dummy_break_point();}
                 ;
 
 start           : /* empty */
