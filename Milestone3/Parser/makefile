@@ -8,4 +8,4 @@ parser: parser.y scanner.l parser.h
 
 
 clean:
-	rm *.*.* parser parser.output parser.hpp
+	rm *.*.* parser

@@ -1,0 +1,6 @@
+main()
+{
+    boolean x;
+    int y;
+    x = !y;
+}

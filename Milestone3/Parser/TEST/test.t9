@@ -1,0 +1,10 @@
+main()
+{
+
+}
+
+
+int foo(int x, int x)
+{
+    
+}

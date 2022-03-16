@@ -45,13 +45,32 @@ void CollectGlobal(AST *root)
     // if the current node is global variable
     if (root->type == NodeType::GLOBAL_VAR_DEC)
     {
+        if(GLOBAL_FUNC.find(ChildLiteral(root, 1))!=GLOBAL_FUNC.end())
+        {
+            std::cerr << root->children[1]->attribute->literal << " was double definted at or near line "
+                          << root->children[1]->attribute->line
+                          << std::endl;
+                exit(EXIT_FAILURE);
+        }
+    
         // insert into global var table, second child's literal would be the identifier (key),
         // the first child would be the type of the identifier
         GLOBAL_VAR.insert({ChildLiteral(root, 1),
                            NodeToData(ChildType(root, 0))});
     }
+
     else if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
     {
+
+        if(GLOBAL_FUNC.find(ChildLiteral(root,1))!=GLOBAL_FUNC.end())
+        {
+
+        std::cerr << root->children[1]->attribute->literal << " was double definted at or near line "
+                          << root->children[1]->attribute->line
+                          << std::endl;
+                exit(EXIT_FAILURE);
+        }
+
         // insert into global function table
         // second child's literal would be the identifier (key)
         // the first child would be the return type
@@ -84,6 +103,14 @@ void BuildSymbolTable(AST *root, std::string current_scope)
         // for each formal of formals
         for (auto c : root->children[2]->children)
         {
+            if (SYMBOL_TABLE.find(current_scope)->second.find(c->children[1]->attribute->literal) != SYMBOL_TABLE.find(current_scope)->second.end())
+            {
+                std::cerr << c->children[1]->attribute->literal << " was double definted at or near line "
+                          << c->children[1]->attribute->line
+                          << std::endl;
+                exit(EXIT_FAILURE);
+            }
+
             // find the table of current_scope
             SYMBOL_TABLE.find(current_scope)->second.insert({c->children[1]->attribute->literal,                      // formal's 2nd child is the identifier
                                                              NodeTypeToDataType.find(c->children[0]->type)->second}); // formal's 1st child has the type
@@ -93,6 +120,14 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     // if the node is a varaiable, add into scope
     if (root->type == NodeType::VAR_DEC)
     {
+        if (SYMBOL_TABLE.find(current_scope)->second.find(root->children[1]->attribute->literal) != SYMBOL_TABLE.find(current_scope)->second.end())
+        {
+            std::cerr << root->children[1]->attribute->literal << " was double definted at or near line"
+                      << root->children[1]->attribute->line
+                      << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
         SYMBOL_TABLE.find(current_scope)->second.insert({root->children[1]->attribute->literal, NodeTypeToDataType.find(root->children[0]->type)->second});
     }
 
@@ -270,7 +305,7 @@ void TypeCheck(AST *root, std::string current_scope)
 
         if (c != DataType::BOOL)
         {
-            std::cerr << "Fail to Type Un LOGIC "
+            std::cerr << "Fail to Type Unary LOGIC"
                       << " for "
                       << root->children[0]->symbol
                       << " at or near line " << root->attribute->line
@@ -278,7 +313,26 @@ void TypeCheck(AST *root, std::string current_scope)
             exit(EXIT_FAILURE);
         }
     }
+
+    if (isEqual(root, WHILE))
+    {
+    }
 }
+
+
+
+// int NumMain(AST*root)
+// {
+//     if()
+
+//     int occurrence = 0;
+
+//     for(auto c:root->children)
+//     {
+//         NumMain(c,)
+//     }
+// }
+
 
 void dummy_break_point()
 {

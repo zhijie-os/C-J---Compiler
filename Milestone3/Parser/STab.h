@@ -10,6 +10,15 @@ struct FuncRecord
 {
     DataType returnType;
     std::vector<DataType> paramType;
+    AST* node;
+};
+
+
+// record in the symbol table to store the information about an identifier
+struct IdentifierRecord
+{
+    DataType type;
+    AST *node;
 };
 
 
@@ -22,6 +31,8 @@ void CollectGlobal(AST *root);
 void BuildSymbolTable(AST *root, std::string current_scope);
 void TypeCheck(AST* root, std::string current_scope);
 DataType TypeLookup(AST* root, std::string);
+
+// int NumMain(AST*root, int num);
 void dummy_break_point();
 extern std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC;
 extern std::unordered_map<std::string, DataType> GLOBAL_VAR;
