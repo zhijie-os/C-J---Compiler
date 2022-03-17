@@ -1233,7 +1233,7 @@ yyreduce:
     {
   case 3: /* start: globaldeclarations  */
 #line 25 "parser.y"
-                                        {yyval=yyvsp[0];CollectGlobal(yyval);BuildSymbolTable(yyval,""); TypeCheck(yyval,"");}
+                                        {yyval=yyvsp[0];CollectGlobal(yyval);dummy_break_point();BuildSymbolTable(yyval,""); TypeCheck(yyval,"");}
 #line 1238 "parser.bison.cpp"
     break;
 
@@ -1533,7 +1533,7 @@ yyreduce:
 
   case 53: /* unaryexpression: '-' unaryexpression  */
 #line 124 "parser.y"
-                                                                            {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
+                                                                            {yyvsp[-1]->type=NodeType::UN_ARITHMETIC;yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
 #line 1538 "parser.bison.cpp"
     break;
 

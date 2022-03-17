@@ -22,7 +22,7 @@
 
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;CollectGlobal($$);BuildSymbolTable($$,""); TypeCheck($$,"");}
+                | globaldeclarations    {$$=$1;CollectGlobal($$);dummy_break_point();BuildSymbolTable($$,""); TypeCheck($$,"");}
                 ;
 
 literal         : NUMBER                {$$=$1;}
@@ -121,7 +121,7 @@ postfixexpression       : primary                                           {$$=
                         | identifier                                        {$$=$1;}
                         ;
 
-unaryexpression         : '-' unaryexpression                               {$1->AttachChildren($2);$$=$1;}
+unaryexpression         : '-' unaryexpression                               {$1->type=NodeType::UN_ARITHMETIC;$1->AttachChildren($2);$$=$1;}
                         | '!' unaryexpression                               {$1->AttachChildren($2);$$=$1;}
                         | postfixexpression                                 {$$=$1;}
                         ;
