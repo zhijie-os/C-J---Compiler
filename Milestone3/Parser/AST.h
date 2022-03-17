@@ -50,9 +50,6 @@ public:
 
     AST(NodeType, std::string, ATR *, AST *, AST *, AST *);
 
-
-    void PrettyPrint(int);
-
     void AttachChildren(AST *);
 
     void AttachChildren(AST *, AST *);
@@ -69,3 +66,5 @@ public:
 
     bool isLeaf();
 };
+
+void PrettyPrint(AST*, std::string, int);

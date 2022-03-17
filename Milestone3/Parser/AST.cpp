@@ -1,5 +1,5 @@
 #include "AST.h"
-
+#include "STab.h"
 
 ATR::ATR(int l)
 {
@@ -19,14 +19,14 @@ AST::AST(NodeType t, std::string str)
     symbol = str;
 }
 
-AST::AST(NodeType t,std::string str, ATR* atr)
+AST::AST(NodeType t, std::string str, ATR *atr)
 {
     type = t;
     attribute = atr;
     symbol = str;
 }
 
-AST::AST(NodeType t,std::string str, AST *a)
+AST::AST(NodeType t, std::string str, AST *a)
 {
     type = t;
 
@@ -34,35 +34,34 @@ AST::AST(NodeType t,std::string str, AST *a)
     AttachChildren(a);
 }
 
-AST::AST(NodeType t,std::string str, AST *a, AST *b)
+AST::AST(NodeType t, std::string str, AST *a, AST *b)
 {
-    type = t ;
+    type = t;
 
     symbol = str;
-    AttachChildren(a,b);
+    AttachChildren(a, b);
 }
 
-AST::AST(NodeType t,std::string str, AST *a, AST *b, AST *c)
+AST::AST(NodeType t, std::string str, AST *a, AST *b, AST *c)
 {
 
-    type = t ;
+    type = t;
 
     symbol = str;
-    AttachChildren(a,b,c);
+    AttachChildren(a, b, c);
 }
 
-
-AST::AST(NodeType t,std::string str, AST *a, AST *b, AST *c, AST*d)
+AST::AST(NodeType t, std::string str, AST *a, AST *b, AST *c, AST *d)
 {
 
-    type = t ;
+    type = t;
 
     symbol = str;
-    AttachChildren(a,b,c);
+    AttachChildren(a, b, c);
     AttachChildren(d);
 }
 
-AST::AST(NodeType t,std::string str, ATR* atr, AST *a)
+AST::AST(NodeType t, std::string str, ATR *atr, AST *a)
 {
     type = t;
     attribute = atr;
@@ -71,50 +70,76 @@ AST::AST(NodeType t,std::string str, ATR* atr, AST *a)
     AttachChildren(a);
 }
 
-AST::AST(NodeType t,std::string str, ATR* atr, AST *a, AST *b)
+AST::AST(NodeType t, std::string str, ATR *atr, AST *a, AST *b)
 {
 
     type = t;
     attribute = atr;
 
     symbol = str;
-    AttachChildren(a,b);
+    AttachChildren(a, b);
 }
 
-AST::AST(NodeType t,std::string str, ATR* atr, AST *a, AST *b, AST *c)
+AST::AST(NodeType t, std::string str, ATR *atr, AST *a, AST *b, AST *c)
 {
 
     type = t;
     attribute = atr;
 
     symbol = str;
-    AttachChildren(a,b,c);
+    AttachChildren(a, b, c);
 }
 
-void AST::PrettyPrint(int level)
+void PrettyPrint(AST *root, std::string scope, int level)
 {
-    for(int i=0;i<level;i++)
+    for (int i = 0; i < level; i++)
     {
         std::cout << "    ";
     }
-
-    std::cout << symbol;
-
-    if(attribute)
+    if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
     {
-        std::cout << " { line: " << attribute->line ;
-        if(!attribute->literal.empty())
+        scope = root->children[1]->attribute->literal;
+    }
+
+    std::cout << root->symbol;
+
+    if (root->attribute)
+    {
+        std::cout << " { line: " << root->attribute->line;
+        if (!root->attribute->literal.empty())
         {
-            std::cout<<" ,"<<"literal: " << attribute->literal;
+            std::cout << ", "
+                      << "literal: " << root->attribute->literal;
         }
+        if (root->type == NodeType::IDENTIFIER)
+        {
+            std::cout << ", "
+                      << "address: ";
+            if (!scope.empty() && SYMBOL_TABLE.find(scope)->second.find(root->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
+            {
+                std::cout << &SYMBOL_TABLE.find(scope)->second.find(root->attribute->literal)->second;
+            }
+            else
+            {
+                if (GLOBAL_FUNC.find(root->attribute->literal) != GLOBAL_FUNC.end())
+                {
+                    std::cout << &GLOBAL_FUNC.find(root->attribute->literal)->second;
+                }
+                else
+                {
+                    std::cout << &GLOBAL_VAR.find(root->attribute->literal)->second;
+                }
+            }
+        }
+
         std::cout << " }";
     }
 
     std::cout << std::endl;
 
-    for(auto c:children)
+    for (auto c : root->children)
     {
-        c->PrettyPrint(level+1);
+        PrettyPrint(c, scope, level + 1);
     }
 }
 
@@ -165,5 +190,5 @@ void AST::BecomeSibling(AST *a, AST *b, AST *c)
 
 bool AST::isLeaf()
 {
-    return children.size()==0;
+    return children.size() == 0;
 }

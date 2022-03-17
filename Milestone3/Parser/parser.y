@@ -22,10 +22,13 @@
 
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;CollectGlobal($$);MainDefined();dummy_break_point();BuildSymbolTable($$,""); 
-                TypeCheck($$,"");
-                FinalCheck($$,"");
-                $$->PrettyPrint(0);}
+                | globaldeclarations    {$$=$1;CollectGlobal($$);
+                                            MainDefined();
+                                            dummy_break_point();
+                                            BuildSymbolTable($$,""); 
+                                            TypeCheck($$,"");
+                                            FinalCheck($$,"");
+                                            PrettyPrint($$,"",0);}
                 ;
 
 literal         : NUMBER                {$$=$1;}

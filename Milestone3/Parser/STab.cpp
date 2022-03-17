@@ -6,7 +6,16 @@
 #define NodeToData(x) NodeTypeToDataType.find(x)->second
 
 std::string MAIN_ID = "";
-std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC;
+std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC
+{
+    {"getchar", {{DataType::INT}, {}}},
+    {"halt",    {{DataType::VOID}, {}}},
+    {"printb", {{DataType::VOID}, {DataType::BOOL}}},
+    {"printc", {{DataType::VOID}, {DataType::INT}}},
+    {"printi", {{DataType::VOID}, {DataType::INT}}},
+    {"prints", {{DataType::VOID}, {DataType::STRING}}},
+};
+
 std::unordered_map<std::string, IdentifierRecord> GLOBAL_VAR;
 std::unordered_map<std::string, std::unordered_map<std::string, IdentifierRecord>> SYMBOL_TABLE;
 
@@ -18,12 +27,7 @@ const std::unordered_map<DataType, std::string> DataTypeToString{
 };
 
 const std::unordered_map<std::string, FuncRecord> LIB{
-    {"getchar", {{DataType::INT}, {}}},
-    {"halt", {{DataType::VOID}, {DataType::VOID}}},
-    {"printb", {{DataType::VOID}, {DataType::BOOL}}},
-    {"printc", {{DataType::VOID}, {DataType::INT}}},
-    {"printi", {{DataType::VOID}, {DataType::INT}}},
-    {"prints", {{DataType::VOID}, {DataType::STRING}}},
+   
 };
 
 const std::unordered_map<NodeType, DataType> NodeTypeToDataType{
@@ -304,6 +308,12 @@ void BuildSymbolTable(AST *root, std::string current_scope)
 
 DataType TypeLookup(AST *root, std::string scope)
 {
+
+    if (isEqual(root,FUNC_CALL))
+    {
+        return GLOBAL_FUNC.find(ChildLiteral(root,0))->second.returnType;
+    }
+
     if (isEqual(root, NUMBER))
     {
         return DataType::INT;
@@ -361,6 +371,10 @@ DataType TypeLookup(AST *root, std::string scope)
         return DataType::VOID;
     }
 
+    if(root->type == NodeType::ASSIGN)
+    {
+        return TypeLookup(root->children[0],scope);
+    }
 
     // this line should not be executed if all the errors are caputured, keep for debugging purpose
     SemanticError(root->attribute->line, "there is a " + root->symbol + " is undefined");
@@ -441,6 +455,25 @@ void TypeCheck(AST *root, std::string current_scope)
 
         SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type.");
     }
+
+
+    if (isEqual(root, BIN_RELATION))
+    {
+
+        DataType lhs = TypeLookup(root->children[0], current_scope);
+        DataType rhs = TypeLookup(root->children[1], current_scope);
+
+        if (lhs != DataType::INT)
+        {
+            SemanticError(root->attribute->line, "binary relation operator " + root->symbol + " has Non NUMBER type on LHS.");
+        }
+        else if (rhs != DataType::INT)
+        {
+
+            SemanticError(root->attribute->line, "binary relation operator " + root->symbol + " has Non NUMBER type on RHS.");
+        }
+    }
+
 
     if (isEqual(root, WHILE))
     {

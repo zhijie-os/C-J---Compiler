@@ -22,7 +22,6 @@ struct IdentifierRecord
 };
 
 
-extern const std::unordered_map<std::string, FuncRecord> LIB;
 extern const std::unordered_map<NodeType, DataType> NodeTypeToDataType;
 extern const std::unordered_map<DataType, std::string> DataTypeToString;
 std::vector<DataType> ParseFormals(AST *root);
