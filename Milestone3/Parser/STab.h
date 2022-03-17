@@ -42,6 +42,7 @@ DataType TypeLookup(AST* root, std::string);
 void FinalCheck(AST* root, std::string);
 void SemanticError(int, std::string);
 void MainDefined();
+bool ContainReturn(AST* root);
 
 // int NumMain(AST*root, int num);
 void dummy_break_point();

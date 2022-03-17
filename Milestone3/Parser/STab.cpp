@@ -73,6 +73,25 @@ void ActualsMatchFormals(AST *root, std::string scope)
     }
 }
 
+
+bool ContainReturn(AST* root)
+{
+    if(root->type==NodeType::RETURN)
+    {
+        return true;
+    }
+    
+    for(auto c:root->children)
+    {
+        if(ContainReturn(c))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void MainDefined()
 {
     if (MAIN_ID.empty())
@@ -477,6 +496,14 @@ void FinalCheck(AST* root, std::string current_scope)
     if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
     {
         current_scope = root->children[1]->attribute->literal;
+
+        if(GLOBAL_FUNC.find(current_scope)->second.returnType!=DataType::VOID)
+        {
+            if(!ContainReturn(root))
+            {
+                SemanticError(root->children[1]->attribute->line, "non-void function " + current_scope + " does not return");
+            }
+        }
     }
 
     for(auto c:root->children)
