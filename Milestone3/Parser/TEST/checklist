@@ -1,14 +1,14 @@
-No main declaration found. 
-Multiple main declarations found.
+[X] No main declaration found. 
+[X] Multiple main declarations found.
 [X] A local declaration was not in an outermost block.
-The number/type of arguments in a function call doesn't match the function's declaration.
-The main function can't be called.
-Break statements must be inside a while statement.
+[X] The number/type of arguments in a function call doesn't match the function's declaration.
+[X] The main function can't be called.
+[X] Break statements must be inside a while statement.
 [X] Type mismatch for an operator (||, &&, ==, !=, =, <, >, <=, >=, +, - (unary and binary), *, /, %, !).
 No return statement in a non-void function.
 A void function can't return a value.
 A non-void function must return a value. Note that you're only checking for the existence of an appropriate return statement at the semantic checking stage, not whether it's actually executed.
-A value returned from a function has the wrong type.
-An if- or while-condition must be of Boolean type.
+[X] A value returned from a function has the wrong type.
+[X] An if- or while-condition must be of Boolean type.
 [X] An identifier is redefined within the same scope.
 [X] An undeclared identifier is used.

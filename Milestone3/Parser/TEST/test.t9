@@ -1,10 +1,13 @@
 main()
 {
-
+    int x;
+    int j;
+    boolean k;
+    foo(x,j);
 }
 
 
-int foo(int x, int x)
+int foo(int x, boolean k)
 {
-    
+
 }

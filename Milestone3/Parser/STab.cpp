@@ -1,16 +1,20 @@
 #include "STab.h"
 #include "AST.h"
 
+#define ChildType(p, i) p->children[i]->type
+#define ChildLiteral(p, i) p->children[i]->attribute->literal
+#define NodeToData(x) NodeTypeToDataType.find(x)->second
+
+std::string MAIN_ID = "";
 std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC;
 std::unordered_map<std::string, IdentifierRecord> GLOBAL_VAR;
 std::unordered_map<std::string, std::unordered_map<std::string, IdentifierRecord>> SYMBOL_TABLE;
 
-const std::unordered_map<DataType, std::string> DataTypeToString
-{
-    {DataType::BOOL,"BOOLEAN"},
-    {DataType::INT,"NUMBER"},
-    {DataType::STRING,"STRING"},
-    {DataType::VOID,"VOID"},
+const std::unordered_map<DataType, std::string> DataTypeToString{
+    {DataType::BOOL, "BOOLEAN"},
+    {DataType::INT, "NUMBER"},
+    {DataType::STRING, "STRING"},
+    {DataType::VOID, "VOID"},
 };
 
 const std::unordered_map<std::string, FuncRecord> LIB{
@@ -34,7 +38,7 @@ std::vector<DataType> ParseFormals(AST *root)
     std::vector<DataType> toReturn;
 
     // for every formal in formals
-    for (auto c : root->children[2]->children)
+    for (auto c : root->children)
     {
         // this formal's first child is the type, push it in to the toReturn
         toReturn.push_back(NodeTypeToDataType.find(c->children[0]->type)->second);
@@ -43,9 +47,67 @@ std::vector<DataType> ParseFormals(AST *root)
     return toReturn;
 }
 
-#define ChildType(p, i) p->children[i]->type
-#define ChildLiteral(p, i) p->children[i]->attribute->literal
-#define NodeToData(x) NodeTypeToDataType.find(x)->second
+void ActualsMatchFormals(AST *root, std::string scope)
+{
+    std::vector<DataType> formals = GLOBAL_FUNC.find(ChildLiteral(root, 0))->second.paramType;
+    std::vector<DataType> actuals;
+
+    // for each actual in actuals
+    for (auto c : root->children[1]->children)
+    {
+        // this actual's first child
+        actuals.push_back(TypeLookup(c, scope));
+    }
+
+    if (formals.size() != actuals.size())
+    {
+        SemanticError(root->children[0]->attribute->line, ChildLiteral(root, 0) + ": ACTUALS does not match FORMALS by size");
+    }
+
+    for (int i = 0; i < formals.size(); i++)
+    {
+        if (formals[i] != actuals[i])
+        {
+            SemanticError(root->children[0]->attribute->line, ChildLiteral(root, 0) + ": ACTUALS does not match FORMALS by type");
+        }
+    }
+}
+
+void MainDefined()
+{
+    if (MAIN_ID.empty())
+    {
+        std::cerr << "Main was not defined!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+
+void BreakInWhile(AST *root)
+{
+    bool inWhile = false;
+    AST* copy = root;
+
+    while(root->parent)
+    {
+        root= root->parent;
+        if(root->type==NodeType::WHILE)
+        {
+            inWhile = true;
+        }
+        else if(root->type==NodeType::BLOCK)
+        {
+            break;
+        }
+    }
+
+    if(!inWhile)
+    {
+        SemanticError(copy->attribute->line,"Break is not inside WHILE loop");
+    }
+
+}
 
 bool NotGlobalDefined(std::string id, AST *ptr)
 {
@@ -82,10 +144,10 @@ void InsertGlobalVar(std::string literal, DataType type, AST *node)
 
 void SemanticError(int line, std::string reason)
 {
-    std::cerr   << "Line " << line << ", "
-                << reason 
-                << "."
-                << std::endl;
+    std::cerr << "Line " << line << ", "
+              << reason
+              << "."
+              << std::endl;
 
     exit(EXIT_FAILURE);
 }
@@ -113,7 +175,21 @@ void CollectGlobal(AST *root)
             // second child's literal would be the identifier (key)
             // the first child would be the return type
             // the formals would be the children of third child
-            InsertGlobalFunc(ChildLiteral(root, 1), NodeToData(ChildType(root, 0)), ParseFormals(root), root->children[1]);
+            InsertGlobalFunc(ChildLiteral(root, 1), NodeToData(ChildType(root, 0)), ParseFormals(root->children[2]), root->children[1]);
+            if (root->type == NodeType::MAIN_DEC)
+            {
+                if (MAIN_ID.empty())
+                {
+                    MAIN_ID = ChildLiteral(root, 1);
+                }
+                else
+                {
+                    SemanticError(root->children[1]->attribute->line, "MAIN was already defined: " 
+                    + GLOBAL_FUNC.find(MAIN_ID)->second.node->attribute->literal 
+                    + ", at line "+ 
+                    std::to_string(GLOBAL_FUNC.find(MAIN_ID)->second.node->attribute->line));
+                }
+            }
         }
     }
 
@@ -142,8 +218,8 @@ void BuildSymbolTable(AST *root, std::string current_scope)
         for (auto c : root->children[2]->children)
         {
             if (SYMBOL_TABLE.find(current_scope)->second.find(c->children[1]->attribute->literal) != SYMBOL_TABLE.find(current_scope)->second.end())
-            {   
-                SemanticError(c->children[1]->attribute->line,c->children[1]->attribute->literal+"was double definted");
+            {
+                SemanticError(c->children[1]->attribute->line, c->children[1]->attribute->literal + "was double definted");
             }
 
             // find the table of current_scope
@@ -157,7 +233,7 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     {
         if (SYMBOL_TABLE.find(current_scope)->second.find(root->children[1]->attribute->literal) != SYMBOL_TABLE.find(current_scope)->second.end())
         {
-            SemanticError(root->children[1]->attribute->line,root->children[1]->attribute->literal + " was double definted");
+            SemanticError(root->children[1]->attribute->line, root->children[1]->attribute->literal + " was double definted");
         }
 
         SYMBOL_TABLE.find(current_scope)->second.insert({root->children[1]->attribute->literal, {NodeTypeToDataType.find(root->children[0]->type)->second, root->children[1]}});
@@ -181,7 +257,7 @@ void BuildSymbolTable(AST *root, std::string current_scope)
                 && LIB.find(root->attribute->literal) == LIB.end())                // if it is predefined
             {
 
-                SemanticError(root->attribute->line,"Identifier: " + root->attribute->literal +" is undefined");
+                SemanticError(root->attribute->line, "Identifier: " + root->attribute->literal + " is undefined");
             }
         }
         else
@@ -197,17 +273,23 @@ void BuildSymbolTable(AST *root, std::string current_scope)
                     && LIB.find(root->attribute->literal) == LIB.end())                // if it is predefined
                 {
                     // otherwise, the identifier is not defined!
-                     SemanticError(root->attribute->line,"Identifier: " + root->attribute->literal +" is undefined");
+                    SemanticError(root->attribute->line, "Identifier: " + root->attribute->literal + " is undefined");
                 }
             }
         }
     }
+
 }
 
 #define isEqual(x, y) x->type == NodeType::y
 
 DataType TypeLookup(AST *root, std::string scope)
 {
+    if (isEqual(root, NUMBER))
+    {
+        return DataType::INT;
+    }
+
     if (isEqual(root, BIN_ARITHMETIC) || isEqual(root, UN_ARITHMETIC) || isEqual(root, NUMBER))
     {
         return DataType::INT;
@@ -250,19 +332,19 @@ DataType TypeLookup(AST *root, std::string scope)
         }
     }
 
-    if(root->type==NodeType::STRING)
+    if (root->type == NodeType::STRING)
     {
         return DataType::STRING;
     }
 
-
-    if(root->type==NodeType::VOID)
+    if (root->type == NodeType::VOID)
     {
         return DataType::VOID;
     }
 
+
     // this line should not be executed if all the errors are caputured, keep for debugging purpose
-    SemanticError(root->attribute->line,"there is a " + root->symbol +" is undefined");
+    SemanticError(root->attribute->line, "there is a " + root->symbol + " is undefined");
     return DataType::VOID;
 }
 
@@ -287,11 +369,9 @@ void TypeCheck(AST *root, std::string current_scope)
         DataType lhs = TypeLookup(root->children[0], current_scope);
         DataType rhs = TypeLookup(root->children[1], current_scope);
 
-
-
         if (lhs != rhs)
         {
-            SemanticError(root->attribute->line, root->children[0]->attribute->literal+"can not be assigned to be "+ DataTypeToString.find(rhs)->second);
+            SemanticError(root->attribute->line, root->children[0]->attribute->literal + "can not be assigned to be " + DataTypeToString.find(rhs)->second);
         }
     }
 
@@ -302,11 +382,11 @@ void TypeCheck(AST *root, std::string current_scope)
 
         if (lhs != DataType::INT)
         {
-            SemanticError(root->attribute->line, "binary arithmetic operator "+root->symbol+" has Non NUMBER type on LHS.");
+            SemanticError(root->attribute->line, "binary arithmetic operator " + root->symbol + " has Non NUMBER type on LHS.");
         }
         if (rhs != DataType::INT)
         {
-            SemanticError(root->attribute->line, "binary arithmetic operator "+root->symbol+" has Non NUMBER type on RHS.");
+            SemanticError(root->attribute->line, "binary arithmetic operator " + root->symbol + " has Non NUMBER type on RHS.");
         }
     }
 
@@ -316,7 +396,7 @@ void TypeCheck(AST *root, std::string current_scope)
 
         if (c != DataType::INT)
         {
-            SemanticError(root->attribute->line, "unary arithmetic operator "+root->symbol+" has Non NUMBER type.");
+            SemanticError(root->attribute->line, "unary arithmetic operator " + root->symbol + " has Non NUMBER type.");
         }
     }
 
@@ -327,12 +407,12 @@ void TypeCheck(AST *root, std::string current_scope)
 
         if (lhs != DataType::BOOL)
         {
-            SemanticError(root->attribute->line, "binary boolean operator "+root->symbol+" has Non BOOLEAN type on LHS.");
+            SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type on LHS.");
         }
         else if (rhs != DataType::BOOL)
         {
-            
-            SemanticError(root->attribute->line, "binary boolean operator "+root->symbol+" has Non BOOLEAN type on RHS.");
+
+            SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type on RHS.");
         }
     }
 
@@ -340,8 +420,7 @@ void TypeCheck(AST *root, std::string current_scope)
     {
         DataType c = TypeLookup(root->children[0], current_scope);
 
-        
-            SemanticError(root->attribute->line, "binary boolean operator "+root->symbol+" has Non BOOLEAN type.");
+        SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type.");
     }
 
     if (isEqual(root, WHILE))
@@ -373,19 +452,65 @@ void TypeCheck(AST *root, std::string current_scope)
             SemanticError(root->children[0]->attribute->line, "IF_ELSE has non BOOLEAN condition.");
         }
     }
+
+    if (isEqual(root, FUNC_CALL))
+    {
+        if (!ChildLiteral(root, 0).empty() && ChildLiteral(root, 0) == MAIN_ID)
+        {
+            SemanticError(root->children[0]->attribute->line, "program attempted to call MAIN");
+        }
+
+        if (GLOBAL_FUNC.find(ChildLiteral(root, 0)) != GLOBAL_FUNC.end())
+        {
+            ActualsMatchFormals(root, current_scope);
+        }
+        else
+        {
+            SemanticError(root->children[0]->attribute->line, "function " + ChildLiteral(root, 0) + " was not defined");
+        }
+    }
 }
 
-// int NumMain(AST*root)
-// {
-//     if()
+void FinalCheck(AST* root, std::string current_scope)
+{
+    
+    if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
+    {
+        current_scope = root->children[1]->attribute->literal;
+    }
 
-//     int occurrence = 0;
+    for(auto c:root->children)
+    {
+        FinalCheck(c,current_scope);
+    }
 
-//     for(auto c:root->children)
-//     {
-//         NumMain(c,)
-//     }
-// }
+    // check if a break statement is inside WHILE loop
+    if(root->type==NodeType::BREAK)
+    {
+        BreakInWhile(root);
+    }
+
+
+    // check if return type is correct
+    if(root->type==NodeType::RETURN)
+    {
+        DataType returnValue;
+
+        if(root->children.empty())
+        {
+            returnValue = DataType::VOID;
+        }
+        else
+        {
+            returnValue = TypeLookup(root->children[0],current_scope);
+        }
+
+        if(returnValue!=GLOBAL_FUNC.find(current_scope)->second.returnType)
+        {
+            SemanticError(root->attribute->line, "function "+ current_scope +" returns wrong type");
+        }
+    }
+}
 
 void dummy_break_point()
 {

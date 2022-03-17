@@ -51,8 +51,8 @@ false       {yylval=new AST(NodeType::FALSE, "false",new ATR(yylineno)); return 
 boolean     {yylval=new AST(NodeType::BOOLEAN, "bool",new ATR(yylineno)); return BOOLEAN;}
 int         {yylval=new AST(NodeType::INT, "int",new ATR(yylineno)); return INT;}
 void        {yylval=new AST(NodeType::VOID, "void",new ATR(yylineno)); return VOID;}
-if          {return IF;}
-else        {return ELSE;}
+if          {yylval=new AST(NodeType::IF,"while", new ATR(yylineno)); return IF;}
+else        {yylval=new AST(NodeType::IF_ELSE,"while", new ATR(yylineno)); return ELSE;}
 while       {yylval=new AST(NodeType::WHILE,"while", new ATR(yylineno));return WHILE;}
 break       {yylval=new AST(NodeType::BREAK, "break",new ATR(yylineno)); return BREAK;}
 return      {yylval=new AST(NodeType::RETURN, "return",new ATR(yylineno)); return RETURN;}

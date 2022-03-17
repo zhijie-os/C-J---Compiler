@@ -22,7 +22,10 @@
 
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;CollectGlobal($$);dummy_break_point();BuildSymbolTable($$,""); TypeCheck($$,"");}
+                | globaldeclarations    {$$=$1;CollectGlobal($$);MainDefined();dummy_break_point();BuildSymbolTable($$,""); 
+                TypeCheck($$,"");
+                FinalCheck($$,"");
+                $$->PrettyPrint(0);}
                 ;
 
 literal         : NUMBER                {$$=$1;}
@@ -92,9 +95,9 @@ statement               : block                                             {$$=
                         | BREAK ';'                                         {$$=$1;}
                         | RETURN expression ';'                             {$1->AttachChildren($2); $$=$1;}
                         | RETURN ';'                                        {$$=$1;}
-                        | IF '(' expression ')' statement                   {$$=new AST(NodeType::IF, "IF",new ATR($3->line), $3, $5);}
-                        | IF '(' expression ')' statement ELSE statement    {$$=new AST(NodeType::IF_ELSE,"IF_ELSE",new ATR($3->line),$3, $5, $7);}
-                        | WHILE '(' expression ')' statement                {$$=new AST(NodeType::WHILE,"WHILE", $3, $5); }
+                        | IF '(' expression ')' statement                   {$1->AttachChildren($3,$5);$$=$1;}
+                        | IF '(' expression ')' statement ELSE statement    {$1->type=NodeType::IF_ELSE;$1->AttachChildren($3,$5,$7);$$=$1;}
+                        | WHILE '(' expression ')' statement                {$1->AttachChildren($3,$5);$$=$1; }
                         ;
 
 

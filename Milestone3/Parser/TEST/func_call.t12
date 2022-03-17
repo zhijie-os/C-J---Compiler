@@ -1,0 +1,10 @@
+main()
+{
+    int j;
+    foo(4,j);
+}
+
+int foo(int k, int j)
+{
+
+}

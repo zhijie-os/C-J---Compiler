@@ -1,0 +1,13 @@
+main()
+{
+    foo();
+    return;
+}
+
+
+int foo()
+{
+    int j;
+    return true;
+}
+
