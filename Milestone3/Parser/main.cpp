@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "parser.h"
-#include "Semantic.h"
+#include "semantic.h"
 
 int main(int argc, char *argv[])
 {

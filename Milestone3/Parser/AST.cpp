@@ -1,5 +1,5 @@
 #include "AST.h"
-#include "Semantic.h"
+#include "semantic.h"
 
 ATR::ATR(int l)
 {
@@ -90,27 +90,38 @@ AST::AST(NodeType t, std::string str, ATR *atr, AST *a, AST *b, AST *c)
     AttachChildren(a, b, c);
 }
 
+
+
+// Pretty Print the AST
 void PrettyPrint(AST *root,  int level)
 {
+    // print indentation
     for (int i = 0; i < level; i++)
     {
         std::cout << "    ";
     }
 
+    // print the node symbol
     std::cout << root->symbol;
 
+
+    // if attribute exists
     if (root->attribute)
     {
+        // print the line number
         std::cout << " { line: " << root->attribute->line;
         if (!root->attribute->literal.empty())
         {
+            // print the literal
             std::cout << ", "
                       << "literal: " << root->attribute->literal;
         }
         if (root->type == NodeType::IDENTIFIER)
         {
+            // if it is identifier, print the address of symbol table entry
             std::cout << ", "
                       << "address: ";
+                    //   if it is function, print both return type and parameter types
             if(root->f_record)
             {
                 std::cout << root->f_record;
@@ -123,6 +134,7 @@ void PrettyPrint(AST *root,  int level)
                 std::cout << " > ";
             }
 
+            // print the type of the identifier
             if(root->id_record)
             {
                 std::cout << root->id_record;
@@ -135,11 +147,13 @@ void PrettyPrint(AST *root,  int level)
 
     std::cout << std::endl;
 
+    // recurse
     for(auto c:root->children)
     {
         PrettyPrint(c,level+1);
     }
 }
+
 
 void AST::AttachChildren(AST *a)
 {

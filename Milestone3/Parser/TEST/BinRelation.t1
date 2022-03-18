@@ -1,0 +1,6 @@
+main()
+{
+    boolean b;
+    int j;
+    b = 3 < false;
+}

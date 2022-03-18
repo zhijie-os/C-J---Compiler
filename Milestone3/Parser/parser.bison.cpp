@@ -73,7 +73,7 @@
     #include <stdlib.h>
     #include "parser.h"
     #include "AST.h"
-    #include "Semantic.h"
+    #include "semantic.h"
 
 
 #line 80 "parser.bison.cpp"

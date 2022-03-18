@@ -1,4 +1,4 @@
-#include "Semantic.h"
+#include "semantic.h"
 #include "AST.h"
 
 std::string MAIN_ID = "";
@@ -119,12 +119,12 @@ void BreakInWhile(AST *root)
     while (root->parent)
     {
         root = root->parent;
-        if (root->type == NodeType::WHILE)
+        if (root->type == NodeType::BLOCK)
         {
-            inWhile = true;
-        }
-        else if (root->type == NodeType::BLOCK)
-        {
+            if(root->parent->type==NodeType::WHILE)
+            {
+                inWhile = true;
+            }    
             break;
         }
     }
@@ -370,24 +370,24 @@ void BuildSymbolTable(AST *root, std::string current_scope)
 
 
 
+// lookup the type of a particular tree node, even it is not an identifier
 DataType TypeLookup(AST *root)
 {
+    // correctness are built bottom,up, we can assume the subtree is the correct type
 
+    // if the node is function call, the return type is the return
     if (isEqual(root, FUNC_CALL))
     {
         return Child(root, 0)->f_record->returnType;
     }
 
-    if (isEqual(root, NUMBER))
-    {
-        return DataType::INT;
-    }
-
+    // the root is number or arithmetic operation, return INT
     if (isEqual(root, BIN_ARITHMETIC) || isEqual(root, UN_ARITHMETIC) || isEqual(root, NUMBER))
     {
         return DataType::INT;
     }
 
+    // if the root is logic operation, relation operation, true or false
     if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || isEqual(root, BIN_RELATION))
     {
         return DataType::BOOL;
@@ -401,24 +401,30 @@ DataType TypeLookup(AST *root)
         {
             return root->id_record->type;
         }
+
         SemanticError(root->attribute->line, root->attribute->literal + " is not defined");
     }
 
+    // if the node is a string "xxx"
     if (root->type == NodeType::STRING)
     {
         return DataType::STRING;
     }
 
+
+    // if the node is VOID
     if (root->type == NodeType::VOID)
     {
         return DataType::VOID;
     }
 
+    // if the node is assign operation, return the type of the identifier to be assigned a value
     if (root->type == NodeType::ASSIGN)
     {
         return TypeLookup(Child(root, 0));
     }
 
+    // dummy return
     return DataType::VOID;
 }
 
@@ -436,6 +442,8 @@ void TypeCheck(AST *root)
         }
     }
 
+
+    // both side should be number
     if (isEqual(root, BIN_ARITHMETIC))
     {
         DataType lhs = TypeLookup(Child(root, 0));
@@ -451,6 +459,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // the child should be number
     if (isEqual(root, UN_ARITHMETIC))
     {
         DataType c = TypeLookup(Child(root, 0));
@@ -461,6 +470,8 @@ void TypeCheck(AST *root)
         }
     }
 
+
+    // both side should be boolean
     if (isEqual(root, BIN_LOGIC))
     {
         DataType lhs = TypeLookup(Child(root, 0));
@@ -477,6 +488,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // the only child should be boolean
     if (isEqual(root, UN_LOGIC))
     {
         DataType c = TypeLookup(Child(root, 0));
@@ -484,6 +496,7 @@ void TypeCheck(AST *root)
         SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type.");
     }
 
+    // both side should be number
     if (isEqual(root, BIN_RELATION))
     {
 
@@ -501,6 +514,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // check if the condition is boolean
     if (isEqual(root, WHILE))
     {
         DataType condition = TypeLookup(root->children[0]);
@@ -511,6 +525,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // check if the condition is boolean
     if (isEqual(root, IF))
     {
         DataType condition = TypeLookup(root->children[0]);
@@ -521,6 +536,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // check if the condition is boolean
     if (isEqual(root, IF_ELSE))
     {
         DataType condition = TypeLookup(root->children[0]);
@@ -531,6 +547,7 @@ void TypeCheck(AST *root)
         }
     }
 
+    // if it's function call, check if arguments match parameters
     if (isEqual(root, FUNC_CALL))
     {
         if (!ChildLiteral(root, 0).empty() && ChildLiteral(root, 0) == MAIN_ID)
@@ -549,6 +566,8 @@ void TypeCheck(AST *root)
     }
 }
 
+
+// some additionl check: non-void function return, break in main, function return type is correct
 void FinalCheck(AST *root, std::string current_scope)
 {
 
@@ -595,11 +614,4 @@ void FinalCheck(AST *root, std::string current_scope)
             SemanticError(root->attribute->line, "function " + current_scope + " returns wrong type");
         }
     }
-}
-
-void dummy_break_point()
-{
-    std::cout << "Enter" << std::endl;
-    int v = 5;
-    std::cout << "Exit" << std::endl;
 }

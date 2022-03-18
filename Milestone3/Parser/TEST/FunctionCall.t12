@@ -1,10 +1,11 @@
 main()
 {
     int j;
-    foo(4,j);
+    boolean k;
+    foo(k,j);
 }
 
 int foo(int k, int j)
 {
-
+    return k;
 }
