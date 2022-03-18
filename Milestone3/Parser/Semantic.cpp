@@ -1,7 +1,5 @@
-#include "STab.h"
+#include "Semantic.h"
 #include "AST.h"
-
-
 
 std::string MAIN_ID = "";
 std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC{
@@ -44,20 +42,26 @@ std::vector<DataType> ParseFormals(AST *root)
     return toReturn;
 }
 
+/**
+ * Check if a function call's arguments match the parameters
+*/
 void ActualsMatchFormals(AST *fun_c, AST *actual)
 {
+    // parameters can be extract from the fun_c's record in the symbol table
     std::vector<DataType> formals = fun_c->f_record->paramType;
-    std::vector<DataType> actuals;
 
+    std::vector<DataType> actuals;
     // for each actual in actuals
     for (auto c : actual->children)
     {
-        // this actual's first child
+        // this append into actuals
         actuals.push_back(TypeLookup(c));
     }
 
+    // check if the two vectors store the same data
     if (formals.size() != actuals.size())
     {
+        // the size does not match
         SemanticError(ChildLine(actual, 0), ChildLiteral(actual, 0) + ": ACTUALS does not match FORMALS by size");
     }
 
@@ -65,29 +69,36 @@ void ActualsMatchFormals(AST *fun_c, AST *actual)
     {
         if (formals[i] != actuals[i])
         {
+            // one of the type does not match
             SemanticError(ChildLine(actual, 0), ChildLiteral(actual, 0) + ": ACTUALS does not match FORMALS by type");
         }
     }
 }
 
+// check if a function contains return statement
 bool ContainReturn(AST *root)
 {
+    // if this node is NodeType::RETURN, true
     if (root->type == NodeType::RETURN)
     {
         return true;
     }
 
+    // recurse
     for (auto c : root->children)
     {
+        // check all the children, if any of the those is a return statement, true
         if (ContainReturn(c))
         {
             return true;
         }
     }
 
+    // otherwise, false
     return false;
 }
 
+// assert main is defined
 void MainDefined()
 {
     if (MAIN_ID.empty())
@@ -97,11 +108,14 @@ void MainDefined()
     }
 }
 
+
+// assert break statement is inside While
 void BreakInWhile(AST *root)
 {
     bool inWhile = false;
     AST *copy = root;
 
+    // climb up the root and try to find a block whose parent is WHILE
     while (root->parent)
     {
         root = root->parent;
@@ -115,34 +129,48 @@ void BreakInWhile(AST *root)
         }
     }
 
+    // assert it is in while
     if (!inWhile)
-    {
+    {   // otherwise return false
         SemanticError(copy->attribute->line, "Break is not inside WHILE loop");
     }
 }
 
+// Insert an ID as Global Function
 void InsertGlobalFunc(std::string literal, DataType returnType, std::vector<DataType> paramType, AST *node)
 {
+    // insert into symbol table
     GLOBAL_FUNC.insert({literal, {returnType, paramType, node}});
+    // link the node with its symbol table
     node->f_record = &GLOBAL_FUNC.find(literal)->second;
 }
 
+// Insert an ID as Global Variable
 void InsertGlobalVar(std::string literal, DataType type, AST *node)
 {
+    // insert into symbol
     GLOBAL_VAR.insert({literal, {type, node}});
+    // link the node with its symbol table
     node->id_record = &GLOBAL_VAR.find(literal)->second;
 }
 
+// Insert an ID as Local Variable
 void InsertLocalVar(std::string scope, std::string literal, DataType type, AST *node)
 {
+    // insert into symbol table
     SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node}});
+    // link the node with its symbol table
     node->id_record = &SYMBOL_TABLE.find(scope)->second.find(literal)->second;
 }
 
+
+// assert an ID is not defined in the current scope
 bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
 {
+    // if scope is empty, then it's global
     if (scope.empty())
     {
+        // try to find in the global variables
         if (GLOBAL_VAR.find(ptr->attribute->literal) != GLOBAL_VAR.end())
         {
             std::cerr << "Line: " << ptr->attribute->line << ", "
@@ -152,6 +180,7 @@ bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
             exit(EXIT_FAILURE);
         }
 
+        // try to find in the global functions
         if (GLOBAL_FUNC.find(ptr->attribute->literal) != GLOBAL_FUNC.end())
         {
             std::cerr << "Line: " << ptr->attribute->line << ", "
@@ -162,7 +191,8 @@ bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
         }
     }
     else
-    {
+    {   
+        // try to find it in the local variable
         if (SYMBOL_TABLE.find(scope)->second.find(ptr->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
         {
             std::cerr << "Line: " << ptr->attribute->line << ", "
@@ -175,22 +205,27 @@ bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
     return true;
 }
 
+// Check if Identifier is defined, it a identifier is not defined in the scope, try to link to a global variable
 void IdentifierDefined(std::string scope, AST *node)
 {
-
+    // if the identifier is already linked to an entry in the symbol table
     if (node->f_record || node->id_record)
     {
+        // then, it is defined already
         return;
     }
     else
-    {
+    {   
+        // if the current scope is empty <=> global
         if (scope.empty())
         {
+            // try to find in the global functions, and link
             if (GLOBAL_FUNC.find(node->attribute->literal) != GLOBAL_FUNC.end())
             {
                 node->f_record = &GLOBAL_FUNC.find(node->attribute->literal)->second;
                 return;
             }
+            // try to find in the global variables, and link
             if (GLOBAL_VAR.find(node->attribute->literal) != GLOBAL_VAR.end())
             {
                 node->id_record = &GLOBAL_VAR.find(node->attribute->literal)->second;
@@ -199,6 +234,7 @@ void IdentifierDefined(std::string scope, AST *node)
         }
         else
         {
+            // try to find in the local variables, and link
             if (SYMBOL_TABLE.find(scope)->second.find(node->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
             {
                 node->id_record = &SYMBOL_TABLE.find(scope)->second.find(node->attribute->literal)->second;
@@ -206,11 +242,13 @@ void IdentifierDefined(std::string scope, AST *node)
             }
             else
             {
+                // try to find in the global functions, and link
                 if (GLOBAL_FUNC.find(node->attribute->literal) != GLOBAL_FUNC.end())
                 {
                     node->f_record = &GLOBAL_FUNC.find(node->attribute->literal)->second;
                     return;
                 }
+                // try to find in the global variables, and link
                 if (GLOBAL_VAR.find(node->attribute->literal) != GLOBAL_VAR.end())
                 {
                     node->id_record = &GLOBAL_VAR.find(node->attribute->literal)->second;
@@ -220,12 +258,14 @@ void IdentifierDefined(std::string scope, AST *node)
         }
     }
 
+    // not find anywhere, it is not defined, error
     std::cerr << "Line: " << node->attribute->line << ", "
               << node->attribute->literal << " was not defined in the scope "
               << std::endl;
     exit(EXIT_FAILURE);
 }
 
+// a subroutine to format error message
 void SemanticError(int line, std::string reason)
 {
     std::cerr << "Line " << line << ", "
@@ -263,12 +303,15 @@ void CollectGlobal(AST *root)
             InsertGlobalFunc(ChildLiteral(root, 1), NodeToData(ChildType(root, 0)), ParseFormals(Child(root, 2)), Child(root, 1));
             if (root->type == NodeType::MAIN_DEC)
             {
+                // if the main is not defined before
                 if (MAIN_ID.empty())
                 {
+                    // set main
                     MAIN_ID = ChildLiteral(root, 1);
                 }
                 else
                 {
+                    // main is being double defined, error
                     SemanticError(ChildLine(root, 1), "MAIN was already defined: " + GLOBAL_FUNC.find(MAIN_ID)->second.node->attribute->literal + ", at line " +
                                                           std::to_string(GLOBAL_FUNC.find(MAIN_ID)->second.node->attribute->line));
                 }
@@ -321,10 +364,11 @@ void BuildSymbolTable(AST *root, std::string current_scope)
         BuildSymbolTable(c, current_scope);
     }
 
+    // check types bottom-up
     TypeCheck(root);
 }
 
-#define isEqual(x, y) x->type == NodeType::y
+
 
 DataType TypeLookup(AST *root)
 {

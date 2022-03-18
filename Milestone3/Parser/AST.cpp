@@ -1,5 +1,5 @@
 #include "AST.h"
-#include "STab.h"
+#include "Semantic.h"
 
 ATR::ATR(int l)
 {

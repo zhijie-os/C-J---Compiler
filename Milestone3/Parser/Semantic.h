@@ -6,7 +6,7 @@
 #include "AST.h"
 #include <iostream>
 
-
+// macros used in the Semantic.cpp
 #define CreateScope(x) SYMBOL_TABLE.insert({x, {}});
 #define Child(p, i) p->children[i]
 #define ChildType(p, i) p->children[i]->type
@@ -14,6 +14,7 @@
 #define ChildLine(p, i) p->children[i]->attribute->line
 #define NodeToData(x) NodeTypeToDataType.find(x)->second
 #define DataToString(x) DataTypeToString.find(x)->second
+#define isEqual(x, y) x->type == NodeType::y
 
 extern const std::unordered_map<NodeType, DataType> NodeTypeToDataType;
 extern const std::unordered_map<DataType, std::string> DataTypeToString;

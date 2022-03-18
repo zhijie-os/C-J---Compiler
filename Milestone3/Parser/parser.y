@@ -3,7 +3,7 @@
     #include <stdlib.h>
     #include "parser.h"
     #include "AST.h"
-    #include "STab.h"
+    #include "Semantic.h"
 
 %}
 
