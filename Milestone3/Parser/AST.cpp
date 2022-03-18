@@ -90,15 +90,11 @@ AST::AST(NodeType t, std::string str, ATR *atr, AST *a, AST *b, AST *c)
     AttachChildren(a, b, c);
 }
 
-void PrettyPrint(AST *root, std::string scope, int level)
+void PrettyPrint(AST *root,  int level)
 {
     for (int i = 0; i < level; i++)
     {
         std::cout << "    ";
-    }
-    if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
-    {
-        scope = root->children[1]->attribute->literal;
     }
 
     std::cout << root->symbol;
@@ -115,20 +111,22 @@ void PrettyPrint(AST *root, std::string scope, int level)
         {
             std::cout << ", "
                       << "address: ";
-            if (!scope.empty() && SYMBOL_TABLE.find(scope)->second.find(root->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
+            if(root->f_record)
             {
-                std::cout << &SYMBOL_TABLE.find(scope)->second.find(root->attribute->literal)->second;
+                std::cout << root->f_record;
+                std::cout << " returnType = " << DataToString(root->f_record->returnType);
+                std::cout << " paramType = < ";
+                for(auto c:root->f_record->paramType)
+                {
+                    DataToString(c);
+                }
+                std::cout << " > ";
             }
-            else
+
+            if(root->id_record)
             {
-                if (GLOBAL_FUNC.find(root->attribute->literal) != GLOBAL_FUNC.end())
-                {
-                    std::cout << &GLOBAL_FUNC.find(root->attribute->literal)->second;
-                }
-                else
-                {
-                    std::cout << &GLOBAL_VAR.find(root->attribute->literal)->second;
-                }
+                std::cout << root->id_record;
+                std::cout << " type = " << DataToString(root->id_record->type) ;
             }
         }
 
@@ -137,6 +135,10 @@ void PrettyPrint(AST *root, std::string scope, int level)
 
     std::cout << std::endl;
 
+    for(auto c:root->children)
+    {
+        PrettyPrint(c,level+1);
+    }
 }
 
 void AST::AttachChildren(AST *a)

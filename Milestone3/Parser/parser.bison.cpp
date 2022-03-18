@@ -562,14 +562,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    24,    24,    25,    33,    34,    35,    36,    39,    40,
-      43,    44,    47,    48,    49,    52,    55,    58,    61,    62,
-      65,    66,    69,    70,    73,    76,    79,    82,    83,    86,
-      87,    90,    91,    94,    95,    96,    97,    98,    99,   100,
-     101,   102,   108,   109,   112,   113,   114,   117,   118,   121,
-     122,   125,   126,   129,   130,   131,   134,   135,   136,   137,
-     140,   141,   142,   145,   146,   147,   148,   149,   152,   153,
-     154,   157,   158,   161,   162,   167,   168,   171,   174
+       0,    24,    24,    25,    34,    35,    36,    37,    40,    41,
+      44,    45,    48,    49,    50,    53,    56,    59,    62,    63,
+      66,    67,    70,    71,    74,    77,    80,    83,    84,    87,
+      88,    91,    92,    95,    96,    97,    98,    99,   100,   101,
+     102,   103,   109,   110,   113,   114,   115,   118,   119,   122,
+     123,   126,   127,   130,   131,   132,   135,   136,   137,   138,
+     141,   142,   143,   146,   147,   148,   149,   150,   153,   154,
+     155,   158,   159,   162,   163,   168,   169,   172,   175
 };
 #endif
 
@@ -1238,462 +1238,463 @@ yyreduce:
                                             MainDefined();
                                             BuildSymbolTable(yyval,""); 
                                             FinalCheck(yyval,"");
+                                            PrettyPrint(yyval,0);
                                         }
-#line 1243 "parser.bison.cpp"
+#line 1244 "parser.bison.cpp"
     break;
 
   case 4: /* literal: NUMBER  */
-#line 33 "parser.y"
+#line 34 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1249 "parser.bison.cpp"
+#line 1250 "parser.bison.cpp"
     break;
 
   case 5: /* literal: STRING_Y  */
-#line 34 "parser.y"
+#line 35 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1255 "parser.bison.cpp"
+#line 1256 "parser.bison.cpp"
     break;
 
   case 6: /* literal: TRUE  */
-#line 35 "parser.y"
+#line 36 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1261 "parser.bison.cpp"
+#line 1262 "parser.bison.cpp"
     break;
 
   case 7: /* literal: FALSE  */
-#line 36 "parser.y"
+#line 37 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1267 "parser.bison.cpp"
+#line 1268 "parser.bison.cpp"
     break;
 
   case 8: /* type: BOOLEAN  */
-#line 39 "parser.y"
+#line 40 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1273 "parser.bison.cpp"
+#line 1274 "parser.bison.cpp"
     break;
 
   case 9: /* type: INT  */
-#line 40 "parser.y"
+#line 41 "parser.y"
                                         {yyval=yyvsp[0];}
-#line 1279 "parser.bison.cpp"
+#line 1280 "parser.bison.cpp"
     break;
 
   case 10: /* globaldeclarations: globaldeclaration  */
-#line 43 "parser.y"
+#line 44 "parser.y"
                                                                         {yyval=new AST(NodeType::PROGRAM, "PROGRAM",yyvsp[0]);}
-#line 1285 "parser.bison.cpp"
+#line 1286 "parser.bison.cpp"
     break;
 
   case 11: /* globaldeclarations: globaldeclarations globaldeclaration  */
-#line 44 "parser.y"
+#line 45 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1291 "parser.bison.cpp"
+#line 1292 "parser.bison.cpp"
     break;
 
   case 12: /* globaldeclaration: variabledeclaration  */
-#line 47 "parser.y"
+#line 48 "parser.y"
                                                                         {yyvsp[0]->type=NodeType::GLOBAL_VAR_DEC;yyvsp[0]->symbol="GLOBAL_VAR_DEC";yyval=yyvsp[0];}
-#line 1297 "parser.bison.cpp"
+#line 1298 "parser.bison.cpp"
     break;
 
   case 13: /* globaldeclaration: functiondeclaration  */
-#line 48 "parser.y"
+#line 49 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1303 "parser.bison.cpp"
+#line 1304 "parser.bison.cpp"
     break;
 
   case 14: /* globaldeclaration: mainfunctiondeclaration  */
-#line 49 "parser.y"
+#line 50 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1309 "parser.bison.cpp"
+#line 1310 "parser.bison.cpp"
     break;
 
   case 15: /* variabledeclaration: type identifier ';'  */
-#line 52 "parser.y"
+#line 53 "parser.y"
                                                                         {yyval=new AST(NodeType::VAR_DEC,"VAR_DEC",yyvsp[-2],yyvsp[-1]);}
-#line 1315 "parser.bison.cpp"
+#line 1316 "parser.bison.cpp"
     break;
 
   case 16: /* identifier: ID  */
-#line 55 "parser.y"
+#line 56 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1321 "parser.bison.cpp"
+#line 1322 "parser.bison.cpp"
     break;
 
   case 17: /* functiondeclaration: functionheader block  */
-#line 58 "parser.y"
+#line 59 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1327 "parser.bison.cpp"
+#line 1328 "parser.bison.cpp"
     break;
 
   case 18: /* functionheader: type functiondeclarator  */
-#line 61 "parser.y"
+#line 62 "parser.y"
                                                                         {yyvsp[0]->children.insert(yyvsp[0]->children.begin(),yyvsp[-1]);yyval=yyvsp[0];}
-#line 1333 "parser.bison.cpp"
+#line 1334 "parser.bison.cpp"
     break;
 
   case 19: /* functionheader: VOID functiondeclarator  */
-#line 62 "parser.y"
+#line 63 "parser.y"
                                                                         {yyvsp[0]->children.insert(yyvsp[0]->children.begin(), new AST(NodeType::VOID,"VOID"));yyval=yyvsp[0];}
-#line 1339 "parser.bison.cpp"
+#line 1340 "parser.bison.cpp"
     break;
 
   case 20: /* functiondeclarator: identifier '(' formalparameterlist ')'  */
-#line 65 "parser.y"
+#line 66 "parser.y"
                                                                         {yyval=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  yyvsp[-3], yyvsp[-1]);}
-#line 1345 "parser.bison.cpp"
+#line 1346 "parser.bison.cpp"
     break;
 
   case 21: /* functiondeclarator: identifier '(' ')'  */
-#line 66 "parser.y"
+#line 67 "parser.y"
                                                                         {yyval=new AST(NodeType::FUNC_DEC, "FUNC_DEC",  yyvsp[-2], new AST(NodeType::FORMALS,"FORMALS"));}
-#line 1351 "parser.bison.cpp"
+#line 1352 "parser.bison.cpp"
     break;
 
   case 22: /* formalparameterlist: formalparameter  */
-#line 69 "parser.y"
+#line 70 "parser.y"
                                                                         {yyval=new AST(NodeType::FORMALS,"FORMALS",yyvsp[0]);}
-#line 1357 "parser.bison.cpp"
+#line 1358 "parser.bison.cpp"
     break;
 
   case 23: /* formalparameterlist: formalparameterlist ',' formalparameter  */
-#line 70 "parser.y"
+#line 71 "parser.y"
                                                                         {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
-#line 1363 "parser.bison.cpp"
+#line 1364 "parser.bison.cpp"
     break;
 
   case 24: /* formalparameter: type identifier  */
-#line 73 "parser.y"
+#line 74 "parser.y"
                                                                         {yyval=new AST(NodeType::FORMAL, "FORMAL",yyvsp[-1], yyvsp[0]);}
-#line 1369 "parser.bison.cpp"
+#line 1370 "parser.bison.cpp"
     break;
 
   case 25: /* mainfunctiondeclaration: mainfunctiondeclarator block  */
-#line 76 "parser.y"
+#line 77 "parser.y"
                                                                         {yyval=new AST(NodeType::MAIN_DEC, "MAIN_DEC", new AST(NodeType::VOID, "VOID"),yyvsp[-1],new AST(NodeType::FORMALS,"FORMALS"),yyvsp[0]);}
-#line 1375 "parser.bison.cpp"
+#line 1376 "parser.bison.cpp"
     break;
 
   case 26: /* mainfunctiondeclarator: identifier '(' ')'  */
-#line 79 "parser.y"
+#line 80 "parser.y"
                                                                         {yyval=yyvsp[-2];}
-#line 1381 "parser.bison.cpp"
+#line 1382 "parser.bison.cpp"
     break;
 
   case 27: /* block: '{' blockstatements '}'  */
-#line 82 "parser.y"
+#line 83 "parser.y"
                                                                         {yyval=yyvsp[-1];}
-#line 1387 "parser.bison.cpp"
+#line 1388 "parser.bison.cpp"
     break;
 
   case 28: /* block: '{' '}'  */
-#line 83 "parser.y"
+#line 84 "parser.y"
                                                                         {yyval=new AST(NodeType::BLOCK,"BLOCK");}
-#line 1393 "parser.bison.cpp"
+#line 1394 "parser.bison.cpp"
     break;
 
   case 29: /* blockstatements: blockstatement  */
-#line 86 "parser.y"
+#line 87 "parser.y"
                                                                         {yyval=new AST(NodeType::BLOCK, "BLOCK",yyvsp[0]);}
-#line 1399 "parser.bison.cpp"
+#line 1400 "parser.bison.cpp"
     break;
 
   case 30: /* blockstatements: blockstatements blockstatement  */
-#line 87 "parser.y"
+#line 88 "parser.y"
                                                                         {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1405 "parser.bison.cpp"
+#line 1406 "parser.bison.cpp"
     break;
 
   case 31: /* blockstatement: variabledeclaration  */
-#line 90 "parser.y"
+#line 91 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1411 "parser.bison.cpp"
+#line 1412 "parser.bison.cpp"
     break;
 
   case 32: /* blockstatement: statement  */
-#line 91 "parser.y"
+#line 92 "parser.y"
                                                                         {yyval=yyvsp[0];}
-#line 1417 "parser.bison.cpp"
+#line 1418 "parser.bison.cpp"
     break;
 
   case 33: /* statement: block  */
-#line 94 "parser.y"
+#line 95 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1423 "parser.bison.cpp"
+#line 1424 "parser.bison.cpp"
     break;
 
   case 34: /* statement: ';'  */
-#line 95 "parser.y"
+#line 96 "parser.y"
                                                                             {yyval=new AST(NodeType::NULL_STMT,"nullStmt");}
-#line 1429 "parser.bison.cpp"
+#line 1430 "parser.bison.cpp"
     break;
 
   case 35: /* statement: statementexpression ';'  */
-#line 96 "parser.y"
+#line 97 "parser.y"
                                                                             {yyval=new AST(NodeType::STMT_EXPR,"STMTEXPR",yyvsp[-1]);}
-#line 1435 "parser.bison.cpp"
+#line 1436 "parser.bison.cpp"
     break;
 
   case 36: /* statement: BREAK ';'  */
-#line 97 "parser.y"
+#line 98 "parser.y"
                                                                             {yyval=yyvsp[-1];}
-#line 1441 "parser.bison.cpp"
+#line 1442 "parser.bison.cpp"
     break;
 
   case 37: /* statement: RETURN expression ';'  */
-#line 98 "parser.y"
+#line 99 "parser.y"
                                                                             {yyvsp[-2]->AttachChildren(yyvsp[-1]); yyval=yyvsp[-2];}
-#line 1447 "parser.bison.cpp"
+#line 1448 "parser.bison.cpp"
     break;
 
   case 38: /* statement: RETURN ';'  */
-#line 99 "parser.y"
+#line 100 "parser.y"
                                                                             {yyval=yyvsp[-1];}
-#line 1453 "parser.bison.cpp"
+#line 1454 "parser.bison.cpp"
     break;
 
   case 39: /* statement: IF '(' expression ')' statement  */
-#line 100 "parser.y"
+#line 101 "parser.y"
                                                                             {yyvsp[-4]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-4];}
-#line 1459 "parser.bison.cpp"
+#line 1460 "parser.bison.cpp"
     break;
 
   case 40: /* statement: IF '(' expression ')' statement ELSE statement  */
-#line 101 "parser.y"
+#line 102 "parser.y"
                                                                             {yyvsp[-6]->type=NodeType::IF_ELSE;yyvsp[-6]->AttachChildren(yyvsp[-4],yyvsp[-2],yyvsp[0]);yyval=yyvsp[-6];}
-#line 1465 "parser.bison.cpp"
+#line 1466 "parser.bison.cpp"
     break;
 
   case 41: /* statement: WHILE '(' expression ')' statement  */
-#line 102 "parser.y"
+#line 103 "parser.y"
                                                                             {yyvsp[-4]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-4]; }
-#line 1471 "parser.bison.cpp"
+#line 1472 "parser.bison.cpp"
     break;
 
   case 42: /* statementexpression: assignment  */
-#line 108 "parser.y"
+#line 109 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1477 "parser.bison.cpp"
+#line 1478 "parser.bison.cpp"
     break;
 
   case 43: /* statementexpression: functioninvocation  */
-#line 109 "parser.y"
+#line 110 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1483 "parser.bison.cpp"
+#line 1484 "parser.bison.cpp"
     break;
 
   case 44: /* primary: literal  */
-#line 112 "parser.y"
+#line 113 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1489 "parser.bison.cpp"
+#line 1490 "parser.bison.cpp"
     break;
 
   case 45: /* primary: '(' expression ')'  */
-#line 113 "parser.y"
+#line 114 "parser.y"
                                                                             {yyval=yyvsp[-1];}
-#line 1495 "parser.bison.cpp"
+#line 1496 "parser.bison.cpp"
     break;
 
   case 46: /* primary: functioninvocation  */
-#line 114 "parser.y"
+#line 115 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1501 "parser.bison.cpp"
+#line 1502 "parser.bison.cpp"
     break;
 
   case 47: /* argumentlist: expression  */
-#line 117 "parser.y"
+#line 118 "parser.y"
                                                                             {yyval=new AST(NodeType::ACTUALS,"ACTUALS",yyvsp[0]);}
-#line 1507 "parser.bison.cpp"
+#line 1508 "parser.bison.cpp"
     break;
 
   case 48: /* argumentlist: argumentlist ',' expression  */
-#line 118 "parser.y"
+#line 119 "parser.y"
                                                                             {yyvsp[-2]->AttachChildren(yyvsp[0]);yyval=yyvsp[-2];}
-#line 1513 "parser.bison.cpp"
+#line 1514 "parser.bison.cpp"
     break;
 
   case 49: /* functioninvocation: identifier '(' argumentlist ')'  */
-#line 121 "parser.y"
+#line 122 "parser.y"
                                                                             {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-3], yyvsp[-1]);;}
-#line 1519 "parser.bison.cpp"
+#line 1520 "parser.bison.cpp"
     break;
 
   case 50: /* functioninvocation: identifier '(' ')'  */
-#line 122 "parser.y"
+#line 123 "parser.y"
                                                                             {yyval=new AST(NodeType::FUNC_CALL, "FUNC_CALL",yyvsp[-2], new AST(NodeType::ACTUALS,"ACTUALS"));}
-#line 1525 "parser.bison.cpp"
+#line 1526 "parser.bison.cpp"
     break;
 
   case 51: /* postfixexpression: primary  */
-#line 125 "parser.y"
+#line 126 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1531 "parser.bison.cpp"
+#line 1532 "parser.bison.cpp"
     break;
 
   case 52: /* postfixexpression: identifier  */
-#line 126 "parser.y"
+#line 127 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1537 "parser.bison.cpp"
+#line 1538 "parser.bison.cpp"
     break;
 
   case 53: /* unaryexpression: '-' unaryexpression  */
-#line 129 "parser.y"
+#line 130 "parser.y"
                                                                             {yyvsp[-1]->type=NodeType::UN_ARITHMETIC;yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1543 "parser.bison.cpp"
+#line 1544 "parser.bison.cpp"
     break;
 
   case 54: /* unaryexpression: '!' unaryexpression  */
-#line 130 "parser.y"
+#line 131 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[0]);yyval=yyvsp[-1];}
-#line 1549 "parser.bison.cpp"
+#line 1550 "parser.bison.cpp"
     break;
 
   case 55: /* unaryexpression: postfixexpression  */
-#line 131 "parser.y"
+#line 132 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1555 "parser.bison.cpp"
+#line 1556 "parser.bison.cpp"
     break;
 
   case 56: /* multiplicativeexpression: unaryexpression  */
-#line 134 "parser.y"
+#line 135 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1561 "parser.bison.cpp"
+#line 1562 "parser.bison.cpp"
     break;
 
   case 57: /* multiplicativeexpression: multiplicativeexpression '*' unaryexpression  */
-#line 135 "parser.y"
+#line 136 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1567 "parser.bison.cpp"
+#line 1568 "parser.bison.cpp"
     break;
 
   case 58: /* multiplicativeexpression: multiplicativeexpression '/' unaryexpression  */
-#line 136 "parser.y"
+#line 137 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1573 "parser.bison.cpp"
+#line 1574 "parser.bison.cpp"
     break;
 
   case 59: /* multiplicativeexpression: multiplicativeexpression '%' unaryexpression  */
-#line 137 "parser.y"
+#line 138 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1579 "parser.bison.cpp"
+#line 1580 "parser.bison.cpp"
     break;
 
   case 60: /* additiveexpression: multiplicativeexpression  */
-#line 140 "parser.y"
+#line 141 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1585 "parser.bison.cpp"
+#line 1586 "parser.bison.cpp"
     break;
 
   case 61: /* additiveexpression: additiveexpression '+' multiplicativeexpression  */
-#line 141 "parser.y"
+#line 142 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1591 "parser.bison.cpp"
+#line 1592 "parser.bison.cpp"
     break;
 
   case 62: /* additiveexpression: additiveexpression '-' multiplicativeexpression  */
-#line 142 "parser.y"
+#line 143 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1597 "parser.bison.cpp"
+#line 1598 "parser.bison.cpp"
     break;
 
   case 63: /* relationalexpression: additiveexpression  */
-#line 145 "parser.y"
+#line 146 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1603 "parser.bison.cpp"
+#line 1604 "parser.bison.cpp"
     break;
 
   case 64: /* relationalexpression: relationalexpression '<' additiveexpression  */
-#line 146 "parser.y"
+#line 147 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1609 "parser.bison.cpp"
+#line 1610 "parser.bison.cpp"
     break;
 
   case 65: /* relationalexpression: relationalexpression '>' additiveexpression  */
-#line 147 "parser.y"
+#line 148 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1615 "parser.bison.cpp"
+#line 1616 "parser.bison.cpp"
     break;
 
   case 66: /* relationalexpression: relationalexpression LE additiveexpression  */
-#line 148 "parser.y"
+#line 149 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1621 "parser.bison.cpp"
+#line 1622 "parser.bison.cpp"
     break;
 
   case 67: /* relationalexpression: relationalexpression GE additiveexpression  */
-#line 149 "parser.y"
+#line 150 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1627 "parser.bison.cpp"
+#line 1628 "parser.bison.cpp"
     break;
 
   case 68: /* equalityexpression: relationalexpression  */
-#line 152 "parser.y"
+#line 153 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1633 "parser.bison.cpp"
+#line 1634 "parser.bison.cpp"
     break;
 
   case 69: /* equalityexpression: equalityexpression EQ relationalexpression  */
-#line 153 "parser.y"
+#line 154 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1639 "parser.bison.cpp"
+#line 1640 "parser.bison.cpp"
     break;
 
   case 70: /* equalityexpression: equalityexpression NE relationalexpression  */
-#line 154 "parser.y"
+#line 155 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1645 "parser.bison.cpp"
+#line 1646 "parser.bison.cpp"
     break;
 
   case 71: /* conditionalandexpression: equalityexpression  */
-#line 157 "parser.y"
+#line 158 "parser.y"
                                                                             {yyval=yyvsp[0];}
-#line 1651 "parser.bison.cpp"
+#line 1652 "parser.bison.cpp"
     break;
 
   case 72: /* conditionalandexpression: conditionalandexpression AND equalityexpression  */
-#line 158 "parser.y"
+#line 159 "parser.y"
                                                                             {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1657 "parser.bison.cpp"
+#line 1658 "parser.bison.cpp"
     break;
 
   case 73: /* conditionalorexpression: conditionalandexpression  */
-#line 161 "parser.y"
+#line 162 "parser.y"
                                                                                 {yyval=yyvsp[0];}
-#line 1663 "parser.bison.cpp"
+#line 1664 "parser.bison.cpp"
     break;
 
   case 74: /* conditionalorexpression: conditionalorexpression OR conditionalandexpression  */
-#line 162 "parser.y"
+#line 163 "parser.y"
                                                                                 {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1669 "parser.bison.cpp"
+#line 1670 "parser.bison.cpp"
     break;
 
   case 75: /* assignmentexpression: conditionalorexpression  */
-#line 167 "parser.y"
+#line 168 "parser.y"
                                                             {yyval=yyvsp[0];}
-#line 1675 "parser.bison.cpp"
+#line 1676 "parser.bison.cpp"
     break;
 
   case 76: /* assignmentexpression: assignment  */
-#line 168 "parser.y"
+#line 169 "parser.y"
                                                             {yyval=yyvsp[0];}
-#line 1681 "parser.bison.cpp"
+#line 1682 "parser.bison.cpp"
     break;
 
   case 77: /* assignment: identifier '=' assignmentexpression  */
-#line 171 "parser.y"
+#line 172 "parser.y"
                                                                 {yyvsp[-1]->AttachChildren(yyvsp[-2],yyvsp[0]);yyval=yyvsp[-1];}
-#line 1687 "parser.bison.cpp"
+#line 1688 "parser.bison.cpp"
     break;
 
   case 78: /* expression: assignmentexpression  */
-#line 174 "parser.y"
+#line 175 "parser.y"
                                                             {yyval=yyvsp[0];}
-#line 1693 "parser.bison.cpp"
+#line 1694 "parser.bison.cpp"
     break;
 
 
-#line 1697 "parser.bison.cpp"
+#line 1698 "parser.bison.cpp"
 
       default: break;
     }
@@ -1886,7 +1887,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 178 "parser.y"
+#line 179 "parser.y"
 
 
 

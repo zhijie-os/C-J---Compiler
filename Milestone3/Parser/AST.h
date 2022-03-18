@@ -93,5 +93,4 @@ struct IdentifierRecord
 };
 
 
-
-void PrettyPrint(AST*, std::string, int);
+void PrettyPrint(AST *root,  int level);

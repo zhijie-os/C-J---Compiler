@@ -27,6 +27,7 @@ start           : /* empty */
                                             MainDefined();
                                             BuildSymbolTable($$,""); 
                                             FinalCheck($$,"");
+                                            PrettyPrint($$,0);
                                         }
                 ;
 

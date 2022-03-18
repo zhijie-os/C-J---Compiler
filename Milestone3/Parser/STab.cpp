@@ -1,12 +1,7 @@
 #include "STab.h"
 #include "AST.h"
 
-#define CreateScope(x) SYMBOL_TABLE.insert({x, {}});
-#define Child(p, i) p->children[i]
-#define ChildType(p, i) p->children[i]->type
-#define ChildLiteral(p, i) p->children[i]->attribute->literal
-#define ChildLine(p, i) p->children[i]->attribute->line
-#define NodeToData(x) NodeTypeToDataType.find(x)->second
+
 
 std::string MAIN_ID = "";
 std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC{
@@ -23,7 +18,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, IdentifierRecord
 
 const std::unordered_map<DataType, std::string> DataTypeToString{
     {DataType::BOOL, "BOOLEAN"},
-    {DataType::INT, "NUMBER"},
+    {DataType::INT, "INT"},
     {DataType::STRING, "STRING"},
     {DataType::VOID, "VOID"},
 };
