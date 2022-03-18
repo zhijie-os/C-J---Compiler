@@ -5,6 +5,7 @@
 #define ChildLiteral(p, i) p->children[i]->attribute->literal
 #define NodeToData(x) NodeTypeToDataType.find(x)->second
 
+
 std::string MAIN_ID = "";
 std::unordered_map<std::string, FuncRecord> GLOBAL_FUNC
 {
@@ -158,12 +159,20 @@ bool NotGlobalDefined(std::string id, AST *ptr)
 void InsertGlobalFunc(std::string literal, DataType returnType, std::vector<DataType> paramType, AST *node)
 {
     GLOBAL_FUNC.insert({literal, {returnType, paramType, node}});
+    node->f_record = &GLOBAL_FUNC.find(literal)->second;
 }
 
 void InsertGlobalVar(std::string literal, DataType type, AST *node)
 {
     GLOBAL_VAR.insert({literal, {type, node}});
+    node->id_record = &GLOBAL_VAR.find(literal)->second;
 }
+
+void InsertLocalVar(std::string scope, std::string literal, DataType, AST *node)
+{
+    
+}
+
 
 void SemanticError(int line, std::string reason)
 {
@@ -229,7 +238,6 @@ void CollectGlobal(AST *root)
 void BuildSymbolTable(AST *root, std::string current_scope, int level)
 {
     // preorder
-
     // create scope and add parameters into the newly created scope
     if (root->type == NodeType::FUNC_DEC || root->type == NodeType::MAIN_DEC)
     {
@@ -248,6 +256,7 @@ void BuildSymbolTable(AST *root, std::string current_scope, int level)
             // find the table of current_scope
             SYMBOL_TABLE.find(current_scope)->second.insert({c->children[1]->attribute->literal,                                        // formal's 2nd child is the identifier
                                                              {NodeTypeToDataType.find(c->children[0]->type)->second, c->children[1]}}); // formal's 1st child has the type
+            c->children[1]->id_record =  &SYMBOL_TABLE.find(current_scope)->second.find(c->children[1]->attribute->literal)->second;
         }
     }
 
@@ -260,6 +269,7 @@ void BuildSymbolTable(AST *root, std::string current_scope, int level)
         }
 
         SYMBOL_TABLE.find(current_scope)->second.insert({root->children[1]->attribute->literal, {NodeTypeToDataType.find(root->children[0]->type)->second, root->children[1]}});
+        root->children[1]->id_record = &SYMBOL_TABLE.find(current_scope)->second.find(root->children[1]->attribute->literal)->second;
     }
 
     TypeCheck(root,current_scope);
@@ -309,24 +319,9 @@ DataType TypeLookup(AST *root, std::string scope)
     if (root->type == NodeType::IDENTIFIER)
     {
         // grab the literal
-        std::string id = root->attribute->literal;
-
-        // if the scope is not null
-        if (SYMBOL_TABLE.find(scope) != SYMBOL_TABLE.end())
+        if(root->id_record)
         {
-            // try to find the identifier in the scope
-            if (SYMBOL_TABLE.find(scope)->second.find(id) != SYMBOL_TABLE.find(scope)->second.end())
-            {
-                // if found, return the type
-                return SYMBOL_TABLE.find(scope)->second.find(id)->second.type;
-            }
-        }
-
-        // otherwise, try to find in the global scope
-        if (GLOBAL_VAR.find(id) != GLOBAL_VAR.end())
-        {
-            // if found, return
-            return GLOBAL_VAR.find(id)->second.type;
+            return root->id_record->type;
         }
 
         SemanticError(root->attribute->line,root->attribute->literal+" is not defined");

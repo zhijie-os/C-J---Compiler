@@ -1233,9 +1233,9 @@ yyreduce:
     {
   case 3: /* start: globaldeclarations  */
 #line 25 "parser.y"
-                                        {yyval=yyvsp[0];CollectGlobal(yyval);
+                                        {yyval=yyvsp[0];
+                                            CollectGlobal(yyval);
                                             MainDefined();
-                                            dummy_break_point();
                                             BuildSymbolTable(yyval,"",0); 
                                             FinalCheck(yyval,"");
                                         }

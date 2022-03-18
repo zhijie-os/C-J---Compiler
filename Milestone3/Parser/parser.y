@@ -22,9 +22,9 @@
 
 
 start           : /* empty */
-                | globaldeclarations    {$$=$1;CollectGlobal($$);
+                | globaldeclarations    {$$=$1;
+                                            CollectGlobal($$);
                                             MainDefined();
-                                            dummy_break_point();
                                             BuildSymbolTable($$,"",0); 
                                             FinalCheck($$,"");
                                         }

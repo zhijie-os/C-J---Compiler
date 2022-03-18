@@ -6,20 +6,6 @@
 #include "AST.h"
 #include <iostream>
 
-struct FuncRecord
-{
-    DataType returnType;
-    std::vector<DataType> paramType;
-    AST* node;
-};
-
-
-// record in the symbol table to store the information about an identifier
-struct IdentifierRecord
-{
-    DataType type;
-    AST *node;
-};
 
 
 extern const std::unordered_map<NodeType, DataType> NodeTypeToDataType;

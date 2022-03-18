@@ -136,6 +136,7 @@ void PrettyPrint(AST *root, std::string scope, int level)
     }
 
     std::cout << std::endl;
+
 }
 
 void AST::AttachChildren(AST *a)

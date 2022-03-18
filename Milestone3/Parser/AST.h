@@ -7,6 +7,10 @@
 #include <unordered_map>
 #include "Type.h"
 
+
+struct FuncRecord;
+struct IdentifierRecord;
+
 class ATR
 {
 public:
@@ -29,7 +33,11 @@ public:
     std::string symbol;
     int line;
 
+    FuncRecord* f_record;
+    IdentifierRecord* id_record;
+
     ATR *attribute;
+
 
     AST(NodeType, std::string);
 
@@ -66,5 +74,24 @@ public:
 
     bool isLeaf();
 };
+
+
+
+struct FuncRecord
+{
+    DataType returnType;
+    std::vector<DataType> paramType;
+    AST* node;
+};
+
+
+// record in the symbol table to store the information about an identifier
+struct IdentifierRecord
+{
+    DataType type;
+    AST *node;
+};
+
+
 
 void PrettyPrint(AST*, std::string, int);
