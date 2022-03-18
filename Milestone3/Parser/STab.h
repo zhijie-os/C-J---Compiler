@@ -35,7 +35,7 @@ void InsertGlobalFunc(std::string literal, DataType returnType, std::vector<Data
 void InsertGlobalVar(std::string literal, DataType type, AST* node);
 bool NotGlobalDefined(std::string id, AST *ptr);
 void CollectGlobal(AST *root);
-void BuildSymbolTable(AST *root, std::string current_scope);
+void BuildSymbolTable(AST *root, std::string current_scope,int level);
 void TypeCheck(AST* root, std::string current_scope);
 DataType TypeLookup(AST* root, std::string);
 void FinalCheck(AST* root, std::string);

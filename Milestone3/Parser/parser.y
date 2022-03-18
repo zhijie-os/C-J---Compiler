@@ -25,9 +25,9 @@ start           : /* empty */
                 | globaldeclarations    {$$=$1;CollectGlobal($$);
                                             MainDefined();
                                             dummy_break_point();
-                                            BuildSymbolTable($$,""); 
+                                            BuildSymbolTable($$,"",0); 
                                             FinalCheck($$,"");
-                                            PrettyPrint($$,"",0);}
+                                        }
                 ;
 
 literal         : NUMBER                {$$=$1;}

@@ -136,11 +136,6 @@ void PrettyPrint(AST *root, std::string scope, int level)
     }
 
     std::cout << std::endl;
-
-    for (auto c : root->children)
-    {
-        PrettyPrint(c, scope, level + 1);
-    }
 }
 
 void AST::AttachChildren(AST *a)

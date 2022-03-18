@@ -226,7 +226,7 @@ void CollectGlobal(AST *root)
 #define CreateScope(x) SYMBOL_TABLE.insert({x, {}});
 
 // BuildSymbolTable, also check if each identifier is defined in the scope
-void BuildSymbolTable(AST *root, std::string current_scope)
+void BuildSymbolTable(AST *root, std::string current_scope, int level)
 {
     // preorder
 
@@ -263,10 +263,13 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     }
 
     TypeCheck(root,current_scope);
+
+    PrettyPrint(root,current_scope,level);
+
         // recurse
     for (auto c : root->children)
     {
-        BuildSymbolTable(c, current_scope);
+        BuildSymbolTable(c, current_scope,level+1);
     }
 }
 
