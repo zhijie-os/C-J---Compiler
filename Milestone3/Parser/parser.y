@@ -25,7 +25,7 @@ start           : /* empty */
                 | globaldeclarations    {$$=$1;
                                             CollectGlobal($$);
                                             MainDefined();
-                                            BuildSymbolTable($$,"",0); 
+                                            BuildSymbolTable($$,""); 
                                             FinalCheck($$,"");
                                         }
                 ;

@@ -33,10 +33,10 @@ public:
     std::string symbol;
     int line;
 
-    FuncRecord* f_record;
-    IdentifierRecord* id_record;
+    FuncRecord* f_record=nullptr;
+    IdentifierRecord* id_record=nullptr;
 
-    ATR *attribute;
+    ATR *attribute=nullptr;
 
 
     AST(NodeType, std::string);

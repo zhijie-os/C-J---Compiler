@@ -1236,7 +1236,7 @@ yyreduce:
                                         {yyval=yyvsp[0];
                                             CollectGlobal(yyval);
                                             MainDefined();
-                                            BuildSymbolTable(yyval,"",0); 
+                                            BuildSymbolTable(yyval,""); 
                                             FinalCheck(yyval,"");
                                         }
 #line 1243 "parser.bison.cpp"
