@@ -26,7 +26,6 @@ start           : /* empty */
                                             MainDefined();
                                             dummy_break_point();
                                             BuildSymbolTable($$,""); 
-                                            TypeCheck($$,"");
                                             FinalCheck($$,"");
                                             PrettyPrint($$,"",0);}
                 ;

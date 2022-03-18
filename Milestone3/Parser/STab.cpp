@@ -262,46 +262,12 @@ void BuildSymbolTable(AST *root, std::string current_scope)
         SYMBOL_TABLE.find(current_scope)->second.insert({root->children[1]->attribute->literal, {NodeTypeToDataType.find(root->children[0]->type)->second, root->children[1]}});
     }
 
-    // recurse
+    TypeCheck(root,current_scope);
+        // recurse
     for (auto c : root->children)
     {
         BuildSymbolTable(c, current_scope);
     }
-
-    // postorder, check if a identifier already defined before using
-    if (root->type == NodeType::IDENTIFIER)
-    {
-
-        if (current_scope.empty())
-        {
-            // if there is no scope for the identifier as local variable, try global
-            if (GLOBAL_VAR.find(root->attribute->literal) == GLOBAL_VAR.end()      // if it is global variable
-                && GLOBAL_FUNC.find(root->attribute->literal) == GLOBAL_FUNC.end() // if it is global function
-                && LIB.find(root->attribute->literal) == LIB.end())                // if it is predefined
-            {
-
-                SemanticError(root->attribute->line, "Identifier: " + root->attribute->literal + " is undefined");
-            }
-        }
-        else
-        {
-            // find the scope of the identifier, if any
-            auto current_table = SYMBOL_TABLE.find(current_scope)->second;
-
-            if (current_table.find(root->attribute->literal) == current_table.end())
-            {
-                // if there is no scope for the identifier as local variable, try global
-                if (GLOBAL_VAR.find(root->attribute->literal) == GLOBAL_VAR.end()      // if it is global variable
-                    && GLOBAL_FUNC.find(root->attribute->literal) == GLOBAL_FUNC.end() // if it is global function
-                    && LIB.find(root->attribute->literal) == LIB.end())                // if it is predefined
-                {
-                    // otherwise, the identifier is not defined!
-                    SemanticError(root->attribute->line, "Identifier: " + root->attribute->literal + " is undefined");
-                }
-            }
-        }
-    }
-
 }
 
 #define isEqual(x, y) x->type == NodeType::y
@@ -359,6 +325,8 @@ DataType TypeLookup(AST *root, std::string scope)
             // if found, return
             return GLOBAL_VAR.find(id)->second.type;
         }
+
+        SemanticError(root->attribute->line,root->attribute->literal+" is not defined");
     }
 
     if (root->type == NodeType::STRING)
@@ -376,26 +344,11 @@ DataType TypeLookup(AST *root, std::string scope)
         return TypeLookup(root->children[0],scope);
     }
 
-    // this line should not be executed if all the errors are caputured, keep for debugging purpose
-    SemanticError(root->attribute->line, "there is a " + root->symbol + " is undefined");
     return DataType::VOID;
 }
 
 void TypeCheck(AST *root, std::string current_scope)
 {
-
-    if (isEqual(root, FUNC_DEC) || isEqual(root, MAIN_DEC))
-    {
-        // change into a local scope
-        current_scope = root->children[1]->attribute->literal;
-    }
-
-    // bottom up, i.e, postorder for soundness
-    for (auto c : root->children)
-    {
-        TypeCheck(c, current_scope);
-    }
-
     // check if assignment match the pair
     if (isEqual(root, ASSIGN))
     {

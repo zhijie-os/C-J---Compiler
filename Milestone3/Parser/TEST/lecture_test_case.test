@@ -1,0 +1,7 @@
+int x;
+foo()
+{
+    printi(x);
+    boolean x;
+    printb(x);
+}
