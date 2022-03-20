@@ -35,3 +35,17 @@ The parser is located in `Milestone2/Parser` direcotry.
 1. compile the scanner using the above instructions.
 2. run: `./parser <path to the input file>`.
 
+
+## Milestone 3: Semantic Analysis and Completion of Front End
+
+
+### How to compile the **Front End**?
+
+1. cd into `Milestone3/FrontEnd`
+2. run `make clean`
+3. run `make`
+
+### How to use the **Front End**?
+
+1. compile the scanner using the above instructions.
+2. run: `./main <path to the input file>`.
