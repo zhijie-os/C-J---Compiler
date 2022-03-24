@@ -15,6 +15,10 @@ void yycodegen(AST *root)
         {
             GenMain(c);
         }
+        if(c->type==NodeType::FUNC_DEC)
+        {
+            GenFunc(c);
+        }
     }   
 }
 
@@ -54,6 +58,8 @@ void GenMain(AST *root)
  */
 void GenFunc(AST *root)
 {
+    ASM(".text")
+    ASM(ChildLiteral(root,1)+":");
     /**
      *                 <- SP
      *  local variables
