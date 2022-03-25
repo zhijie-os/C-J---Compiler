@@ -149,7 +149,7 @@ void InsertGlobalFunc(std::string literal, DataType returnType, std::vector<Data
 void InsertGlobalVar(std::string literal, DataType type, AST *node)
 {
     // insert into symbol
-    GLOBAL_VAR.insert({literal, {type, node}});
+    GLOBAL_VAR.insert({literal, {type, node,true}});
     // link the node with its symbol table
     node->id_record = &GLOBAL_VAR.find(literal)->second;
 }
@@ -158,7 +158,7 @@ void InsertGlobalVar(std::string literal, DataType type, AST *node)
 void InsertLocalVar(std::string scope, std::string literal, DataType type, AST *node)
 {
     // insert into symbol table
-    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node}});
+    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node,false}});
     // link the node with its symbol table
     node->id_record = &SYMBOL_TABLE.find(scope)->second.find(literal)->second;
 }

@@ -94,8 +94,6 @@ void GenFunc(AST *root)
     std::string l = GenLabel();
     FuncLabel.insert({ChildLiteral(root,1),l}); // to look up
 
-
-
     ASM(l);
     /**
      *                 <- SP
@@ -107,124 +105,88 @@ void GenFunc(AST *root)
      */
 
     ASM1("# function setup")
-    // store return address
-    ASM1("sw    $ra,0($sp)");       // store on top of the stack         
-    ASM1("subu  $sp, $sp, 4");    // expand stack
+    // store old FP
+    ASM1("move  $fp, $sp");
+    ASM1("sw    $ra, 0($sp)");
+    ASM1("subu  $sp, $sp,-4");
 
-    // store FP
-    ASM1("sw    $fp, 0($sp)");      // store on top of the stack
-    ASM1("subu  $sp, $sp, 4");    // expand stack
+    // generate code for the function block
+    GenCode(Child(root,3));
 
-    // calculate the new FP address
-    
-    // # of paramter * 4 + 4 + 4
-    ASM1("li    $t0, 4");         // each variable is 4 bytes
-    ASM1("mul   $t0, $t0,"+std::to_string(num_params)); //  size of  the parameters 
-    ASM1("addu  $t0, $t0, 8");    // skip Parameters + Return Address + Function Pointer
-    ASM1("addu  $fp, $sp, $t0");  // reset the FP to the beginning
-    
-
-
-    // # of local * 4
-    ASM1("li    $t0, 4");        // each variable is 4 bytes
-    ASM1("mul   $t0, $t0," + std::to_string(num_local));  // locals
-    ASM1("subu  $fp, $sp, $t0")   // expand stack for local variables
-
-
-    // GenBlock(Child(root,3));
-
-    EMPTY_LINE;EMPTY_LINE;
-    ASM1("# function teardown");
-    // function exit and return
-    ASM1("lw    $ra,"+std::to_string(num_params*DATA_SIZE)+"($fp)");    // load back the RA
-    ASM1("move  $t0, $fp");         // the beginning of the frame
-    ASM1("lw    $ra, "+std::to_string(num_params*DATA_SIZE)+"($fp)");   // load back the FP
-    ASM1("move  $sp, $t0");        // pop off the stack frame
-    ASM1("jr    $ra");          // return 
-
-    EMPTY_LINE;
+    // load back the return address
+    ASM1("lw    $ra, 4($sp)");
+    // shrink the stack
+    ASM1("subu  $sp, $sp, "+std::to_string(num_params*4+8));
+    // load back the old function pointer
+    ASM1("lw    $fp, 0($sp)");
+    // jump return
+    ASM1("jr    $ra");
 }
 
 
-void GenBlock(AST* root)
+void GenFuncCall(AST* root)
 {
+    ASM1("sw    $fp, 0($sp)");       // store FP
+    ASM1("subu  $sp, $sp, 4");      // expand the stack
 
+
+    // for every actual, push on the stack but backwards
+    for(int i=Child(root,1)->children.size()-1;i>=0;i--)
+    {
+        GenCode(Child(root,1)->children[i]);
+        ASM1("sw    $a0, 0($sp)");
+    }    
+
+    // look up the function label
+    std::string function_label = FuncLabel.find(ChildLiteral(root,0))->second;
+
+    // jump and link
+    ASM1("jal   "+function_label);
 }
 
 
 
-int CountLocal(AST* root)
-{
-    int num_local=0;
-
-    if(root->type==NodeType::VAR_DEC)
-    {
-        num_local++;
-    }
-
-    for(auto c: root->children)
-    {
-        num_local+=CountLocal(c);
-    }
-
-    return num_local;
-}
-
-// halt the program 
+// halt the program
 void halt()
 {
-    ASM1("li    $v0, 10");
-    ASM1("syscall");
+    ASM1("li    $v0, 10");          // load instruction 10
+    ASM1("syscall");                // exit via syscall
 }
 
 
 // Put a number on the top of the stack
-void GenExprNumber(AST *root)
+void GenNumber(AST *root)
 {
-    ASM1("li    $t0,"+root->attribute->literal);    // load the literal
-    ASM1("sw    $t0, ($sp)")        // store on the top of the stack
-    ASM1("subu  $sp, $sp, 4")       // expand the stack
+    ASM1("li    $a0,"+root->attribute->literal);    // load the literal
 }
 
 // Put a bool on the top of the stack
-void GenExprBool(AST *root)
+void GenBoolean(AST *root)
 {
     if(root->type==NodeType::TRUE)
     {
-        ASM1("li    $t0, TRUE");    // true
+        ASM1("li    $a0, TRUE");    // true
     }
     else 
     {
-        ASM1("li    $t0, FALSE");   // false
+        ASM1("li    $a0, FALSE");   // false
     }
-    ASM1("sw    $t0, ($sp)")        // store on the top of the stack
-    ASM1("subu  $sp, $sp 4")       // expand the stack
 }
 
 
-void GenExprStr(AST *root)
+void GenString(AST *root)
 {
+    std::string str_label=GenLabel();
     // create new string data
     ASM1("  .data");
-    ASM1("str_"+std::to_string(label_count)+": .asciiz " + root->attribute->literal);
+    ASM1("str_"+str_label+": .asciiz \"" + root->attribute->literal+"\"");
 
     // back to text
     ASM1("  .text");
     
     // load onto the top of the stack
-    ASM1("la    $t0, str_"+std::to_string(label_count));
-    ASM1("sw    $t0, ($sp)");
-    ASM1("subu  $sp, $sp, 4");  // expand the stack
-
+    ASM1("la    $a0, str_"+str_label);
 }
-
-
-void GenPOP(std::string reg)
-{
-    ASM1("lw    "+reg+", 0($sp)");
-    ASM1("addu  $sp, $sp, 4");
-}
-
 
 void GenCondition(AST* root)
 {
@@ -248,39 +210,34 @@ void GenCondition(AST* root)
         // true label
         ASM(true_label);
         GenCode(Child(root,1));
-        
+
         // just keep it empty
         ASM(end_label);
     }   
 
     if(root->type==NodeType::IF)
     {
-
+        GenExpr(Child(root,0));
+        std::string end_label=GenLabel();
+        // branch check
+        ASM1("beq   $a0, FALSE, "+end_label);
+        // otherwise, true, do this
+        GenCode(Child(root,1));
+        // just keep it empty
+        ASM(end_label);
     }
+
 }
 
 
 // the result would be register $a0
 void GenExpr(AST* root)
 {
-    // base cases
-    if(root->type==NodeType::STRING)
-    {
-        GenExprBool(root);
-    }
-    else if(root->type==NodeType::BOOLEAN)
-    {
-        GenExprStr(root);
-    }
-    else if(root->type==NodeType::NUMBER)
-    {
-        GenExprNumber(root);
-    }
 
     if(root->type==NodeType::BIN_ARITHMETIC||root->type==NodeType::BIN_LOGIC||root->type==NodeType::BIN_RELATION||root->type==NodeType::EQUIVALENCE)
     {
 
-        GenExpr(Child(root,0)); // get lhs
+        GenCode(Child(root,0)); // get lhs
         ASM1("sw    $a0, 0($sp)");
         ASM1("subu  $sp, $sp, 4"); // tempory store on the stack
         GenExpr(Child(root,1));  // get rhs
@@ -317,5 +274,17 @@ std::string GenLabel()
 
 void GenCode(AST* root)
 {
-
+        // base cases
+    if(root->type==NodeType::STRING)
+    {
+        GenBoolean(root);
+    }
+    else if(root->type==NodeType::BOOLEAN)
+    {
+        GenString(root);
+    }
+    else if(root->type==NodeType::NUMBER)
+    {
+        GenNumber(root);
+    }
 }
