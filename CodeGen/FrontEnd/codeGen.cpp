@@ -8,7 +8,28 @@
 
 #define DATA_SIZE 4
 
+
+const std::unordered_map<std::string, std::string> BinaryInstruction{
+    {"==","seq"},{"!=","sne"},
+    {">","sgt"},{">=","sge"},
+    {"<","slt"},{"<=","sle"},
+    {"+","addu"},{"-","subu"},
+    {"*","mul"},{"/","div"},
+    {"%","rem"}
+};
+
+std::unordered_map<std::string, std::string> FuncLabel;
+
+// const std::unordered_map<std::string, std::string> UnaryInstruction
+// {
+//     {"x","!"}, {"negu","-"};
+// };
+
+
+
+
 int label_count = 0;
+
 
 void yycodegen(AST *root)
 {
@@ -69,7 +90,13 @@ void GenFunc(AST *root)
     int num_local = SYMBOL_TABLE.find(ChildLiteral(root,1))->second.size() - num_params;
 
     // ASM1(".text")
-    ASM(ChildLiteral(root,1)+":");
+    
+    std::string l = GenLabel();
+    FuncLabel.insert({ChildLiteral(root,1),l}); // to look up
+
+
+
+    ASM(l);
     /**
      *                 <- SP
      *  local variables
@@ -171,7 +198,7 @@ void GenExprBool(AST *root)
         ASM1("li    $t0, FALSE");   // false
     }
     ASM1("sw    $t0, ($sp)")        // store on the top of the stack
-    ASM1("subu  $sp, $spm 4")       // expand the stack
+    ASM1("subu  $sp, $sp 4")       // expand the stack
 }
 
 
@@ -198,9 +225,97 @@ void GenPOP(std::string reg)
     ASM1("addu  $sp, $sp, 4");
 }
 
-// void EvalExpr(AST* root)
-// {
-//     if(root->type==NodeType::)
-// }
+
+void GenCondition(AST* root)
+{
+    if(root->type==NodeType::IF_ELSE)
+    {
+        GenExpr(Child(root,0));
+        std::string true_label=GenLabel();
+        std::string false_label=GenLabel();
+        std::string end_label=GenLabel();
+        
+        // branch check
+        ASM1("beq   $a0, TRUE, "+true_label);
+        
+        // if failed, goes in to false_label
+        ASM(false_label);
+        // gen code for the code inside the label;
+        GenCode(Child(root,2));
+        // skip true label
+        ASM1("b     "+end_label);
+
+        // true label
+        ASM(true_label);
+        GenCode(Child(root,1));
+        
+        // just keep it empty
+        ASM(end_label);
+    }   
+
+    if(root->type==NodeType::IF)
+    {
+
+    }
+}
 
 
+// the result would be register $a0
+void GenExpr(AST* root)
+{
+    // base cases
+    if(root->type==NodeType::STRING)
+    {
+        GenExprBool(root);
+    }
+    else if(root->type==NodeType::BOOLEAN)
+    {
+        GenExprStr(root);
+    }
+    else if(root->type==NodeType::NUMBER)
+    {
+        GenExprNumber(root);
+    }
+
+    if(root->type==NodeType::BIN_ARITHMETIC||root->type==NodeType::BIN_LOGIC||root->type==NodeType::BIN_RELATION||root->type==NodeType::EQUIVALENCE)
+    {
+
+        GenExpr(Child(root,0)); // get lhs
+        ASM1("sw    $a0, 0($sp)");
+        ASM1("subu  $sp, $sp, 4"); // tempory store on the stack
+        GenExpr(Child(root,1));  // get rhs
+
+        ASM1("lw    $t0, 4($sp)");  // rhs on the temp 1
+        ASM1("addu  $sp, $sp, 4")   // restore the stack
+
+        // store result on the $a0
+        ASM1(BinaryInstruction.find(root->symbol)->second+"    $a0, $t0,$a0 "); // the result is on the temp 0
+    }
+
+    if(root->type==NodeType::UN_ARITHMETIC)
+    {
+        GenExpr(Child(root,0));
+        ASM1("negu  $a0, $a0");
+    }
+
+    if(root->type==NodeType::UN_LOGIC)
+    {
+        GenExpr(Child(root,0));
+        ASM1("xori  $a0, $a0,1");
+    }
+
+}
+
+
+
+std::string GenLabel()
+{
+    label_count++;
+    return "Label"+std::to_string(label_count-1)+": ";
+}
+
+
+void GenCode(AST* root)
+{
+
+}

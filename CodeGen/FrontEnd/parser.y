@@ -179,4 +179,5 @@ void yyerror(char const *s)
 {
     // print out the token that cannot be shifted or reduced and its line number
     fprintf(stderr, "Syntax Error around:  %s, at or near %d", yytext, yylineno);
+    exit(EXIT_FAILURE);
 }
