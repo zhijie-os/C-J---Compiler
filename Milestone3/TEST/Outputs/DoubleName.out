@@ -1,0 +1,14 @@
+PROGRAM
+    FUNC_DEC
+        VOID
+        identifier { line: 1, literal: foo, address: 0x561848144eb8 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+    GLOBAL_VAR_DEC
+        int { line: 2 }
+        identifier { line: 2, literal: x, address: 0x561848144f18 type = INT }
+    MAIN_DEC
+        VOID
+        identifier { line: 4, literal: main, address: 0x561848144fd8 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK

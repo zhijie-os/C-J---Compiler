@@ -8,6 +8,8 @@
 
 #define DATA_SIZE 4
 
+int label_count = 0;
+
 void yycodegen(AST *root)
 {
     GenGlobalVar(root);
@@ -79,7 +81,7 @@ void GenFunc(AST *root)
 
     ASM1("# function setup")
     // store return address
-    ASM1("sw    $ra,0($sp)");       // store on top of the stack         
+    ASM1("sw    $ra, 0($sp)");       // store on top of the stack         
     ASM1("subu  $sp, $sp, 4");    // expand stack
 
     // store FP
@@ -90,7 +92,7 @@ void GenFunc(AST *root)
     
     // # of paramter * 4 + 4 + 4
     ASM1("li    $t0, 4");         // each variable is 4 bytes
-    ASM1("mul   $t0, $t0,"+std::to_string(num_params)); //  size of  the parameters 
+    ASM1("mul   $t0, $t0, "+std::to_string(num_params)); //  size of  the parameters 
     ASM1("addu  $t0, $t0, 8");    // skip Parameters + Return Address + Function Pointer
     ASM1("addu  $fp, $sp, $t0");  // reset the FP to the beginning
     
@@ -98,7 +100,7 @@ void GenFunc(AST *root)
 
     // # of local * 4
     ASM1("li    $t0, 4");        // each variable is 4 bytes
-    ASM1("mul   $t0, $t0," + std::to_string(num_local));  // locals
+    ASM1("mul   $t0, $t0, " + std::to_string(num_local));  // locals
     ASM1("subu  $fp, $sp, $t0")   // expand stack for local variables
 
 
@@ -107,81 +109,11 @@ void GenFunc(AST *root)
     EMPTY_LINE;EMPTY_LINE;
     ASM1("# function teardown");
     // function exit and return
-    ASM1("lw    $ra,"+std::to_string(num_params*DATA_SIZE)+"($fp)");    // load back the RA
+    ASM1("lw    $ra, "+std::to_string(num_params*DATA_SIZE)+"($fp)");    // load back the RA
     ASM1("move  $t0, $fp");         // the beginning of the frame
     ASM1("lw    $ra, "+std::to_string(num_params*DATA_SIZE)+"($fp)");   // load back the FP
     ASM1("move  $sp, $t0");        // pop off the stack frame
     ASM1("jr    $ra");          // return 
 
     EMPTY_LINE;
-}
-
-
-void GenBlock(AST* root)
-{
-
-}
-
-
-
-int CountLocal(AST* root)
-{
-    int num_local=0;
-
-    if(root->type==NodeType::VAR_DEC)
-    {
-        num_local++;
-    }
-
-    for(auto c: root->children)
-    {
-        num_local+=CountLocal(c);
-    }
-
-    return num_local;
-}
-
-// halt the program 
-void halt()
-{
-    ASM1("li    $v0, 10");
-    ASM1("syscall");
-}
-
-
-void GenExprNumber(AST *root)
-{
-    ASM1("li    $t0,"+root->attribute->literal);    // load the literal
-    ASM1("sw    $t0, ($sp)")        // store on the top of the stack
-    ASM1("subu  $sp, $sp, 4")       // expand the stack
-}
-
-void GenExprBool(AST *root)
-{
-    if(root->type==NodeType::TRUE)
-    {
-        ASM1("li    $t0, TRUE");    // true
-    }
-    else 
-    {
-        ASM1("li    $t0, FALSE");   // false
-    }
-    ASM1("sw    $t0, ($sp)")        // store on the top of the stack
-    ASM1("subu  $sp, $spm 4")       // expand the stack
-}
-
-void GenExprStr(AST *root)
-{
-
-}
-
-
-void printc()
-{
-
-}
-
-void prints()
-{
-
 }

@@ -1,0 +1,24 @@
+PROGRAM
+    GLOBAL_VAR_DEC
+        int { line: 1 }
+        identifier { line: 1, literal: x, address: 0x5565b4b8d498 type = INT }
+    MAIN_DEC
+        VOID
+        identifier { line: 2, literal: foo, address: 0x5565b4b8d558 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 4, literal: printi, address: 0x5565b4b871d8 returnType = VOID paramType = <  >  }
+                    ACTUALS
+                        + { line: 4 }
+                            number { line: 4, literal: 3 }
+                            number { line: 4, literal: 2 }
+            VAR_DEC
+                bool { line: 5 }
+                identifier { line: 5, literal: x, address: 0x5565b4b8d698 type = BOOLEAN }
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 6, literal: printb, address: 0x5565b4b870d8 returnType = VOID paramType = <  >  }
+                    ACTUALS
+                        identifier { line: 6, literal: x, address: 0x5565b4b8d698 type = BOOLEAN }
