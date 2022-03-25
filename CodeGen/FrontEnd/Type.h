@@ -24,6 +24,7 @@ enum class NodeType
     BIN_ARITHMETIC,
     BIN_RELATION,
     UN_ARITHMETIC,
+    EQUIVALENCE,
     BIN_LOGIC,
     UN_LOGIC,
     ASSIGN,

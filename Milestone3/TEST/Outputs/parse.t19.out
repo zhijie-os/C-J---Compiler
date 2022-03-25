@@ -1,0 +1,12 @@
+PROGRAM
+    MAIN_DEC
+        VOID
+        identifier { line: 1, literal: main, address: 0x55ca3d9bedd8 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+            while { line: 2 }
+                true { line: 2 }
+                while { line: 3 }
+                    true { line: 3 }
+                    nullStmt
+                    nullStmt

@@ -65,8 +65,8 @@ return      {yylval=new AST(NodeType::RETURN, "return",new ATR(yylineno)); retur
 ">"         {yylval=new AST(NodeType::BIN_RELATION,">", new ATR(yylineno));return '>';}
 "<="        {yylval=new AST(NodeType::BIN_RELATION,"<=", new ATR(yylineno));return LE;}
 ">="        {yylval=new AST(NodeType::BIN_RELATION,">=", new ATR(yylineno));return GE;}
-"=="        {yylval=new AST(NodeType::BIN_RELATION,"==", new ATR(yylineno));return EQ;}
-"!="        {yylval=new AST(NodeType::BIN_RELATION,"!=", new ATR(yylineno));return NE;}
+"=="        {yylval=new AST(NodeType::EQUIVALENCE,"==", new ATR(yylineno));return EQ;}
+"!="        {yylval=new AST(NodeType::EQUIVALENCE,"!=", new ATR(yylineno));return NE;}
 "="         {yylval=new AST(NodeType::ASSIGN,"=", new ATR(yylineno));return '=';}
 "!"         {yylval=new AST(NodeType::UN_LOGIC,"!", new ATR(yylineno));return '!';}
 "&&"        {yylval=new AST(NodeType::BIN_LOGIC,"&&", new ATR(yylineno));return AND;}

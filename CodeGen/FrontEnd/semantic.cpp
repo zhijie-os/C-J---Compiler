@@ -388,7 +388,8 @@ DataType TypeLookup(AST *root)
     }
 
     // if the root is logic operation, relation operation, true or false
-    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || isEqual(root, BIN_RELATION))
+    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || 
+    isEqual(root, BIN_RELATION)||isEqual(root,EQUIVALENCE))
     {
         return DataType::BOOL;
     }
@@ -513,6 +514,18 @@ void TypeCheck(AST *root)
             SemanticError(root->attribute->line, "binary relation operator " + root->symbol + " has Non NUMBER type on RHS.");
         }
     }
+
+    if(isEqual(root,EQUIVALENCE))
+    {
+        DataType lhs = TypeLookup(Child(root, 0));
+        DataType rhs = TypeLookup(Child(root, 1));
+
+        if(lhs != rhs || (lhs!=DataType::INT&&lhs!=DataType::BOOL))
+        {
+             SemanticError(root->attribute->line, "equivalence check"+root->symbol+"has mismatched type.");
+        }
+    }
+
 
     // check if the condition is boolean
     if (isEqual(root, WHILE))

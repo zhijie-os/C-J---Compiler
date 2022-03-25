@@ -44,7 +44,7 @@ std::vector<DataType> ParseFormals(AST *root)
 
 /**
  * Check if a function call's arguments match the parameters
-*/
+ */
 void ActualsMatchFormals(AST *fun_c, AST *actual)
 {
     // parameters can be extract from the fun_c's record in the symbol table
@@ -108,7 +108,6 @@ void MainDefined()
     }
 }
 
-
 // assert break statement is inside While
 void BreakInWhile(AST *root)
 {
@@ -121,17 +120,17 @@ void BreakInWhile(AST *root)
         root = root->parent;
         if (root->type == NodeType::BLOCK)
         {
-            if(root->parent->type==NodeType::WHILE)
+            if (root->parent->type == NodeType::WHILE)
             {
                 inWhile = true;
-            }    
+            }
             break;
         }
     }
 
     // assert it is in while
     if (!inWhile)
-    {   // otherwise return false
+    { // otherwise return false
         SemanticError(copy->attribute->line, "Break is not inside WHILE loop");
     }
 }
@@ -163,7 +162,6 @@ void InsertLocalVar(std::string scope, std::string literal, DataType type, AST *
     node->id_record = &SYMBOL_TABLE.find(scope)->second.find(literal)->second;
 }
 
-
 // assert an ID is not defined in the current scope
 bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
 {
@@ -191,7 +189,7 @@ bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
         }
     }
     else
-    {   
+    {
         // try to find it in the local variable
         if (SYMBOL_TABLE.find(scope)->second.find(ptr->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
         {
@@ -215,7 +213,7 @@ void IdentifierDefined(std::string scope, AST *node)
         return;
     }
     else
-    {   
+    {
         // if the current scope is empty <=> global
         if (scope.empty())
         {
@@ -368,8 +366,6 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     TypeCheck(root);
 }
 
-
-
 // lookup the type of a particular tree node, even it is not an identifier
 DataType TypeLookup(AST *root)
 {
@@ -388,7 +384,8 @@ DataType TypeLookup(AST *root)
     }
 
     // if the root is logic operation, relation operation, true or false
-    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || isEqual(root, BIN_RELATION))
+    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) ||
+        isEqual(root, TRUE) || isEqual(root, FALSE) || isEqual(root, BIN_RELATION) || isEqual(root, EQUIVALENCE))
     {
         return DataType::BOOL;
     }
@@ -410,7 +407,6 @@ DataType TypeLookup(AST *root)
     {
         return DataType::STRING;
     }
-
 
     // if the node is VOID
     if (root->type == NodeType::VOID)
@@ -442,7 +438,6 @@ void TypeCheck(AST *root)
         }
     }
 
-
     // both side should be number
     if (isEqual(root, BIN_ARITHMETIC))
     {
@@ -469,7 +464,6 @@ void TypeCheck(AST *root)
             SemanticError(root->attribute->line, "unary arithmetic operator " + root->symbol + " has Non NUMBER type.");
         }
     }
-
 
     // both side should be boolean
     if (isEqual(root, BIN_LOGIC))
@@ -511,6 +505,17 @@ void TypeCheck(AST *root)
         {
 
             SemanticError(root->attribute->line, "binary relation operator " + root->symbol + " has Non NUMBER type on RHS.");
+        }
+    }
+
+    if (isEqual(root, EQUIVALENCE))
+    {
+        DataType lhs = TypeLookup(Child(root, 0));
+        DataType rhs = TypeLookup(Child(root, 1));
+
+        if (lhs != rhs || (lhs != DataType::INT && lhs != DataType::BOOL))
+        {
+            SemanticError(root->attribute->line, "equivalence check" + root->symbol + "has mismatched type.");
         }
     }
 
@@ -565,7 +570,6 @@ void TypeCheck(AST *root)
         }
     }
 }
-
 
 // some additionl check: non-void function return, break in main, function return type is correct
 void FinalCheck(AST *root, std::string current_scope)

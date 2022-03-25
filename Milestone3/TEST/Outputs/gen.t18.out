@@ -1,0 +1,696 @@
+PROGRAM
+    MAIN_DEC
+        VOID
+        identifier { line: 5, literal: calculator, address: 0x5636ce9f20a8 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 7, literal: init, address: 0x5636ce9f3098 returnType = VOID paramType = <  >  }
+                    ACTUALS
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 8, literal: parser, address: 0x5636ce9f2618 returnType = VOID paramType = <  >  }
+                    ACTUALS
+    GLOBAL_VAR_DEC
+        bool { line: 15 }
+        identifier { line: 15, literal: _havechar, address: 0x5636ce9ef4f8 type = BOOLEAN }
+    GLOBAL_VAR_DEC
+        int { line: 16 }
+        identifier { line: 16, literal: _char, address: 0x5636ce9f2178 type = INT }
+    FUNC_DEC
+        int { line: 18 }
+        identifier { line: 18, literal: getc, address: 0x5636ce9f21c8 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            while { line: 20 }
+                identifier { line: 20, literal: _havechar, address: 0x5636ce9ef4f8 type = BOOLEAN }
+                BLOCK
+                    STMTEXPR
+                        = { line: 21 }
+                            identifier { line: 21, literal: _havechar, address: 0x5636ce9ef4f8 type = BOOLEAN }
+                            false { line: 21 }
+                    return { line: 22 }
+                        identifier { line: 22, literal: _char, address: 0x5636ce9f2178 type = INT }
+            return { line: 24 }
+                FUNC_CALL
+                    identifier { line: 24, literal: getchar, address: 0x5636ce9d0018 returnType = INT paramType = <  >  }
+                    ACTUALS
+    FUNC_DEC
+        VOID
+        identifier { line: 27, literal: ungetc, address: 0x5636ce9f2288 returnType = VOID paramType = <  >  }
+        FORMALS
+            FORMAL
+                int { line: 27 }
+                identifier { line: 27, literal: ch, address: 0x5636ce9f3248 type = INT }
+        BLOCK
+            while { line: 29 }
+                identifier { line: 29, literal: _havechar, address: 0x5636ce9ef4f8 type = BOOLEAN }
+                BLOCK
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 30, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                string { line: 30, literal: Internal error: too many ungets!\n }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 31, literal: halt, address: 0x5636ce9d0078 returnType = VOID paramType = <  >  }
+                            ACTUALS
+            STMTEXPR
+                = { line: 33 }
+                    identifier { line: 33, literal: _havechar, address: 0x5636ce9ef4f8 type = BOOLEAN }
+                    true { line: 33 }
+            STMTEXPR
+                = { line: 34 }
+                    identifier { line: 34, literal: _char, address: 0x5636ce9f2178 type = INT }
+                    identifier { line: 34, literal: ch, address: 0x5636ce9f3248 type = INT }
+    GLOBAL_VAR_DEC
+        bool { line: 41 }
+        identifier { line: 41, literal: _havetoken, address: 0x5636ce9f22e8 type = BOOLEAN }
+    GLOBAL_VAR_DEC
+        int { line: 42 }
+        identifier { line: 42, literal: _token, address: 0x5636ce9f2338 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 43 }
+        identifier { line: 43, literal: attr, address: 0x5636ce9f2388 type = INT }
+    FUNC_DEC
+        int { line: 45 }
+        identifier { line: 45, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            while { line: 47 }
+                identifier { line: 47, literal: _havetoken, address: 0x5636ce9f22e8 type = BOOLEAN }
+                return { line: 48 }
+                    identifier { line: 48, literal: _token, address: 0x5636ce9f2338 type = INT }
+            STMTEXPR
+                = { line: 50 }
+                    identifier { line: 50, literal: _havetoken, address: 0x5636ce9f22e8 type = BOOLEAN }
+                    true { line: 50 }
+            return { line: 51 }
+                = { line: 51 }
+                    identifier { line: 51, literal: _token, address: 0x5636ce9f2338 type = INT }
+                    FUNC_CALL
+                        identifier { line: 51, literal: scanner, address: 0x5636ce9f24b8 returnType = INT paramType = <  >  }
+                        ACTUALS
+    FUNC_DEC
+        VOID
+        identifier { line: 54, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+        FORMALS
+            FORMAL
+                int { line: 54 }
+                identifier { line: 54, literal: expect, address: 0x5636ce9f33e8 type = INT }
+        BLOCK
+            while { line: 56 }
+                != { line: 56 }
+                    FUNC_CALL
+                        identifier { line: 56, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                        ACTUALS
+                    identifier { line: 56, literal: expect, address: 0x5636ce9f33e8 type = INT }
+                BLOCK
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 57, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                string { line: 57, literal: Error: expected  }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 58, literal: printc, address: 0x5636ce9d0158 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 58, literal: expect, address: 0x5636ce9f33e8 type = INT }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 59, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                string { line: 59, literal: \n }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 60, literal: halt, address: 0x5636ce9d0078 returnType = VOID paramType = <  >  }
+                            ACTUALS
+            STMTEXPR
+                = { line: 62 }
+                    identifier { line: 62, literal: _havetoken, address: 0x5636ce9f22e8 type = BOOLEAN }
+                    false { line: 62 }
+    FUNC_DEC
+        int { line: 65 }
+        identifier { line: 65, literal: scanner, address: 0x5636ce9f24b8 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            VAR_DEC
+                int { line: 67 }
+                identifier { line: 67, literal: ch, address: 0x5636ce9f3518 type = INT }
+            while { line: 69 }
+                FUNC_CALL
+                    identifier { line: 69, literal: isspace, address: 0x5636ce9f25b8 returnType = BOOLEAN paramType = <  >  }
+                    ACTUALS
+                        = { line: 69 }
+                            identifier { line: 69, literal: ch, address: 0x5636ce9f3518 type = INT }
+                            FUNC_CALL
+                                identifier { line: 69, literal: getc, address: 0x5636ce9f21c8 returnType = INT paramType = <  >  }
+                                ACTUALS
+                nullStmt
+            while { line: 72 }
+                == { line: 72 }
+                    identifier { line: 72, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 72, literal: EOF, address: 0x5636ce9f28c8 type = INT }
+                return { line: 72 }
+                    identifier { line: 72, literal: TK_EOF, address: 0x5636ce9f2918 type = INT }
+            while { line: 73 }
+                == { line: 73 }
+                    identifier { line: 73, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 73, literal: ASCII_NL, address: 0x5636ce9f3048 type = INT }
+                return { line: 73 }
+                    identifier { line: 73, literal: TK_EOLN, address: 0x5636ce9f2968 type = INT }
+            while { line: 74 }
+                == { line: 74 }
+                    identifier { line: 74, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 74, literal: ASCII_PLUS, address: 0x5636ce9f2d78 type = INT }
+                return { line: 74 }
+                    identifier { line: 74, literal: TK_ADD, address: 0x5636ce9f2a08 type = INT }
+            while { line: 75 }
+                == { line: 75 }
+                    identifier { line: 75, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 75, literal: ASCII_MINUS, address: 0x5636ce9f2dc8 type = INT }
+                return { line: 75 }
+                    identifier { line: 75, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+            while { line: 76 }
+                == { line: 76 }
+                    identifier { line: 76, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 76, literal: ASCII_STAR, address: 0x5636ce9f2e18 type = INT }
+                return { line: 76 }
+                    identifier { line: 76, literal: TK_MUL, address: 0x5636ce9f2aa8 type = INT }
+            while { line: 77 }
+                == { line: 77 }
+                    identifier { line: 77, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 77, literal: ASCII_SLASH, address: 0x5636ce9f2e68 type = INT }
+                return { line: 77 }
+                    identifier { line: 77, literal: TK_DIV, address: 0x5636ce9f2af8 type = INT }
+            while { line: 78 }
+                == { line: 78 }
+                    identifier { line: 78, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 78, literal: ASCII_LPAREN, address: 0x5636ce9f2eb8 type = INT }
+                return { line: 78 }
+                    identifier { line: 78, literal: TK_LPAREN, address: 0x5636ce9f2b48 type = INT }
+            while { line: 79 }
+                == { line: 79 }
+                    identifier { line: 79, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    identifier { line: 79, literal: ASCII_RPAREN, address: 0x5636ce9f2f08 type = INT }
+                return { line: 79 }
+                    identifier { line: 79, literal: TK_RPAREN, address: 0x5636ce9f2c88 type = INT }
+            while { line: 81 }
+                FUNC_CALL
+                    identifier { line: 81, literal: isdigit, address: 0x5636ce9f2538 returnType = BOOLEAN paramType = <  >  }
+                    ACTUALS
+                        identifier { line: 81, literal: ch, address: 0x5636ce9f3518 type = INT }
+                BLOCK
+                    STMTEXPR
+                        = { line: 82 }
+                            identifier { line: 82, literal: attr, address: 0x5636ce9f2388 type = INT }
+                            number { line: 82, literal: 0 }
+                    while { line: 83 }
+                        FUNC_CALL
+                            identifier { line: 83, literal: isdigit, address: 0x5636ce9f2538 returnType = BOOLEAN paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 83, literal: ch, address: 0x5636ce9f3518 type = INT }
+                        BLOCK
+                            STMTEXPR
+                                = { line: 84 }
+                                    identifier { line: 84, literal: attr, address: 0x5636ce9f2388 type = INT }
+                                    + { line: 84 }
+                                        * { line: 84 }
+                                            identifier { line: 84, literal: attr, address: 0x5636ce9f2388 type = INT }
+                                            number { line: 84, literal: 10 }
+                                        - { line: 84 }
+                                            identifier { line: 84, literal: ch, address: 0x5636ce9f3518 type = INT }
+                                            identifier { line: 84, literal: ASCII_0, address: 0x5636ce9f2cd8 type = INT }
+                            STMTEXPR
+                                = { line: 85 }
+                                    identifier { line: 85, literal: ch, address: 0x5636ce9f3518 type = INT }
+                                    FUNC_CALL
+                                        identifier { line: 85, literal: getc, address: 0x5636ce9f21c8 returnType = INT paramType = <  >  }
+                                        ACTUALS
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 87, literal: ungetc, address: 0x5636ce9f2288 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 87, literal: ch, address: 0x5636ce9f3518 type = INT }
+                    return { line: 88 }
+                        identifier { line: 88, literal: TK_NUMBER, address: 0x5636ce9f29b8 type = INT }
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 91, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                    ACTUALS
+                        string { line: 91, literal: Error: invalid character.\n }
+            STMTEXPR
+                FUNC_CALL
+                    identifier { line: 92, literal: halt, address: 0x5636ce9d0078 returnType = VOID paramType = <  >  }
+                    ACTUALS
+    FUNC_DEC
+        bool { line: 95 }
+        identifier { line: 95, literal: isdigit, address: 0x5636ce9f2538 returnType = BOOLEAN paramType = <  >  }
+        FORMALS
+            FORMAL
+                int { line: 95 }
+                identifier { line: 95, literal: ch, address: 0x5636ce9f3648 type = INT }
+        BLOCK
+            return { line: 97 }
+                && { line: 97 }
+                    >= { line: 97 }
+                        identifier { line: 97, literal: ch, address: 0x5636ce9f3648 type = INT }
+                        identifier { line: 97, literal: ASCII_0, address: 0x5636ce9f2cd8 type = INT }
+                    <= { line: 97 }
+                        identifier { line: 97, literal: ch, address: 0x5636ce9f3648 type = INT }
+                        identifier { line: 97, literal: ASCII_9, address: 0x5636ce9f2d28 type = INT }
+    FUNC_DEC
+        bool { line: 100 }
+        identifier { line: 100, literal: isspace, address: 0x5636ce9f25b8 returnType = BOOLEAN paramType = <  >  }
+        FORMALS
+            FORMAL
+                int { line: 100 }
+                identifier { line: 100, literal: ch, address: 0x5636ce9f3778 type = INT }
+        BLOCK
+            return { line: 102 }
+                || { line: 103 }
+                    || { line: 102 }
+                        == { line: 102 }
+                            identifier { line: 102, literal: ch, address: 0x5636ce9f3778 type = INT }
+                            identifier { line: 102, literal: ASCII_SPACE, address: 0x5636ce9f2f58 type = INT }
+                        == { line: 103 }
+                            identifier { line: 103, literal: ch, address: 0x5636ce9f3778 type = INT }
+                            identifier { line: 103, literal: ASCII_TAB, address: 0x5636ce9f2fa8 type = INT }
+                    == { line: 104 }
+                        identifier { line: 104, literal: ch, address: 0x5636ce9f3778 type = INT }
+                        identifier { line: 104, literal: ASCII_CR, address: 0x5636ce9f2ff8 type = INT }
+    FUNC_DEC
+        VOID
+        identifier { line: 111, literal: parser, address: 0x5636ce9f2618 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+            VAR_DEC
+                int { line: 113 }
+                identifier { line: 113, literal: result, address: 0x5636ce9f38a8 type = INT }
+            while { line: 115 }
+                != { line: 115 }
+                    FUNC_CALL
+                        identifier { line: 115, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                        ACTUALS
+                    identifier { line: 115, literal: TK_EOF, address: 0x5636ce9f2918 type = INT }
+                BLOCK
+                    STMTEXPR
+                        = { line: 116 }
+                            identifier { line: 116, literal: result, address: 0x5636ce9f38a8 type = INT }
+                            FUNC_CALL
+                                identifier { line: 116, literal: E, address: 0x5636ce9f2678 returnType = INT paramType = <  >  }
+                                ACTUALS
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 117, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 117, literal: TK_EOLN, address: 0x5636ce9f2968 type = INT }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 119, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                string { line: 119, literal:  =  }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 120, literal: printi, address: 0x5636ce9d01d8 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 120, literal: result, address: 0x5636ce9f38a8 type = INT }
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 121, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                string { line: 121, literal: \n }
+    FUNC_DEC
+        int { line: 125 }
+        identifier { line: 125, literal: E, address: 0x5636ce9f2678 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            VAR_DEC
+                int { line: 127 }
+                identifier { line: 127, literal: l, address: 0x5636ce9f39d8 type = INT }
+            VAR_DEC
+                int { line: 128 }
+                identifier { line: 128, literal: r, address: 0x5636ce9f3a98 type = INT }
+            VAR_DEC
+                int { line: 129 }
+                identifier { line: 129, literal: token, address: 0x5636ce9f3ae8 type = INT }
+            STMTEXPR
+                = { line: 131 }
+                    identifier { line: 131, literal: l, address: 0x5636ce9f39d8 type = INT }
+                    FUNC_CALL
+                        identifier { line: 131, literal: T, address: 0x5636ce9f26d8 returnType = INT paramType = <  >  }
+                        ACTUALS
+            while { line: 132 }
+                || { line: 132 }
+                    == { line: 132 }
+                        FUNC_CALL
+                            identifier { line: 132, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                            ACTUALS
+                        identifier { line: 132, literal: TK_ADD, address: 0x5636ce9f2a08 type = INT }
+                    == { line: 132 }
+                        FUNC_CALL
+                            identifier { line: 132, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                            ACTUALS
+                        identifier { line: 132, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+                BLOCK
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 133, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                = { line: 133 }
+                                    identifier { line: 133, literal: token, address: 0x5636ce9f3ae8 type = INT }
+                                    FUNC_CALL
+                                        identifier { line: 133, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                                        ACTUALS
+                    STMTEXPR
+                        = { line: 134 }
+                            identifier { line: 134, literal: r, address: 0x5636ce9f3a98 type = INT }
+                            FUNC_CALL
+                                identifier { line: 134, literal: T, address: 0x5636ce9f26d8 returnType = INT paramType = <  >  }
+                                ACTUALS
+                    while { line: 136 }
+                        == { line: 136 }
+                            identifier { line: 136, literal: token, address: 0x5636ce9f3ae8 type = INT }
+                            identifier { line: 136, literal: TK_ADD, address: 0x5636ce9f2a08 type = INT }
+                        STMTEXPR
+                            = { line: 137 }
+                                identifier { line: 137, literal: l, address: 0x5636ce9f39d8 type = INT }
+                                + { line: 137 }
+                                    identifier { line: 137, literal: l, address: 0x5636ce9f39d8 type = INT }
+                                    identifier { line: 137, literal: r, address: 0x5636ce9f3a98 type = INT }
+                        STMTEXPR
+                            = { line: 139 }
+                                identifier { line: 139, literal: l, address: 0x5636ce9f39d8 type = INT }
+                                - { line: 139 }
+                                    identifier { line: 139, literal: l, address: 0x5636ce9f39d8 type = INT }
+                                    identifier { line: 139, literal: r, address: 0x5636ce9f3a98 type = INT }
+            return { line: 141 }
+                identifier { line: 141, literal: l, address: 0x5636ce9f39d8 type = INT }
+    FUNC_DEC
+        int { line: 144 }
+        identifier { line: 144, literal: T, address: 0x5636ce9f26d8 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            VAR_DEC
+                int { line: 146 }
+                identifier { line: 146, literal: l, address: 0x5636ce9f3ba8 type = INT }
+            VAR_DEC
+                int { line: 147 }
+                identifier { line: 147, literal: r, address: 0x5636ce9f3c68 type = INT }
+            VAR_DEC
+                int { line: 148 }
+                identifier { line: 148, literal: token, address: 0x5636ce9f3cb8 type = INT }
+            STMTEXPR
+                = { line: 150 }
+                    identifier { line: 150, literal: l, address: 0x5636ce9f3ba8 type = INT }
+                    FUNC_CALL
+                        identifier { line: 150, literal: F, address: 0x5636ce9f2738 returnType = INT paramType = <  >  }
+                        ACTUALS
+            while { line: 151 }
+                || { line: 151 }
+                    == { line: 151 }
+                        FUNC_CALL
+                            identifier { line: 151, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                            ACTUALS
+                        identifier { line: 151, literal: TK_MUL, address: 0x5636ce9f2aa8 type = INT }
+                    == { line: 151 }
+                        FUNC_CALL
+                            identifier { line: 151, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                            ACTUALS
+                        identifier { line: 151, literal: TK_DIV, address: 0x5636ce9f2af8 type = INT }
+                BLOCK
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 152, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                = { line: 152 }
+                                    identifier { line: 152, literal: token, address: 0x5636ce9f3cb8 type = INT }
+                                    FUNC_CALL
+                                        identifier { line: 152, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                                        ACTUALS
+                    STMTEXPR
+                        = { line: 153 }
+                            identifier { line: 153, literal: r, address: 0x5636ce9f3c68 type = INT }
+                            FUNC_CALL
+                                identifier { line: 153, literal: F, address: 0x5636ce9f2738 returnType = INT paramType = <  >  }
+                                ACTUALS
+                    while { line: 155 }
+                        == { line: 155 }
+                            identifier { line: 155, literal: token, address: 0x5636ce9f3cb8 type = INT }
+                            identifier { line: 155, literal: TK_MUL, address: 0x5636ce9f2aa8 type = INT }
+                        STMTEXPR
+                            = { line: 156 }
+                                identifier { line: 156, literal: l, address: 0x5636ce9f3ba8 type = INT }
+                                * { line: 156 }
+                                    identifier { line: 156, literal: l, address: 0x5636ce9f3ba8 type = INT }
+                                    identifier { line: 156, literal: r, address: 0x5636ce9f3c68 type = INT }
+                        STMTEXPR
+                            = { line: 158 }
+                                identifier { line: 158, literal: l, address: 0x5636ce9f3ba8 type = INT }
+                                / { line: 158 }
+                                    identifier { line: 158, literal: l, address: 0x5636ce9f3ba8 type = INT }
+                                    identifier { line: 158, literal: r, address: 0x5636ce9f3c68 type = INT }
+            return { line: 160 }
+                identifier { line: 160, literal: l, address: 0x5636ce9f3ba8 type = INT }
+    FUNC_DEC
+        int { line: 163 }
+        identifier { line: 163, literal: F, address: 0x5636ce9f2738 returnType = INT paramType = <  >  }
+        FORMALS
+        BLOCK
+            VAR_DEC
+                int { line: 165 }
+                identifier { line: 165, literal: result, address: 0x5636ce9f3d78 type = INT }
+            VAR_DEC
+                int { line: 167 }
+                identifier { line: 167, literal: token, address: 0x5636ce9f3e38 type = INT }
+            STMTEXPR
+                = { line: 168 }
+                    identifier { line: 168, literal: token, address: 0x5636ce9f3e38 type = INT }
+                    FUNC_CALL
+                        identifier { line: 168, literal: peek, address: 0x5636ce9f23d8 returnType = INT paramType = <  >  }
+                        ACTUALS
+            while { line: 170 }
+                == { line: 170 }
+                    identifier { line: 170, literal: token, address: 0x5636ce9f3e38 type = INT }
+                    identifier { line: 170, literal: TK_LPAREN, address: 0x5636ce9f2b48 type = INT }
+                BLOCK
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 171, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 171, literal: TK_LPAREN, address: 0x5636ce9f2b48 type = INT }
+                    STMTEXPR
+                        = { line: 172 }
+                            identifier { line: 172, literal: result, address: 0x5636ce9f3d78 type = INT }
+                            FUNC_CALL
+                                identifier { line: 172, literal: E, address: 0x5636ce9f2678 returnType = INT paramType = <  >  }
+                                ACTUALS
+                    STMTEXPR
+                        FUNC_CALL
+                            identifier { line: 173, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                            ACTUALS
+                                identifier { line: 173, literal: TK_RPAREN, address: 0x5636ce9f2c88 type = INT }
+                while { line: 175 }
+                    == { line: 175 }
+                        identifier { line: 175, literal: token, address: 0x5636ce9f3e38 type = INT }
+                        identifier { line: 175, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+                    BLOCK
+                        STMTEXPR
+                            FUNC_CALL
+                                identifier { line: 176, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                                ACTUALS
+                                    identifier { line: 176, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+                        STMTEXPR
+                            = { line: 177 }
+                                identifier { line: 177, literal: result, address: 0x5636ce9f3d78 type = INT }
+                                - { line: 177 }
+                                    FUNC_CALL
+                                        identifier { line: 177, literal: F, address: 0x5636ce9f2738 returnType = INT paramType = <  >  }
+                                        ACTUALS
+                    while { line: 179 }
+                        == { line: 179 }
+                            identifier { line: 179, literal: token, address: 0x5636ce9f3e38 type = INT }
+                            identifier { line: 179, literal: TK_NUMBER, address: 0x5636ce9f29b8 type = INT }
+                        BLOCK
+                            STMTEXPR
+                                FUNC_CALL
+                                    identifier { line: 180, literal: match, address: 0x5636ce9f2458 returnType = VOID paramType = <  >  }
+                                    ACTUALS
+                                        identifier { line: 180, literal: TK_NUMBER, address: 0x5636ce9f29b8 type = INT }
+                            STMTEXPR
+                                = { line: 181 }
+                                    identifier { line: 181, literal: result, address: 0x5636ce9f3d78 type = INT }
+                                    identifier { line: 181, literal: attr, address: 0x5636ce9f2388 type = INT }
+                        BLOCK
+                            STMTEXPR
+                                FUNC_CALL
+                                    identifier { line: 184, literal: prints, address: 0x5636ce9d0258 returnType = VOID paramType = <  >  }
+                                    ACTUALS
+                                        string { line: 184, literal: Error: expected factor.\n }
+                            STMTEXPR
+                                FUNC_CALL
+                                    identifier { line: 185, literal: halt, address: 0x5636ce9d0078 returnType = VOID paramType = <  >  }
+                                    ACTUALS
+            return { line: 187 }
+                identifier { line: 187, literal: result, address: 0x5636ce9f3d78 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 194 }
+        identifier { line: 194, literal: EOF, address: 0x5636ce9f28c8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 196 }
+        identifier { line: 196, literal: TK_EOF, address: 0x5636ce9f2918 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 197 }
+        identifier { line: 197, literal: TK_EOLN, address: 0x5636ce9f2968 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 198 }
+        identifier { line: 198, literal: TK_NUMBER, address: 0x5636ce9f29b8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 199 }
+        identifier { line: 199, literal: TK_ADD, address: 0x5636ce9f2a08 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 200 }
+        identifier { line: 200, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 201 }
+        identifier { line: 201, literal: TK_MUL, address: 0x5636ce9f2aa8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 202 }
+        identifier { line: 202, literal: TK_DIV, address: 0x5636ce9f2af8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 203 }
+        identifier { line: 203, literal: TK_LPAREN, address: 0x5636ce9f2b48 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 204 }
+        identifier { line: 204, literal: TK_RPAREN, address: 0x5636ce9f2c88 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 206 }
+        identifier { line: 206, literal: ASCII_0, address: 0x5636ce9f2cd8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 207 }
+        identifier { line: 207, literal: ASCII_9, address: 0x5636ce9f2d28 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 208 }
+        identifier { line: 208, literal: ASCII_PLUS, address: 0x5636ce9f2d78 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 209 }
+        identifier { line: 209, literal: ASCII_MINUS, address: 0x5636ce9f2dc8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 210 }
+        identifier { line: 210, literal: ASCII_STAR, address: 0x5636ce9f2e18 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 211 }
+        identifier { line: 211, literal: ASCII_SLASH, address: 0x5636ce9f2e68 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 212 }
+        identifier { line: 212, literal: ASCII_LPAREN, address: 0x5636ce9f2eb8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 213 }
+        identifier { line: 213, literal: ASCII_RPAREN, address: 0x5636ce9f2f08 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 214 }
+        identifier { line: 214, literal: ASCII_SPACE, address: 0x5636ce9f2f58 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 215 }
+        identifier { line: 215, literal: ASCII_TAB, address: 0x5636ce9f2fa8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 216 }
+        identifier { line: 216, literal: ASCII_CR, address: 0x5636ce9f2ff8 type = INT }
+    GLOBAL_VAR_DEC
+        int { line: 217 }
+        identifier { line: 217, literal: ASCII_NL, address: 0x5636ce9f3048 type = INT }
+    FUNC_DEC
+        VOID
+        identifier { line: 219, literal: init, address: 0x5636ce9f3098 returnType = VOID paramType = <  >  }
+        FORMALS
+        BLOCK
+            STMTEXPR
+                = { line: 221 }
+                    identifier { line: 221, literal: EOF, address: 0x5636ce9f28c8 type = INT }
+                    - { line: 221 }
+                        number { line: 221, literal: 1 }
+            STMTEXPR
+                = { line: 223 }
+                    identifier { line: 223, literal: ASCII_0, address: 0x5636ce9f2cd8 type = INT }
+                    number { line: 223, literal: 48 }
+            STMTEXPR
+                = { line: 224 }
+                    identifier { line: 224, literal: ASCII_9, address: 0x5636ce9f2d28 type = INT }
+                    number { line: 224, literal: 57 }
+            STMTEXPR
+                = { line: 225 }
+                    identifier { line: 225, literal: ASCII_PLUS, address: 0x5636ce9f2d78 type = INT }
+                    number { line: 225, literal: 43 }
+            STMTEXPR
+                = { line: 226 }
+                    identifier { line: 226, literal: ASCII_MINUS, address: 0x5636ce9f2dc8 type = INT }
+                    number { line: 226, literal: 45 }
+            STMTEXPR
+                = { line: 227 }
+                    identifier { line: 227, literal: ASCII_STAR, address: 0x5636ce9f2e18 type = INT }
+                    number { line: 227, literal: 42 }
+            STMTEXPR
+                = { line: 228 }
+                    identifier { line: 228, literal: ASCII_SLASH, address: 0x5636ce9f2e68 type = INT }
+                    number { line: 228, literal: 47 }
+            STMTEXPR
+                = { line: 229 }
+                    identifier { line: 229, literal: ASCII_LPAREN, address: 0x5636ce9f2eb8 type = INT }
+                    number { line: 229, literal: 40 }
+            STMTEXPR
+                = { line: 230 }
+                    identifier { line: 230, literal: ASCII_RPAREN, address: 0x5636ce9f2f08 type = INT }
+                    number { line: 230, literal: 41 }
+            STMTEXPR
+                = { line: 231 }
+                    identifier { line: 231, literal: ASCII_SPACE, address: 0x5636ce9f2f58 type = INT }
+                    number { line: 231, literal: 32 }
+            STMTEXPR
+                = { line: 232 }
+                    identifier { line: 232, literal: ASCII_TAB, address: 0x5636ce9f2fa8 type = INT }
+                    number { line: 232, literal: 9 }
+            STMTEXPR
+                = { line: 233 }
+                    identifier { line: 233, literal: ASCII_CR, address: 0x5636ce9f2ff8 type = INT }
+                    number { line: 233, literal: 13 }
+            STMTEXPR
+                = { line: 234 }
+                    identifier { line: 234, literal: ASCII_NL, address: 0x5636ce9f3048 type = INT }
+                    number { line: 234, literal: 10 }
+            STMTEXPR
+                = { line: 236 }
+                    identifier { line: 236, literal: TK_EOF, address: 0x5636ce9f2918 type = INT }
+                    number { line: 236, literal: 256 }
+            STMTEXPR
+                = { line: 237 }
+                    identifier { line: 237, literal: TK_NUMBER, address: 0x5636ce9f29b8 type = INT }
+                    number { line: 237, literal: 257 }
+            STMTEXPR
+                = { line: 238 }
+                    identifier { line: 238, literal: TK_ADD, address: 0x5636ce9f2a08 type = INT }
+                    identifier { line: 238, literal: ASCII_PLUS, address: 0x5636ce9f2d78 type = INT }
+            STMTEXPR
+                = { line: 239 }
+                    identifier { line: 239, literal: TK_SUB, address: 0x5636ce9f2a58 type = INT }
+                    identifier { line: 239, literal: ASCII_MINUS, address: 0x5636ce9f2dc8 type = INT }
+            STMTEXPR
+                = { line: 240 }
+                    identifier { line: 240, literal: TK_MUL, address: 0x5636ce9f2aa8 type = INT }
+                    identifier { line: 240, literal: ASCII_STAR, address: 0x5636ce9f2e18 type = INT }
+            STMTEXPR
+                = { line: 241 }
+                    identifier { line: 241, literal: TK_DIV, address: 0x5636ce9f2af8 type = INT }
+                    identifier { line: 241, literal: ASCII_SLASH, address: 0x5636ce9f2e68 type = INT }
+            STMTEXPR
+                = { line: 242 }
+                    identifier { line: 242, literal: TK_LPAREN, address: 0x5636ce9f2b48 type = INT }
+                    identifier { line: 242, literal: ASCII_LPAREN, address: 0x5636ce9f2eb8 type = INT }
+            STMTEXPR
+                = { line: 243 }
+                    identifier { line: 243, literal: TK_RPAREN, address: 0x5636ce9f2c88 type = INT }
+                    identifier { line: 243, literal: ASCII_RPAREN, address: 0x5636ce9f2f08 type = INT }
+            STMTEXPR
+                = { line: 244 }
+                    identifier { line: 244, literal: TK_EOLN, address: 0x5636ce9f2968 type = INT }
+                    identifier { line: 244, literal: ASCII_NL, address: 0x5636ce9f3048 type = INT }
