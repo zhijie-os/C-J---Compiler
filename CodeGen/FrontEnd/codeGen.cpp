@@ -73,6 +73,24 @@ void GenText()
     EMPTY_LINE;
 }
 
+void GenID(AST *root)
+{
+    if(root->f_record)
+    {
+        ASM1("la     $a0, "+FuncLabel.find(root->attribute->literal)->second);
+    }
+    else 
+    {
+        if(root->id_record->global)
+        {
+            ASM1("la    $a0, "+VarLabel.find(root->attribute->literal)->second);
+        }
+        else
+        {
+            ASM1("lw    $a0, "+std::to_string(4*)+"$(sp)");
+        }
+    }
+}
 
 void GenMain(AST *root)
 {   
@@ -126,7 +144,9 @@ void GenFunc(AST *root)
     ASM1("jr    $ra");
 }
 
-
+/**
+ * 
+*/
 void GenFuncCall(AST* root)
 {
     ASM1("sw    $fp, 0($sp)");       // store FP
@@ -138,11 +158,11 @@ void GenFuncCall(AST* root)
     {
         GenCode(Child(root,1)->children[i]);
         ASM1("sw    $a0, 0($sp)");
-    }    
+        ASM1("subu  $sp, $sp, 4");
+    }
 
     // look up the function label
     std::string function_label = FuncLabel.find(ChildLiteral(root,0))->second;
-
     // jump and link
     ASM1("jal   "+function_label);
 }
