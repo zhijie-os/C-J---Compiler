@@ -157,8 +157,9 @@ void InsertGlobalVar(std::string literal, DataType type, AST *node)
 // Insert an ID as Local Variable
 void InsertLocalVar(std::string scope, std::string literal, DataType type, AST *node)
 {
+    int pos = SYMBOL_TABLE.find(scope)->second.size();
     // insert into symbol table
-    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node,false}});
+    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node,false,pos}});
     // link the node with its symbol table
     node->id_record = &SYMBOL_TABLE.find(scope)->second.find(literal)->second;
 }

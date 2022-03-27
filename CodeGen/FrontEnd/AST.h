@@ -91,6 +91,7 @@ struct IdentifierRecord
     DataType type;
     AST *node;
     bool global;
+    int stackPosition;
 };
 
 

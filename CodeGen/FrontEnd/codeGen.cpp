@@ -264,7 +264,6 @@ void GenExpr(AST* root)
 }
 
 
-
 std::string GenLabel()
 {
     label_count++;
@@ -274,7 +273,7 @@ std::string GenLabel()
 
 void GenCode(AST* root)
 {
-        // base cases
+    // base cases
     if(root->type==NodeType::STRING)
     {
         GenBoolean(root);
@@ -287,4 +286,16 @@ void GenCode(AST* root)
     {
         GenNumber(root);
     }
+}
+
+void IdentifierLookup(std::string id)
+{
+    
+}
+
+void printi(std::string reg)
+{
+    ASM1("move  $a0, "+reg);
+    ASM1("li    $v0, 1");
+    ASM1("syscall");
 }
