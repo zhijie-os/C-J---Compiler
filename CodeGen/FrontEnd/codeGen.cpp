@@ -18,6 +18,7 @@ const std::unordered_map<std::string, std::string> BinaryInstruction{
     {"%","rem"}
 };
 
+std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel;
 
 // const std::unordered_map<std::string, std::string> UnaryInstruction
@@ -55,9 +56,11 @@ void GenGlobalVar(AST *root)
     {
         if (c->type == NodeType::GLOBAL_VAR_DEC)
         {
+            std::string label = GenLabel();
+            VarLabel.insert({ChildLiteral(c,1),label});
             ASM("    .data");
             ASM("    .align 2");
-            ASM(ChildLiteral(c,1)+":    .space 4");
+            ASM(label+":    .space 4");
             EMPTY_LINE;
         }
     }
@@ -267,7 +270,7 @@ void GenExpr(AST* root)
 std::string GenLabel()
 {
     label_count++;
-    return "Label"+std::to_string(label_count-1)+": ";
+    return "L_"+std::to_string(label_count-1)+": ";
 }
 
 
@@ -290,7 +293,7 @@ void GenCode(AST* root)
 
 void IdentifierLookup(std::string id)
 {
-    
+
 }
 
 void printi(std::string reg)

@@ -138,8 +138,13 @@ void PrettyPrint(AST *root,  int level)
             if(root->id_record)
             {
                 std::cout << root->id_record;
-                std::cout << " type = " << DataToString(root->id_record->type) ;
+                std::cout << ", type = " << DataToString(root->id_record->type) ;
+                if(!root->id_record->global)
+                {
+                    std::cout << ", stack pos = " << std::to_string(root->id_record->stackPosition); 
+                }
             }
+
         }
 
         std::cout << " }";

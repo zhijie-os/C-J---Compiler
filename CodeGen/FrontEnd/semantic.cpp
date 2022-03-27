@@ -638,5 +638,5 @@ void yysemantic(AST *root)
     MainDefined();
     BuildSymbolTable(root,""); 
     FinalCheck(root,"");
-    //PrettyPrint(root,0);
+    PrettyPrint(root,0);
 }
