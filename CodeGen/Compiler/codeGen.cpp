@@ -14,7 +14,7 @@ const std::unordered_map<std::string, std::string> BinaryInstruction{
 std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel =
     {
-        {"printi", "printi"}, {"printc", "printc"}, {"printb", "printb"}, {"prints", "prints"}};
+        {"printi", "printi"}, {"printc", "printc"}, {"printb", "printb"}, {"prints", "prints"}, {"getchar", "getchar"}, {"halt", "halt"}};
 
 int label_count = 0;
 
@@ -173,7 +173,7 @@ void GenFuncDec(AST *root)
         // load back the return address
         ASM1("lw    $ra, 4($sp)");
         // shrink the stack
-        ASM1("addu  $sp, $sp, " + std::to_string(num_params * 4 + 8));
+        ASM1("addu  $sp, $sp, " + std::to_string((num_params + num_local) * 4 + 8));
         // load back the old function pointer
         ASM1("lw    $fp, 0($sp)");
         // jump return
@@ -195,6 +195,18 @@ void GenFuncCall(AST *root)
         ASM1("# Function Call Setup")
         ASM1("sw    $fp, 0($sp)"); // store FP
         ASM1("subu  $sp, $sp, 4"); // expand the stack
+
+        if (SYMBOL_TABLE.find(ChildLiteral(root, 0)) != SYMBOL_TABLE.end())
+        {
+            int num_local = SYMBOL_TABLE.find(ChildLiteral(root, 0))->second.size() -
+                            GLOBAL_FUNC.find(ChildLiteral(root, 0))->second.paramType.size();
+
+            ASM1("# Create space for local variables")
+            for (int i = 0; i < num_local; i++)
+            {
+                ASM1("subu  $sp, $sp, 4");
+            }
+        }
 
         // for every actual, push on the stack but backwards
         for (int i = Child(root, 1)->children.size() - 1; i >= 0; i--)
@@ -257,7 +269,7 @@ void GenCondition(AST *root)
 {
     if (root->type == NodeType::IF_ELSE)
     {
-        GenExpr(Child(root, 0));
+        GenCode(Child(root, 0));
         std::string true_label = GenLabel();
         std::string false_label = GenLabel();
         std::string end_label = GenLabel();
@@ -266,44 +278,44 @@ void GenCondition(AST *root)
         ASM1("beq   $a0, 1, " + true_label);
 
         // if failed, goes in to false_label
-        ASM(false_label+":");
+        ASM(false_label + ":");
         // gen code for the code inside the label;
         GenCode(Child(root, 2));
         // skip true label
         ASM1("b     " + end_label);
 
         // true label
-        ASM(true_label+":");
+        ASM(true_label + ":");
         GenCode(Child(root, 1));
 
         // just keep it empty
-        ASM(end_label+":");
+        ASM(end_label + ":");
     }
 
     if (root->type == NodeType::IF)
     {
-        GenExpr(Child(root, 0));
+        GenCode(Child(root, 0));
         std::string end_label = GenLabel();
         // branch check
         ASM1("beq   $a0, 0, " + end_label);
         // otherwise, true, do this
         GenCode(Child(root, 1));
         // just keep it empty
-        ASM(end_label+":");
+        ASM(end_label + ":");
     }
 }
 
 void GenWhile(AST *root)
 {
-    if(root->type==NodeType::WHILE)
+    if (root->type == NodeType::WHILE)
     {
-        
+
         std::string test_label = GenLabel();
         std::string body_label = GenLabel();
         std::string end_label = GenLabel();
 
         ASM1("# WHILE TEST");
-        ASM(test_label+":");
+        ASM(test_label + ":");
         GenCode(Child(root, 0));
 
         ASM1("# WHILE BODY");
@@ -311,14 +323,14 @@ void GenWhile(AST *root)
         ASM1("beq   $a0, 0, " + end_label);
 
         // if failed, goes in to false_label
-        ASM(body_label+":");
+        ASM(body_label + ":");
         // gen code for the code inside the label;
         GenCode(Child(root, 1));
         // skip true label
         ASM1("b     " + test_label);
         // just keep it empty
         ASM1("# WHILE END");
-        ASM(end_label+":");
+        ASM(end_label + ":");
     }
 }
 
@@ -333,7 +345,7 @@ void GenExpr(AST *root)
         ASM1("subu  $sp, $sp, 4"); // tempory store on the stack
         GenCode(Child(root, 1));   // get rhs
 
-        ASM1("lw    $t0, 4($sp)"); // rhs on the temp 1
+        ASM1("lw    $t0, 4($sp)"); // lhs on the temp 1
         ASM1("addu  $sp, $sp, 4")  // restore the stack
 
         // store result on the $a0
@@ -371,9 +383,9 @@ void GenExpr(AST *root)
         ASM1("xori  $a0, $a0,1");
     }
 
-    if(root->type == NodeType::RETURN){
+    if (root->type == NodeType::RETURN)
+    {
         GenCode(root->children[0]);
-
 
         // load back the return address
         ASM1("lw    $ra, 4($sp)");
@@ -383,18 +395,16 @@ void GenExpr(AST *root)
         ASM1("lw    $fp, 0($sp)");
         // jump return
         ASM1("jr    $ra");
-
     }
 }
 
-
-int numParam(AST* root)
+int numParam(AST *root)
 {
-    while(root->type!=NodeType::FUNC_DEC)
+    while (root->type != NodeType::FUNC_DEC)
     {
-        root = root->parent;       
+        root = root->parent;
     }
-    return GLOBAL_FUNC.find(ChildLiteral(root,1))->second.paramType.size();
+    return GLOBAL_FUNC.find(ChildLiteral(root, 1))->second.paramType.size();
 }
 /**
  * @brief Generate a new label and return
@@ -500,7 +510,7 @@ void GenPreclude()
     ASM1("subu  $sp, $sp,4");
 
     ASM1("lw    $a0, 4($fp)");
-    //ASM1("subu  $a0, 32");
+    // ASM1("subu  $a0, 32");
     ASM1("li    $v0, 11");
     ASM1("syscall");
 
@@ -513,7 +523,53 @@ void GenPreclude()
     // jump return
     ASM1("jr    $ra");
 
+    EMPTY_LINE;
+    EMPTY_LINE;
+
+    // printb
+    ASM("printb:");
+    ASM1("move  $fp, $sp");
+    ASM1("sw    $ra, 0($sp)");
+    ASM1("subu  $sp, $sp,4");
+
+    ASM1("lw    $a0, 4($fp)");
+    ASM1("li    $v0, 1");
+    ASM1("syscall");
+
+    // load back the return address
+    ASM1("lw    $ra, 4($sp)");
+    // shrink the stack
+    ASM1("addu  $sp, $sp, 12");
+    // load back the old function pointer
+    ASM1("lw    $fp, 0($sp)");
+    // jump return
+    ASM1("jr    $ra");
+
+    EMPTY_LINE;
+    EMPTY_LINE;
+    // getchar
+    ASM("getchar:");
+    ASM1("move  $fp, $sp");
+    ASM1("sw    $ra, 0($sp)");
+    ASM1("subu  $sp, $sp,4");
+
+    // read char
+    ASM1("li    $v0, 12");
+    ASM1("syscall");
+    // move to $a0
+    ASM1("addiu  $a0, $v0, 0");
+
+    // load back the return address
+    ASM1("lw    $ra, 4($sp)");
+    // shrink the stack
+    ASM1("addu  $sp, $sp, 8");
+    // load back the old function pointer
+    ASM1("lw    $fp, 0($sp)");
+    // jump return
+    ASM1("jr    $ra");
+
     ASM1("# End of predefined functions")
+
     EMPTY_LINE;
     EMPTY_LINE;
 }

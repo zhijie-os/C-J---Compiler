@@ -12,8 +12,5 @@ int foo(int x, int y)
     {
         return x;
     }
-    else 
-    {
-        return y;
-    }
+    return y;
 }
