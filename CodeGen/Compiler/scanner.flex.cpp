@@ -931,17 +931,17 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 54 "scanner.l"
-{yylval=new AST(NodeType::IF,"while", new ATR(yylineno)); return IF;}
+{yylval=new AST(NodeType::IF,"IF", new ATR(yylineno)); return IF;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 55 "scanner.l"
-{yylval=new AST(NodeType::IF_ELSE,"while", new ATR(yylineno)); return ELSE;}
+{yylval=new AST(NodeType::IF_ELSE,"IF_ELSE", new ATR(yylineno)); return ELSE;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 56 "scanner.l"
-{yylval=new AST(NodeType::WHILE,"while", new ATR(yylineno));return WHILE;}
+{yylval=new AST(NodeType::WHILE,"WHILE", new ATR(yylineno));return WHILE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

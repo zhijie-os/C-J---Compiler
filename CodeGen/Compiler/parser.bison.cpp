@@ -1456,7 +1456,7 @@ yyreduce:
 
   case 40: /* statement: IF '(' expression ')' statement ELSE statement  */
 #line 97 "parser.y"
-                                                                            {yyvsp[-6]->type=NodeType::IF_ELSE;yyvsp[-6]->AttachChildren(yyvsp[-4],yyvsp[-2],yyvsp[0]);yyval=yyvsp[-6];}
+                                                                            {yyvsp[-6]->type=NodeType::IF_ELSE;yyvsp[-6]->symbol="IF_ELSE";yyvsp[-6]->AttachChildren(yyvsp[-4],yyvsp[-2],yyvsp[0]);yyval=yyvsp[-6];}
 #line 1461 "parser.bison.cpp"
     break;
 

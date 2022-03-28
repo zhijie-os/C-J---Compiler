@@ -94,7 +94,7 @@ statement               : block                                             {$$=
                         | RETURN expression ';'                             {$1->AttachChildren($2); $$=$1;}
                         | RETURN ';'                                        {$$=$1;}
                         | IF '(' expression ')' statement                   {$1->AttachChildren($3,$5);$$=$1;}
-                        | IF '(' expression ')' statement ELSE statement    {$1->type=NodeType::IF_ELSE;$1->AttachChildren($3,$5,$7);$$=$1;}
+                        | IF '(' expression ')' statement ELSE statement    {$1->type=NodeType::IF_ELSE;$1->symbol="IF_ELSE";$1->AttachChildren($3,$5,$7);$$=$1;}
                         | WHILE '(' expression ')' statement                {$1->AttachChildren($3,$5);$$=$1; }
                         ;
 

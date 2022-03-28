@@ -1,13 +1,19 @@
 main()
 {
-    boolean x;
-    x = true;
-    if(x)
+    printi(foo(1,0));
+}
+
+
+int foo(int x, int y)
+{
+    boolean b;
+    b=true;
+    if(b)
     {
-        prints("True");
+        return x;
     }
-    else
+    else 
     {
-        prints("False");
+        return y;
     }
 }

@@ -293,6 +293,14 @@ void GenCondition(AST *root)
     }
 }
 
+void GenWhile(AST *root)
+{
+    if(root->type==NodeType::WHILE)
+    {
+        
+    }
+}
+
 // the result would be register $a0
 void GenExpr(AST *root)
 {
@@ -340,6 +348,10 @@ void GenExpr(AST *root)
     {
         GenExpr(Child(root, 0));
         ASM1("xori  $a0, $a0,1");
+    }
+
+    if(root->type == NodeType::RETURN){
+        GenCode(root->children[0]);
     }
 }
 

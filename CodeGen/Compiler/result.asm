@@ -49,39 +49,56 @@ printc:
 main:
    # function setup
    move  $fp, $sp
-   # ASSIGNMENT
+   # Function Call Setup
+   sw    $fp, 0($sp)
+   subu  $sp, $sp, 4
+   # Create Actuals
+   # Function Call Setup
+   sw    $fp, 0($sp)
+   subu  $sp, $sp, 4
+   # Create Actuals
+   # Generate Number
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   # Create Actuals
+   # Generate Number
    li    $a0, 1
-   sw    $a0, 4($fp)
-   beq   $a0, 1, L_0
-L_1:
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-     .data
-   str_L_3: .asciiz "False"
-     .text
-   la    $a0, str_L_3
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   jal   prints
-   b     L_2
-L_0:
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-     .data
-   str_L_4: .asciiz "True"
-     .text
-   la    $a0, str_L_4
+   jal   L_0
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   jal   prints
-L_2:
+   jal   printi
    lw    $ra, 4($sp)
-   addu  $sp, $sp, 8
+   addu  $sp, $sp, 4
    li    $v0,10
    syscall
+
+
+   # Begin of Function Declaration
+   .text
+L_0:
+   # function setup
+   move  $fp, $sp
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   # ASSIGNMENT
+   li    $a0, 1
+   sw    $a0, 12($fp)
+   beq   $a0, 1, L_1
+L_2:
+   # Grab ID
+   lw    $a0, 8($fp)
+   b     L_3
+L_1:
+   # Grab ID
+   lw    $a0, 4($fp)
+L_3:
+   lw    $ra, 4($sp)
+   addu  $sp, $sp, 16
+   lw    $fp, 0($sp)
+   jr    $ra
+   # End of Function Declaration
 
 
