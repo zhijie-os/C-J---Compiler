@@ -1,7 +1,9 @@
 int x;
 foo()
 {
-    printi(3+2);
-    boolean x;
-    printb(x);
+    printi(x);
+    int x;
+    int y;
+    printi(x);
+    printi(y);
 }

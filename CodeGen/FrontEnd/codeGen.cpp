@@ -287,7 +287,6 @@ void GenCode(AST *root)
     GenFuncCall(root);
     GenGlobalVar(root);
     GenMain(root);
-
 }
 
 void printi(std::string reg)
