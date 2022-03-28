@@ -1,9 +1,8 @@
 int x;
-foo()
-{
-    printi(x);
-    int x;
-    int y;
-    printi(x);
-    printi(y);
+boolean y;
+
+main(){
+
+	prints("Hello, world!");
 }
+
