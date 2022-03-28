@@ -298,6 +298,30 @@ void GenWhile(AST *root)
     if(root->type==NodeType::WHILE)
     {
         
+        std::string test_label = GenLabel();
+        std::string body_label = GenLabel();
+        std::string end_label = GenLabel();
+
+        ASM1("# WHILE TEST");
+        ASM(test_label+":");
+        GenExpr(Child(root, 0));
+
+        ASM1("# WHILE BODY");
+        // branch check
+        ASM1("beq   $a0, 0, " + end_label);
+
+        // if failed, goes in to false_label
+        ASM(body_label+":");
+        // gen code for the code inside the label;
+        GenCode(Child(root, 1));
+        // skip true label
+        ASM1("b     " + test_label);
+        // just keep it empty
+        ASM1("# WHILE END");
+        ASM(end_label+":");
+
+
+
     }
 }
 
@@ -310,7 +334,7 @@ void GenExpr(AST *root)
         GenCode(Child(root, 0)); // get lhs
         ASM1("sw    $a0, 0($sp)");
         ASM1("subu  $sp, $sp, 4"); // tempory store on the stack
-        GenExpr(Child(root, 1));   // get rhs
+        GenCode(Child(root, 1));   // get rhs
 
         ASM1("lw    $t0, 4($sp)"); // rhs on the temp 1
         ASM1("addu  $sp, $sp, 4")  // restore the stack
@@ -374,6 +398,7 @@ void GenCode(AST *root)
     GenCondition(root);
     GenFuncDec(root);
     GenFuncCall(root);
+    GenWhile(root);
     GenGlobalVar(root);
     GenExpr(root);
     GenMain(root);
