@@ -98,59 +98,59 @@ void PrettyPrint(AST *root,  int level)
     // print indentation
     for (int i = 0; i < level; i++)
     {
-        std::cout << "    ";
+        std::cerr << "    ";
     }
 
     // print the node symbol
-    std::cout << root->symbol;
+    std::cerr << root->symbol;
 
 
     // if attribute exists
     if (root->attribute)
     {
         // print the line number
-        std::cout << " { line: " << root->attribute->line;
+        std::cerr << " { line: " << root->attribute->line;
         if (!root->attribute->literal.empty())
         {
             // print the literal
-            std::cout << ", "
+            std::cerr << ", "
                       << "literal: " << root->attribute->literal;
         }
         if (root->type == NodeType::IDENTIFIER)
         {
             // if it is identifier, print the address of symbol table entry
-            std::cout << ", "
+            std::cerr << ", "
                       << "address: ";
                     //   if it is function, print both return type and parameter types
             if(root->f_record)
             {
-                std::cout << root->f_record;
-                std::cout << " returnType = " << DataToString(root->f_record->returnType);
-                std::cout << " paramType = < ";
+                std::cerr << root->f_record;
+                std::cerr << " returnType = " << DataToString(root->f_record->returnType);
+                std::cerr << " paramType = < ";
                 for(auto c:root->f_record->paramType)
                 {
                     DataToString(c);
                 }
-                std::cout << " > ";
+                std::cerr << " > ";
             }
 
             // print the type of the identifier
             if(root->id_record)
             {
-                std::cout << root->id_record;
-                std::cout << ", type = " << DataToString(root->id_record->type) ;
+                std::cerr << root->id_record;
+                std::cerr << ", type = " << DataToString(root->id_record->type) ;
                 if(!root->id_record->global)
                 {
-                    std::cout << ", stack pos = " << std::to_string(root->id_record->stackPosition); 
+                    std::cerr << ", stack pos = " << std::to_string(root->id_record->stackPosition); 
                 }
             }
 
         }
 
-        std::cout << " }";
+        std::cerr << " }";
     }
 
-    std::cout << std::endl;
+    std::cerr << std::endl;
 
     // recurse
     for(auto c:root->children)

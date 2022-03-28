@@ -18,3 +18,4 @@ void GenFuncCall(AST* root);
 void GenCode(AST* root);
 
 void GenPreclude();
+void Descend(AST *root);

@@ -12,10 +12,9 @@ const std::unordered_map<std::string, std::string> BinaryInstruction{
     {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
 
 std::unordered_map<std::string, std::string> VarLabel;
-std::unordered_map<std::string, std::string> FuncLabel=
-{
-    {"printi","printi"},{"printc","printc"},{"printb","printb"},{"prints","prints"}
-};
+std::unordered_map<std::string, std::string> FuncLabel =
+    {
+        {"printi", "printi"}, {"printc", "printc"}, {"printb", "printb"}, {"prints", "prints"}};
 
 // const std::unordered_map<std::string, std::string> UnaryInstruction
 // {
@@ -31,7 +30,7 @@ void yycodegen(AST *root)
     for (auto c : root->children)
     {
         GenCode(c);
-    }   
+    }
 }
 
 void GenGlobalVar(AST *root)
@@ -52,19 +51,23 @@ void GenGlobalVar(AST *root)
 
 void GenID(AST *root)
 {
-    if (root->f_record)
+    if (root->type == NodeType::IDENTIFIER)
     {
-        ASM1("la     $a0, " + FuncLabel.find(root->attribute->literal)->second);
-    }
-    else
-    {
-        if (root->id_record->global)
+        ASM1("# Grab ID")
+        if (root->f_record)
         {
-            ASM1("la    $a0, " + VarLabel.find(root->attribute->literal)->second);
+            ASM1("la     $a0, " + FuncLabel.find(root->attribute->literal)->second);
         }
         else
         {
-            ASM1("lw    $a0, " + std::to_string(4 + 4 * root->id_record->global) + "$(fp)");
+            if (root->id_record->global)
+            {
+                ASM1("la    $a0, " + VarLabel.find(root->attribute->literal)->second);
+            }
+            else
+            {
+                ASM1("lw    $a0, " + std::to_string(4 + 4 * root->id_record->global) + "($fp)");
+            }
         }
     }
 }
@@ -76,9 +79,31 @@ void GenMain(AST *root)
         ASM1(".text");
         ASM1(".globl main");
         ASM("main:");
-        GenCode(Child(root,3));
-        EMPTY_LINE;
-        ASM1("li  $v0,10");
+
+        int num_local = SYMBOL_TABLE.find(ChildLiteral(root, 1))->second.size();
+
+        /**
+         *                 <- SP
+         *  local variables
+         *  previous FP pointed address
+         *  return address
+         *  params
+         *         <- FP
+         */
+
+        ASM1("# function setup")
+        // store old FP
+        ASM1("move  $fp, $sp");
+
+        // generate code for the function block
+        GenCode(Child(root, 3));
+
+        // load back the return address
+        ASM1("lw    $ra, 4($sp)");
+        // shrink the stack
+        ASM1("addu  $sp, $sp, " + std::to_string(num_local * 4 + 4));
+
+        ASM1("li    $v0,10");
         ASM1("syscall");
     }
 }
@@ -138,13 +163,14 @@ void GenFuncCall(AST *root)
 {
     if (root->type == NodeType::FUNC_CALL)
     {
-
+        ASM1("# Function Call Setup")
         ASM1("sw    $fp, 0($sp)"); // store FP
         ASM1("subu  $sp, $sp, 4"); // expand the stack
 
         // for every actual, push on the stack but backwards
         for (int i = Child(root, 1)->children.size() - 1; i >= 0; i--)
         {
+            ASM1("# Create Actuals")
             GenCode(Child(root, 1)->children[i]);
             ASM1("sw    $a0, 0($sp)");
             ASM1("subu  $sp, $sp, 4");
@@ -157,13 +183,12 @@ void GenFuncCall(AST *root)
     }
 }
 
-
 // Put a number on the top of the stack
 void GenNumber(AST *root)
 {
     if (root->type == NodeType::NUMBER)
     {
-
+        ASM1("# Generate Number")
         ASM1("li    $a0," + root->attribute->literal); // load the literal
     }
 }
@@ -242,7 +267,6 @@ void GenCondition(AST *root)
 // the result would be register $a0
 void GenExpr(AST *root)
 {
-
     if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_LOGIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE)
     {
 
@@ -256,6 +280,14 @@ void GenExpr(AST *root)
 
         // store result on the $a0
         ASM1(BinaryInstruction.find(root->symbol)->second + "    $a0, $t0,$a0 "); // the result is on the temp 0
+    }
+
+    if (root->type == NodeType::ASSIGN)
+    {
+
+        ASM1("# ASSIGNMENT")
+        GenCode(Child(root, 1));                                                                             // get rhs
+        ASM1("sw    $a0, " + std::to_string(4 + 4 * root->children[0]->id_record->stackPosition) + "($fp)"); // lhs on the temp 1
     }
 
     if (root->type == NodeType::UN_ARITHMETIC)
@@ -286,34 +318,40 @@ void GenCode(AST *root)
     GenFunc(root);
     GenFuncCall(root);
     GenGlobalVar(root);
+    GenExpr(root);
     GenMain(root);
+    GenID(root);
+    Descend(root);
 }
 
-void printi(std::string reg)
+void Descend(AST *root)
 {
-    ASM1("move  $a0, " + reg);
-    ASM1("li    $v0, 1");
-    ASM1("syscall");
+    if (root->type == NodeType::BLOCK || root->type == NodeType::STMT_EXPR)
+    {
+        for (auto c : root->children)
+        {
+            GenCode(c);
+        }
+    }
 }
 
 void GenPreclude()
 {
-    // halt 
+    // halt
     // halt the program
     ASM1(".text");
     ASM("halt:");
     ASM1("li    $v0, 10"); // load instruction 10
     ASM1("syscall");       // exit via syscall
 
-
     // print int
     ASM1(".text");
     ASM("printi:");
     ASM1("move  $fp, $sp");
     ASM1("sw    $ra, 0($sp)");
-    ASM1("subu  $sp, $sp,-4");
-    
-    ASM1("lw    $a0, 8($fp)");
+    ASM1("subu  $sp, $sp,4");
+
+    ASM1("lw    $a0, 4($fp)");
     ASM1("li    $v0, 1");
     ASM1("syscall");
 
@@ -329,13 +367,12 @@ void GenPreclude()
     EMPTY_LINE;
     EMPTY_LINE;
 
-
     // print string
     ASM("prints:");
     ASM1("move  $fp, $sp");
     ASM1("sw    $ra, 0($sp)");
-    ASM1("subu  $sp, $sp,-4");
-    
+    ASM1("subu  $sp, $sp,4");
+
     ASM1("lw    $a0, 8($fp)");
     ASM1("li    $v0, 4");
     ASM1("syscall");
@@ -349,13 +386,12 @@ void GenPreclude()
     // jump return
     ASM1("jr    $ra");
 
-
     // print char
     ASM("printc:");
     ASM1("move  $fp, $sp");
     ASM1("sw    $ra, 0($sp)");
-    ASM1("subu  $sp, $sp,-4");
-    
+    ASM1("subu  $sp, $sp,4");
+
     ASM1("lw    $a0, 8($fp)");
     ASM1("li    $v0, 11");
     ASM1("syscall");
