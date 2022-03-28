@@ -227,11 +227,11 @@ void GenBoolean(AST *root)
 {
     if (root->type == NodeType::TRUE)
     {
-        ASM1("li    $a0, TRUE"); // true
+        ASM1("li    $a0, 1"); // true
     }
     if (root->type == NodeType::FALSE)
     {
-        ASM1("li    $a0, FALSE"); // false
+        ASM1("li    $a0, 0"); // false
     }
 }
 
@@ -263,21 +263,21 @@ void GenCondition(AST *root)
         std::string end_label = GenLabel();
 
         // branch check
-        ASM1("beq   $a0, TRUE, " + true_label);
+        ASM1("beq   $a0, 1, " + true_label);
 
         // if failed, goes in to false_label
-        ASM(false_label);
+        ASM(false_label+":");
         // gen code for the code inside the label;
         GenCode(Child(root, 2));
         // skip true label
         ASM1("b     " + end_label);
 
         // true label
-        ASM(true_label);
+        ASM(true_label+":");
         GenCode(Child(root, 1));
 
         // just keep it empty
-        ASM(end_label);
+        ASM(end_label+":");
     }
 
     if (root->type == NodeType::IF)
@@ -285,11 +285,11 @@ void GenCondition(AST *root)
         GenExpr(Child(root, 0));
         std::string end_label = GenLabel();
         // branch check
-        ASM1("beq   $a0, FALSE, " + end_label);
+        ASM1("beq   $a0, 0, " + end_label);
         // otherwise, true, do this
         GenCode(Child(root, 1));
         // just keep it empty
-        ASM(end_label);
+        ASM(end_label+":");
     }
 }
 

@@ -1,0 +1,13 @@
+main()
+{
+    boolean x;
+    x = true;
+    if(x)
+    {
+        prints("True");
+    }
+    else
+    {
+        prints("False");
+    }
+}

@@ -44,106 +44,44 @@ printc:
    # End of predefined functions
 
 
-    .data
-    .align 2
-L_0:    .space 4
-
    .text
    .globl main
 main:
    # function setup
    move  $fp, $sp
    # ASSIGNMENT
-   # Generate Number
-   li    $a0, 123
-   la    $t0, L_0
-   sw    $a0, 0($t0)
-   # ASSIGNMENT
-   # Generate Number
-   li    $a0, 456
+   li    $a0, 1
    sw    $a0, 4($fp)
-   # ASSIGNMENT
-   # Generate Number
-   li    $a0, 789
-   la    $t0, L_1
-   sw    $a0, 0($t0)
-   # ASSIGNMENT
-   # ASSIGNMENT
-   # ASSIGNMENT
-   # Generate Number
-   li    $a0, 42
-   la    $t0, L_1
-   sw    $a0, 0($t0)
-   sw    $a0, 4($fp)
-   la    $t0, L_0
-   sw    $a0, 0($t0)
-   # ASSIGNMENT
-   # Generate Number
-   li    $a0, 42
-   sw    $a0, 8($fp)
+   beq   $a0, 1, L_0
+L_1:
    # Function Call Setup
    sw    $fp, 0($sp)
    subu  $sp, $sp, 4
    # Create Actuals
-   # Grab ID
-   la    $t0, L_0
-   lw    $a0, 0($t0)
+     .data
+   str_L_3: .asciiz "False"
+     .text
+   la    $a0, str_L_3
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   jal   printi
+   jal   prints
+   b     L_2
+L_0:
    # Function Call Setup
    sw    $fp, 0($sp)
    subu  $sp, $sp, 4
    # Create Actuals
-   # Grab ID
-   lw    $a0, 8($fp)
+     .data
+   str_L_4: .asciiz "True"
+     .text
+   la    $a0, str_L_4
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   jal   printc
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-   # Grab ID
-   lw    $a0, 4($fp)
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   printi
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-   # Grab ID
-   lw    $a0, 8($fp)
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   printc
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-   # Grab ID
-   la    $t0, L_1
-   lw    $a0, 0($t0)
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   printi
-   # Function Call Setup
-   sw    $fp, 0($sp)
-   subu  $sp, $sp, 4
-   # Create Actuals
-   # Grab ID
-   lw    $a0, 8($fp)
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   printc
+   jal   prints
+L_2:
    lw    $ra, 4($sp)
-   addu  $sp, $sp, 12
+   addu  $sp, $sp, 8
    li    $v0,10
    syscall
 
-
-    .data
-    .align 2
-L_1:    .space 4
 
