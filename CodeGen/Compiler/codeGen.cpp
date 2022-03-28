@@ -9,7 +9,10 @@
 #define DATA_SIZE 4
 
 const std::unordered_map<std::string, std::string> BinaryInstruction{
-    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
+    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, 
+    {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, 
+    {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"},
+    {"&&","and"},{"||","or"}};
 
 std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel =
@@ -352,7 +355,7 @@ void GenWhile(AST *root)
 // the result would be register $a0
 void GenExpr(AST *root)
 {
-    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE)
+    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE||root->type == NodeType::BIN_LOGIC)
     {
 
         GenCode(Child(root, 0)); // get lhs
@@ -367,9 +370,6 @@ void GenExpr(AST *root)
         ASM1(BinaryInstruction.find(root->symbol)->second + "    $a0, $t0,$a0 "); // the result is on the temp 0
     }
 
-    if (root->type == NodeType::BIN_LOGIC)
-    {
-    }
 
     if (root->type == NodeType::ASSIGN)
     {
