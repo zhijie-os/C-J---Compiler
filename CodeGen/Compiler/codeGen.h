@@ -17,6 +17,7 @@ void GenNumber(AST *root);
 void GenFuncCall(AST* root);
 void GenCode(AST* root);
 void GenFuncDec(AST *root);
-void GenFuncLabel(AST *root);
 void GenPreclude();
+
+void GenLabels(AST *root);
 void Descend(AST *root);

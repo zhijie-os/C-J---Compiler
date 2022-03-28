@@ -44,10 +44,6 @@ printc:
    # End of predefined functions
 
 
-    .data
-    .align 2
-L_1:    .space 4
-
    .text
    .globl main
 main:
@@ -67,7 +63,7 @@ main:
    lw    $a0, 0($t0)
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   jal   L_0
+   jal   L_2
    lw    $ra, 4($sp)
    addu  $sp, $sp, 4
    li    $v0,10
@@ -90,6 +86,37 @@ L_0:
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
    jal   printi
+   lw    $ra, 4($sp)
+   addu  $sp, $sp, 12
+   lw    $fp, 0($sp)
+   jr    $ra
+   # End of Function Declaration
+
+
+    .data
+    .align 2
+L_1:    .space 4
+
+   # Begin of Function Declaration
+   .text
+L_2:
+   # function setup
+   move  $fp, $sp
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   # ASSIGNMENT
+   # Generate Number
+   li    $a0, 520
+   sw    $a0, 4($fp)
+   # Function Call Setup
+   sw    $fp, 0($sp)
+   subu  $sp, $sp, 4
+   # Create Actuals
+   # Grab ID
+   lw    $a0, 4($fp)
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   L_0
    lw    $ra, 4($sp)
    addu  $sp, $sp, 12
    lw    $fp, 0($sp)

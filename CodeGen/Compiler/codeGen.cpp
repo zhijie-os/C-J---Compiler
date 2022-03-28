@@ -25,15 +25,14 @@ int label_count = 0;
 void yycodegen(AST *root)
 {
     GenPreclude();
-    GenFuncLabel(root);
-
+    GenLabels(root);
     for (auto c : root->children)
     {
         GenCode(c);
     }
 }
 
-void GenFuncLabel(AST *root)
+void GenLabels(AST *root)
 {
     for (auto c : root->children)
     {
@@ -41,6 +40,11 @@ void GenFuncLabel(AST *root)
         {
             std::string l = GenLabel();
             FuncLabel.insert({ChildLiteral(c, 1), l}); // to look up
+        }
+        if (c->type == NodeType::GLOBAL_VAR_DEC)
+        {
+            std::string l = GenLabel();
+            VarLabel.insert({ChildLiteral(c, 1), l}); // to look up
         }
     }
 }
@@ -51,11 +55,9 @@ void GenFuncLabel(AST *root)
  */
 void GenGlobalVar(AST *root)
 {
-
     if (root->type == NodeType::GLOBAL_VAR_DEC)
     {
-        std::string label = GenLabel();
-        VarLabel.insert({ChildLiteral(root, 1), label});
+        std::string label = VarLabel.find(ChildLiteral(root, 1))->second;
         ASM("    .data");
         ASM("    .align 2");
         ASM(label + ":    .space 4");
@@ -148,7 +150,7 @@ void GenFuncDec(AST *root)
         ASM1("# Begin of Function Declaration");
         ASM1(".text")
 
-        std::string label = FuncLabel.find(ChildLiteral(root,1))->second;
+        std::string label = FuncLabel.find(ChildLiteral(root, 1))->second;
         ASM(label + ":");
         /**
          *                 <- SP
