@@ -9,7 +9,7 @@
 #define DATA_SIZE 4
 
 const std::unordered_map<std::string, std::string> BinaryInstruction{
-    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addiu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
+    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
 
 std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel =
@@ -441,6 +441,8 @@ std::string GenLabel()
 
 void GenCode(AST *root)
 {
+
+    GenMain(root);
     GenNumber(root);
     GenString(root);
     GenBoolean(root);
@@ -451,7 +453,6 @@ void GenCode(AST *root)
     GenWhile(root);
     GenGlobalVar(root);
     GenExpr(root);
-    GenMain(root);
     GenID(root);
     Descend(root);
 }
