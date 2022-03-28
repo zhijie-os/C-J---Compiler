@@ -181,7 +181,7 @@ void GenFuncDec(AST *root)
 
         ASM1("# End of Function Declaration");
         EMPTY_LINE;
-        EMPTY_LINE
+        EMPTY_LINE;
     }
 }
 
@@ -304,7 +304,7 @@ void GenWhile(AST *root)
 
         ASM1("# WHILE TEST");
         ASM(test_label+":");
-        GenExpr(Child(root, 0));
+        GenCode(Child(root, 0));
 
         ASM1("# WHILE BODY");
         // branch check
@@ -319,9 +319,6 @@ void GenWhile(AST *root)
         // just keep it empty
         ASM1("# WHILE END");
         ASM(end_label+":");
-
-
-
     }
 }
 
@@ -364,21 +361,41 @@ void GenExpr(AST *root)
 
     if (root->type == NodeType::UN_ARITHMETIC)
     {
-        GenExpr(Child(root, 0));
+        GenCode(Child(root, 0));
         ASM1("negu  $a0, $a0");
     }
 
     if (root->type == NodeType::UN_LOGIC)
     {
-        GenExpr(Child(root, 0));
+        GenCode(Child(root, 0));
         ASM1("xori  $a0, $a0,1");
     }
 
     if(root->type == NodeType::RETURN){
         GenCode(root->children[0]);
+
+
+        // load back the return address
+        ASM1("lw    $ra, 4($sp)");
+        // shrink the stack
+        ASM1("addu  $sp, $sp, " + std::to_string(numParam(root) * 4 + 8));
+        // load back the old function pointer
+        ASM1("lw    $fp, 0($sp)");
+        // jump return
+        ASM1("jr    $ra");
+
     }
 }
 
+
+int numParam(AST* root)
+{
+    while(root->type!=NodeType::FUNC_DEC)
+    {
+        root = root->parent;       
+    }
+    return GLOBAL_FUNC.find(ChildLiteral(root,1))->second.paramType.size();
+}
 /**
  * @brief Generate a new label and return
  *
