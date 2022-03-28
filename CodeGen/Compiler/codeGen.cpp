@@ -89,7 +89,7 @@ void GenID(AST *root)
             }
             else
             {
-                ASM1("lw    $a0, " + std::to_string(4 + 4 * root->id_record->global) + "($fp)");
+                ASM1("lw    $a0, " + std::to_string(4 + 4 * root->id_record->stackPosition) + "($fp)");
             }
         }
     }
@@ -446,6 +446,7 @@ void GenPreclude()
     ASM1("subu  $sp, $sp,4");
 
     ASM1("lw    $a0, 4($fp)");
+    //ASM1("subu  $a0, 32");
     ASM1("li    $v0, 11");
     ASM1("syscall");
 
