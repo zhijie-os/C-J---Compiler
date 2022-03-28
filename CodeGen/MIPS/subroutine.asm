@@ -20,7 +20,7 @@ main:
     jal loop_start
 
 
-    addu $sp, $sp, 12
+    addiu $sp, $sp, 12
 
     li $v0, 10
     syscall 
@@ -39,7 +39,7 @@ loop_start:
     li      $v0, 1
     syscall
 
-    addu $sp, $sp, 8
+    addiu $sp, $sp, 8
     lw  $ra, 0($sp)
 
 

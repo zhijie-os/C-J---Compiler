@@ -9,7 +9,7 @@
 #define DATA_SIZE 4
 
 const std::unordered_map<std::string, std::string> BinaryInstruction{
-    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
+    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addiu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}};
 
 std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel =
@@ -124,7 +124,7 @@ void GenMain(AST *root)
         // load back the return address
         ASM1("lw    $ra, 4($sp)");
         // shrink the stack
-        ASM1("addu  $sp, $sp, " + std::to_string(num_local * 4 + 4));
+        ASM1("addiu  $sp, $sp, " + std::to_string(num_local * 4 + 4));
 
         ASM1("li    $v0,10");
         ASM1("syscall");
@@ -173,7 +173,7 @@ void GenFuncDec(AST *root)
         // load back the return address
         ASM1("lw    $ra, 4($sp)");
         // shrink the stack
-        ASM1("addu  $sp, $sp, " + std::to_string((num_params + num_local) * 4 + 8));
+        ASM1("addiu  $sp, $sp, " + std::to_string((num_params + num_local) * 4 + 8));
         // load back the old function pointer
         ASM1("lw    $fp, 0($sp)");
         // jump return
@@ -305,6 +305,19 @@ void GenCondition(AST *root)
     }
 }
 
+void GenBreak(AST *root)
+{
+    if (root->type == NodeType::BREAK)
+    {
+        while (root->type!=NodeType::WHILE)
+        {
+            root = root->parent;
+        }
+
+        ASM1("b     "+root->break_label);
+    }
+}
+
 void GenWhile(AST *root)
 {
     if (root->type == NodeType::WHILE)
@@ -313,6 +326,8 @@ void GenWhile(AST *root)
         std::string test_label = GenLabel();
         std::string body_label = GenLabel();
         std::string end_label = GenLabel();
+
+        root->break_label = end_label;
 
         ASM1("# WHILE TEST");
         ASM(test_label + ":");
@@ -337,7 +352,7 @@ void GenWhile(AST *root)
 // the result would be register $a0
 void GenExpr(AST *root)
 {
-    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_LOGIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE)
+    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE)
     {
 
         GenCode(Child(root, 0)); // get lhs
@@ -346,10 +361,14 @@ void GenExpr(AST *root)
         GenCode(Child(root, 1));   // get rhs
 
         ASM1("lw    $t0, 4($sp)"); // lhs on the temp 1
-        ASM1("addu  $sp, $sp, 4")  // restore the stack
+        ASM1("addiu  $sp, $sp, 4")  // restore the stack
 
         // store result on the $a0
         ASM1(BinaryInstruction.find(root->symbol)->second + "    $a0, $t0,$a0 "); // the result is on the temp 0
+    }
+
+    if (root->type == NodeType::BIN_LOGIC)
+    {
     }
 
     if (root->type == NodeType::ASSIGN)
@@ -385,12 +404,15 @@ void GenExpr(AST *root)
 
     if (root->type == NodeType::RETURN)
     {
-        GenCode(root->children[0]);
+        if (!root->children.empty())
+        {
+            GenCode(root->children[0]);
+        }
 
         // load back the return address
         ASM1("lw    $ra, 4($sp)");
         // shrink the stack
-        ASM1("addu  $sp, $sp, " + std::to_string(numParam(root) * 4 + 8));
+        ASM1("addiu  $sp, $sp, " + std::to_string(numParam(root) * 4 + 8));
         // load back the old function pointer
         ASM1("lw    $fp, 0($sp)");
         // jump return
@@ -425,6 +447,7 @@ void GenCode(AST *root)
     GenCondition(root);
     GenFuncDec(root);
     GenFuncCall(root);
+    GenBreak(root);
     GenWhile(root);
     GenGlobalVar(root);
     GenExpr(root);
@@ -472,7 +495,7 @@ void GenPreclude()
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
     // shrink the stack
-    ASM1("addu  $sp, $sp, 12");
+    ASM1("addiu  $sp, $sp, 12");
     // load back the old function pointer
     ASM1("lw    $fp, 0($sp)");
     // jump return
@@ -494,7 +517,7 @@ void GenPreclude()
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
     // shrink the stack
-    ASM1("addu  $sp, $sp, 12");
+    ASM1("addiu  $sp, $sp, 12");
     // load back the old function pointer
     ASM1("lw    $fp, 0($sp)");
     // jump return
@@ -517,7 +540,7 @@ void GenPreclude()
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
     // shrink the stack
-    ASM1("addu  $sp, $sp, 12");
+    ASM1("addiu  $sp, $sp, 12");
     // load back the old function pointer
     ASM1("lw    $fp, 0($sp)");
     // jump return
@@ -539,7 +562,7 @@ void GenPreclude()
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
     // shrink the stack
-    ASM1("addu  $sp, $sp, 12");
+    ASM1("addiu  $sp, $sp, 12");
     // load back the old function pointer
     ASM1("lw    $fp, 0($sp)");
     // jump return
@@ -562,7 +585,7 @@ void GenPreclude()
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
     // shrink the stack
-    ASM1("addu  $sp, $sp, 8");
+    ASM1("addiu  $sp, $sp, 8");
     // load back the old function pointer
     ASM1("lw    $fp, 0($sp)");
     // jump return

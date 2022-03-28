@@ -44,7 +44,7 @@ std::vector<DataType> ParseFormals(AST *root)
 
 /**
  * Check if a function call's arguments match the parameters
-*/
+ */
 void ActualsMatchFormals(AST *fun_c, AST *actual)
 {
     // parameters can be extract from the fun_c's record in the symbol table
@@ -108,7 +108,6 @@ void MainDefined()
     }
 }
 
-
 // assert break statement is inside While
 void BreakInWhile(AST *root)
 {
@@ -121,17 +120,17 @@ void BreakInWhile(AST *root)
         root = root->parent;
         if (root->type == NodeType::BLOCK)
         {
-            if(root->parent->type==NodeType::WHILE)
+            if (root->parent->type == NodeType::WHILE)
             {
                 inWhile = true;
-            }    
+            }
             break;
         }
     }
 
     // assert it is in while
     if (!inWhile)
-    {   // otherwise return false
+    { // otherwise return false
         SemanticError(copy->attribute->line, "Break is not inside WHILE loop");
     }
 }
@@ -149,7 +148,7 @@ void InsertGlobalFunc(std::string literal, DataType returnType, std::vector<Data
 void InsertGlobalVar(std::string literal, DataType type, AST *node)
 {
     // insert into symbol
-    GLOBAL_VAR.insert({literal, {type, node,true}});
+    GLOBAL_VAR.insert({literal, {type, node, true}});
     // link the node with its symbol table
     node->id_record = &GLOBAL_VAR.find(literal)->second;
 }
@@ -159,11 +158,10 @@ void InsertLocalVar(std::string scope, std::string literal, DataType type, AST *
 {
     int pos = SYMBOL_TABLE.find(scope)->second.size();
     // insert into symbol table
-    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node,false,pos}});
+    SYMBOL_TABLE.find(scope)->second.insert({literal, {type, node, false, pos}});
     // link the node with its symbol table
     node->id_record = &SYMBOL_TABLE.find(scope)->second.find(literal)->second;
 }
-
 
 // assert an ID is not defined in the current scope
 bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
@@ -192,7 +190,7 @@ bool AssertNotDefinedInCurrentScope(std::string scope, AST *ptr)
         }
     }
     else
-    {   
+    {
         // try to find it in the local variable
         if (SYMBOL_TABLE.find(scope)->second.find(ptr->attribute->literal) != SYMBOL_TABLE.find(scope)->second.end())
         {
@@ -216,7 +214,7 @@ void IdentifierDefined(std::string scope, AST *node)
         return;
     }
     else
-    {   
+    {
         // if the current scope is empty <=> global
         if (scope.empty())
         {
@@ -349,6 +347,10 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     } // if the node is a varaiable, add into scope
     else if (root->type == NodeType::VAR_DEC)
     {
+        if (root->parent->parent->type != NodeType::MAIN_DEC && root->parent->parent->type != NodeType::FUNC_DEC)
+        {
+            SemanticError(root->children[0]->attribute->line, "variable declaration :" + ChildLiteral(root, 1) + " is not in the outermost block");
+        }
         if (AssertNotDefinedInCurrentScope(current_scope, Child(root, 1)))
         {
             InsertLocalVar(current_scope, ChildLiteral(root, 1), NodeToData(ChildType(root, 0)), Child(root, 1));
@@ -369,8 +371,6 @@ void BuildSymbolTable(AST *root, std::string current_scope)
     TypeCheck(root);
 }
 
-
-
 // lookup the type of a particular tree node, even it is not an identifier
 DataType TypeLookup(AST *root)
 {
@@ -389,8 +389,8 @@ DataType TypeLookup(AST *root)
     }
 
     // if the root is logic operation, relation operation, true or false
-    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) || 
-    isEqual(root, BIN_RELATION)||isEqual(root,EQUIVALENCE))
+    if (isEqual(root, BIN_LOGIC) || isEqual(root, UN_LOGIC) || isEqual(root, BOOLEAN) || isEqual(root, TRUE) || isEqual(root, FALSE) ||
+        isEqual(root, BIN_RELATION) || isEqual(root, EQUIVALENCE))
     {
         return DataType::BOOL;
     }
@@ -412,7 +412,6 @@ DataType TypeLookup(AST *root)
     {
         return DataType::STRING;
     }
-
 
     // if the node is VOID
     if (root->type == NodeType::VOID)
@@ -444,7 +443,6 @@ void TypeCheck(AST *root)
         }
     }
 
-
     // both side should be number
     if (isEqual(root, BIN_ARITHMETIC))
     {
@@ -472,7 +470,6 @@ void TypeCheck(AST *root)
         }
     }
 
-
     // both side should be boolean
     if (isEqual(root, BIN_LOGIC))
     {
@@ -495,7 +492,10 @@ void TypeCheck(AST *root)
     {
         DataType c = TypeLookup(Child(root, 0));
 
-        SemanticError(root->attribute->line, "binary boolean operator " + root->symbol + " has Non BOOLEAN type.");
+        if (c != DataType::BOOL)
+        {
+            SemanticError(root->attribute->line, "unary boolean operator " + root->symbol + " has Non BOOLEAN type.");
+        }
     }
 
     // both side should be number
@@ -516,17 +516,16 @@ void TypeCheck(AST *root)
         }
     }
 
-    if(isEqual(root,EQUIVALENCE))
+    if (isEqual(root, EQUIVALENCE))
     {
         DataType lhs = TypeLookup(Child(root, 0));
         DataType rhs = TypeLookup(Child(root, 1));
 
-        if(lhs != rhs || (lhs!=DataType::INT&&lhs!=DataType::BOOL))
+        if (lhs != rhs || (lhs != DataType::INT && lhs != DataType::BOOL))
         {
-             SemanticError(root->attribute->line, "equivalence check"+root->symbol+"has mismatched type.");
+            SemanticError(root->attribute->line, "equivalence check" + root->symbol + "has mismatched type.");
         }
     }
-
 
     // check if the condition is boolean
     if (isEqual(root, WHILE))
@@ -580,7 +579,6 @@ void TypeCheck(AST *root)
     }
 }
 
-
 // some additionl check: non-void function return, break in main, function return type is correct
 void FinalCheck(AST *root, std::string current_scope)
 {
@@ -630,13 +628,11 @@ void FinalCheck(AST *root, std::string current_scope)
     }
 }
 
-
-
 void yysemantic(AST *root)
 {
     CollectGlobal(root);
     MainDefined();
-    BuildSymbolTable(root,""); 
-    FinalCheck(root,"");
-    PrettyPrint(root,0);
+    BuildSymbolTable(root, "");
+    FinalCheck(root, "");
+    PrettyPrint(root, 0);
 }

@@ -37,7 +37,7 @@ public:
     IdentifierRecord* id_record=nullptr;
 
     ATR *attribute=nullptr;
-
+    std::string break_label;
 
     AST(NodeType, std::string);
 

@@ -1,0 +1,9 @@
+main()
+{
+
+    if(true)
+    {
+        int x;
+    }
+    x=1;
+}
