@@ -9,10 +9,7 @@
 #define DATA_SIZE 4
 
 const std::unordered_map<std::string, std::string> BinaryInstruction{
-    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, 
-    {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, 
-    {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"},
-    {"&&","and"},{"||","or"}};
+    {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}, {"&&", "and"}, {"||", "or"}};
 
 std::unordered_map<std::string, std::string> VarLabel;
 std::unordered_map<std::string, std::string> FuncLabel =
@@ -64,6 +61,7 @@ void GenGlobalVar(AST *root)
         ASM("    .data");
         ASM("    .align 2");
         ASM(label + ":    .space 4");
+        ASM("   .text");
         EMPTY_LINE;
     }
 }
@@ -77,7 +75,7 @@ void GenID(AST *root)
 {
     if (root->type == NodeType::IDENTIFIER)
     {
-        ASM1("# Grab ID")
+        ASM1("# Grab ID: "+root->attribute->literal)
         if (root->f_record)
         {
             // ASM1("la     $a0, " + FuncLabel.find(root->attribute->literal)->second);
@@ -95,6 +93,8 @@ void GenID(AST *root)
                 ASM1("lw    $a0, " + std::to_string(4 + 4 * root->id_record->stackPosition) + "($fp)");
             }
         }
+        ASM1("# ID grabbed");
+        EMPTY_LINE;
     }
 }
 
@@ -150,7 +150,7 @@ void GenFuncDec(AST *root)
         int num_params = GLOBAL_FUNC.find(ChildLiteral(root, 1))->second.paramType.size();
         int num_local = SYMBOL_TABLE.find(ChildLiteral(root, 1))->second.size() - num_params;
 
-        ASM1("# Begin of Function Declaration");
+        ASM1("# Begin of Function Declaration: " + ChildLiteral(root, 1));
         ASM1(".text")
 
         std::string label = FuncLabel.find(ChildLiteral(root, 1))->second;
@@ -182,7 +182,7 @@ void GenFuncDec(AST *root)
         // jump return
         ASM1("jr    $ra");
 
-        ASM1("# End of Function Declaration");
+        ASM1("# End of Function Declaration:" + ChildLiteral(root, 1));
         EMPTY_LINE;
         EMPTY_LINE;
     }
@@ -195,7 +195,7 @@ void GenFuncCall(AST *root)
 {
     if (root->type == NodeType::FUNC_CALL)
     {
-        ASM1("# Function Call Setup")
+        ASM1("# Function Call Setup:" + ChildLiteral(root, 0))
         ASM1("sw    $fp, 0($sp)"); // store FP
         ASM1("subu  $sp, $sp, 4"); // expand the stack
 
@@ -224,6 +224,8 @@ void GenFuncCall(AST *root)
         std::string function_label = FuncLabel.find(ChildLiteral(root, 0))->second;
         // jump and link
         ASM1("jal   " + function_label);
+        EMPTY_LINE;
+        EMPTY_LINE;
     }
 }
 
@@ -232,8 +234,9 @@ void GenNumber(AST *root)
 {
     if (root->type == NodeType::NUMBER)
     {
-        ASM1("# Generate Number")
+        ASM1("# Generate Number: " + root->attribute->literal)
         ASM1("li    $a0, " + root->attribute->literal); // load the literal
+        EMPTY_LINE;
     }
 }
 
@@ -242,11 +245,15 @@ void GenBoolean(AST *root)
 {
     if (root->type == NodeType::TRUE)
     {
+        ASM1("# Generate Boolean: True");
         ASM1("li    $a0, 1"); // true
+        EMPTY_LINE;
     }
     if (root->type == NodeType::FALSE)
     {
+        ASM1("# Generate Boolean: False");
         ASM1("li    $a0, 0"); // false
+        EMPTY_LINE;
     }
 }
 
@@ -265,6 +272,7 @@ void GenString(AST *root)
 
         // load onto the top of the stack
         ASM1("la    $a0, str_" + str_label);
+        EMPTY_LINE;
     }
 }
 
@@ -276,7 +284,7 @@ void GenCondition(AST *root)
         std::string true_label = GenLabel();
         std::string false_label = GenLabel();
         std::string end_label = GenLabel();
-
+        ASM1("# Generate IF-ELSE block: " + true_label + ", " + false_label + ", " + end_label);
         // branch check
         ASM1("beq   $a0, 1, " + true_label);
 
@@ -293,18 +301,24 @@ void GenCondition(AST *root)
 
         // just keep it empty
         ASM(end_label + ":");
+
+        EMPTY_LINE;
     }
 
     if (root->type == NodeType::IF)
     {
+
         GenCode(Child(root, 0));
         std::string end_label = GenLabel();
+
+        ASM1("# Generate IF block: " + end_label);
         // branch check
         ASM1("beq   $a0, 0, " + end_label);
         // otherwise, true, do this
         GenCode(Child(root, 1));
         // just keep it empty
         ASM(end_label + ":");
+        EMPTY_LINE;
     }
 }
 
@@ -312,12 +326,14 @@ void GenBreak(AST *root)
 {
     if (root->type == NodeType::BREAK)
     {
-        while (root->type!=NodeType::WHILE)
+        while (root->type != NodeType::WHILE)
         {
             root = root->parent;
         }
 
-        ASM1("b     "+root->break_label);
+        ASM1("# Generate Break: " + root->break_label);
+        ASM1("b     " + root->break_label);
+        EMPTY_LINE;
     }
 }
 
@@ -329,6 +345,8 @@ void GenWhile(AST *root)
         std::string test_label = GenLabel();
         std::string body_label = GenLabel();
         std::string end_label = GenLabel();
+
+        ASM1("# Generate WHILE block: " + test_label + ", " + body_label + ", " + end_label);
 
         root->break_label = end_label;
 
@@ -349,27 +367,29 @@ void GenWhile(AST *root)
         // just keep it empty
         ASM1("# WHILE END");
         ASM(end_label + ":");
+
+        EMPTY_LINE;
     }
 }
 
 // the result would be register $a0
 void GenExpr(AST *root)
 {
-    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE||root->type == NodeType::BIN_LOGIC)
+    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE || root->type == NodeType::BIN_LOGIC)
     {
-
+        ASM1("# Evaluate a binary expression, return will be in $a0");
         GenCode(Child(root, 0)); // get lhs
         ASM1("sw    $a0, 0($sp)");
         ASM1("subu  $sp, $sp, 4"); // tempory store on the stack
         GenCode(Child(root, 1));   // get rhs
 
         ASM1("lw    $t0, 4($sp)"); // lhs on the temp 1
-        ASM1("addiu  $sp, $sp, 4")  // restore the stack
+        ASM1("addiu  $sp, $sp, 4") // restore the stack
 
         // store result on the $a0
         ASM1(BinaryInstruction.find(root->symbol)->second + "    $a0, $t0,$a0 "); // the result is on the temp 0
+        EMPTY_LINE;
     }
-
 
     if (root->type == NodeType::ASSIGN)
     {
@@ -386,24 +406,31 @@ void GenExpr(AST *root)
         else
         {
             // local variable, generate value, assign = store in the stack
-            ASM1("sw    $a0, " + std::to_string(4 + 4 * root->children[0]->id_record->stackPosition) + "($fp)");
+            ASM1("sw    $a0, " + std::to_string(4 + 4 * (root->children[0]->id_record->stackPosition+1)) + "($fp)");
         }
+        EMPTY_LINE;
     }
 
     if (root->type == NodeType::UN_ARITHMETIC)
     {
+        ASM1("# unary arithmetic -");
         GenCode(Child(root, 0));
         ASM1("negu  $a0, $a0");
+        EMPTY_LINE;
     }
 
     if (root->type == NodeType::UN_LOGIC)
     {
+        ASM1("# unary logic !");
         GenCode(Child(root, 0));
         ASM1("xori  $a0, $a0,1");
+        EMPTY_LINE;
     }
 
     if (root->type == NodeType::RETURN)
     {
+
+        ASM1("# RETURN");
         if (!root->children.empty())
         {
             GenCode(root->children[0]);
@@ -417,6 +444,7 @@ void GenExpr(AST *root)
         ASM1("lw    $fp, 0($sp)");
         // jump return
         ASM1("jr    $ra");
+        EMPTY_LINE;
     }
 }
 
@@ -571,6 +599,7 @@ void GenPreclude()
 
     EMPTY_LINE;
     EMPTY_LINE;
+
     // getchar
     ASM("getchar:");
     ASM1("move  $fp, $sp");
@@ -581,7 +610,7 @@ void GenPreclude()
     ASM1("li    $v0, 12");
     ASM1("syscall");
     // move to $a0
-    ASM1("addiu  $a0, $v0, 0");
+    ASM1("move  $a0, $v0");
 
     // load back the return address
     ASM1("lw    $ra, 4($sp)");
