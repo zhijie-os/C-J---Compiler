@@ -1,5 +1,5 @@
 .text 
-.globl main
+#.globl main
 
 main:
 	li $v0, 12

@@ -20,7 +20,7 @@ int label_count = 0;
 
 /**
  * Generate from 'PROGRAM' to leaves
- *
+ * 
  */
 void yycodegen(AST *root)
 {
@@ -685,6 +685,12 @@ void GenPreclude()
     ASM1("addiu  $sp, $sp, 4");
     // jump return
     ASM1("jr    $ra");
+
+
+
+    // the function
+    
+
 
     ASM1("# End of predefined functions")
 
