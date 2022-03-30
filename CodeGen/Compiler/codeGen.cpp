@@ -306,8 +306,8 @@ void GenCondition(AST *root)
         std::string end_label = GenLabel();
         ASM1("# Generate IF-ELSE block: " + true_label + ", " + false_label + ", " + end_label);
         // branch check
-        ASM1("beq   $a0, 1, " + true_label);
-
+        ASM1("bne   $a0, 1, " + false_label);
+        ASM1("j     "+true_label);
         // if failed, goes in to false_label
         ASM(false_label + ":");
         // gen code for the code inside the label;
@@ -329,11 +329,14 @@ void GenCondition(AST *root)
     {
 
         GenCode(Child(root, 0));
+        std::string true_label = GenLabel();
         std::string end_label = GenLabel();
 
         ASM1("# Generate IF block: " + end_label);
         // branch check
-        ASM1("beq   $a0, 0, " + end_label);
+        ASM1("bne   $a0, 0, " +true_label );
+        ASM1("j     "+end_label);
+        ASM1(true_label+":");
         // otherwise, true, do this
         GenCode(Child(root, 1));
         // just keep it empty
@@ -376,7 +379,8 @@ void GenWhile(AST *root)
 
         ASM1("# WHILE BODY");
         // branch check
-        ASM1("beq   $a0, 0, " + end_label);
+        ASM1("bne   $a0, 0, " + body_label);
+        ASM1("j " + end_label);
 
         // if failed, goes in to false_label
         ASM(body_label + ":");
