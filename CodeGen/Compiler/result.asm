@@ -26429,7 +26429,10 @@ Label_561:
    lw     $ra, 4($sp)
    addiu  $sp, $sp, 4
    addiu  $sp, $sp, 16
-   li    $v0,10
+   
+   li    $v0, 17
+   syscall 
+   li    $v0, 10
    syscall
 
 
