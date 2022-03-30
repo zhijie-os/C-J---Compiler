@@ -1,9 +1,18 @@
 main()
 {
 
-    if(true)
+    int i;
+    i=0;
+    int j;
+    j=0;
+    while(i<5)
     {
-        int x;
+
+        while(j<5)
+        {   
+            printi(1);
+            j=j+1;
+        }
+        i=i+1;
     }
-    x=1;
 }
