@@ -18,5 +18,8 @@ int baz(int a) {
 
 int main() {
 	d = 10;
-    std::cout << foo(1, bar(2, baz(3), 4), bar(5, baz(6), 7), baz(8)) << std::endl;
+	int p2=bar(2, baz(3), 4);
+	int p3=bar(5, baz(6), 7);
+	int p4=baz(8);
+    std::cout << foo(1, p2 , p3 , p4) << std::endl;
 }

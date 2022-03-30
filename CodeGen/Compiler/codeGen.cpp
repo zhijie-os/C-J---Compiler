@@ -235,9 +235,13 @@ void GenFuncCall(AST *root)
         for (int i = Child(root, 1)->children.size() - 1; i >= 0; i--)
         {
             ASM1("# Create Actuals")
-            GenCode(Child(root, 1)->children[i]);
-            ASM1("sw    $a0, 0($sp)");
             ASM1("subu  $sp, $sp, 4");
+        }
+
+        for(int i =0; i< Child(root,1)->children.size();i++)
+        {
+            GenCode(Child(root, 1)->children[i]);
+            ASM1("sw    $a0,"+std::to_string(4+4*i) +"($sp)");
         }
 
         // look up the function label

@@ -1,6 +1,6 @@
-#line 2 "scanner.flex.cpp"
+#line 1 "scanner.flex.cpp"
 
-#line 4 "scanner.flex.cpp"
+#line 3 "scanner.flex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -548,10 +548,10 @@ char *yytext;
 
     int num_lexer_error=0;
 
-#line 552 "scanner.flex.cpp"
+#line 551 "scanner.flex.cpp"
 
 /* regular definition */
-#line 555 "scanner.flex.cpp"
+#line 554 "scanner.flex.cpp"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -773,7 +773,7 @@ YY_DECL
 #line 30 "scanner.l"
 
 
-#line 777 "scanner.flex.cpp"
+#line 776 "scanner.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1078,7 +1078,7 @@ YY_RULE_SETUP
 #line 85 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1082 "scanner.flex.cpp"
+#line 1081 "scanner.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
