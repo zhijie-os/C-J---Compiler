@@ -20,7 +20,7 @@ public:
     ATR();
 
     ATR(int);
-    ATR(int, std::string, int);
+    ATR(int, const char *, int);
 };
 
 class AST

@@ -8,11 +8,15 @@ ATR::ATR(int l)
     literal_length=0;
 }
 
-ATR::ATR(int l, std::string s, int length)
+ATR::ATR(int l, const char *s, int length)
 {
     line = l;
     literal = "";
-    literal.append(s);
+    literal.resize(length);
+    for(int i=0;i<length;i++)
+    {
+        literal[i]=s[i];
+    }
     literal_length = length;
 }
 

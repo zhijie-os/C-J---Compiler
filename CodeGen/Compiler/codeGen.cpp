@@ -230,17 +230,36 @@ void GenFuncCall(AST *root)
             }
         }
 
-        // for every actual, push on the stack but backwards
-        for (int i = Child(root, 1)->children.size() - 1; i >= 0; i--)
+        if (ChildLiteral(root, 0) == "prints")
         {
-            ASM1("# Create Actuals")
+            ASM1("li    $a0, 0");
+            ASM1("sw    $a0, 0($sp)");
+            ASM1("subu  $sp, $sp, 4");
+
+            
+            GenCode(Child(root, 1)->children[0]);
+            ASM1("sw    $a0, 0($sp)");
+            ASM1("subu  $sp, $sp, 4");
+
+
+            ASM1("li    $a0, " + std::to_string(Child(Child(root, 1), 0)->attribute->literal_length));
+            ASM1("sw    $a0, 0($sp)");
             ASM1("subu  $sp, $sp, 4");
         }
-
-        for (int i = 0; i < Child(root, 1)->children.size(); i++)
+        else
         {
-            GenCode(Child(root, 1)->children[i]);
-            ASM1("sw    $a0," + std::to_string(4 + 4 * i) + "($sp)");
+            // for every actual, push on the stack but backwards
+            for (int i = Child(root, 1)->children.size() - 1; i >= 0; i--)
+            {
+                ASM1("# Create Actuals")
+                ASM1("subu  $sp, $sp, 4");
+            }
+
+            for (int i = 0; i < Child(root, 1)->children.size(); i++)
+            {
+                GenCode(Child(root, 1)->children[i]);
+                ASM1("sw    $a0," + std::to_string(4 + 4 * i) + "($sp)");
+            }
         }
 
         // look up the function label
@@ -289,13 +308,66 @@ void GenString(AST *root)
         // create new string data
         ASM1("  .data");
         ASM1("  .align 4");
-        ASM1("str_" + str_label + ": .asciiz \"" + root->attribute->literal + "\"");
 
+        std::string str_literal = str_label + ": .word";
+
+        int i = 0;
+        int j = 0;
+        while (i < root->attribute->literal_length)
+        {
+            if (root->attribute->literal[i] == '\\' && i + 1 < root->attribute->literal_length)
+            {
+                switch (root->attribute->literal[i + 1])
+                {
+                case 'b':
+                    str_literal += " " + std::to_string(8);
+                    break;
+                case 'f':
+                    str_literal += " " + std::to_string(8);
+                    break;
+                case 't':
+                    str_literal += " " + std::to_string(9);
+                    break;
+                case 'r':
+                    str_literal += " " + std::to_string(13);
+                    break;
+                case 'n':
+                    str_literal += " " + std::to_string(10);
+                    break;
+                case '\'':
+                    str_literal += " " + std::to_string(39);
+                    break;
+                case '\"':
+                    str_literal += " " + std::to_string(34);
+                    break;
+                case '\\':
+                    str_literal += " " + std::to_string(92);
+                    break;
+                default:
+                    str_literal += " " + std::to_string((int)root->attribute->literal[i]);
+                    i--;
+                    break;
+                }
+                i += 2;
+                j++;
+            }
+            else
+            {
+                str_literal += " " + std::to_string((int)root->attribute->literal[i]);
+                i++;
+                j++;
+            }
+            
+        }
+
+        root->attribute->literal_length=j;
+
+        ASM1(str_literal);
         // back to text
         ASM1("  .text");
 
         // load onto the top of the stack
-        ASM1("la    $a0, str_" + str_label);
+        ASM1("la    $a0," + str_label);
         EMPTY_LINE;
     }
 }
@@ -414,14 +486,13 @@ void GenExpr(AST *root)
         ASM1("lw    $t0, 4($sp)"); // lhs on the temp 1
         ASM1("addiu  $sp, $sp, 4") // restore the stack
 
-
         std::string op_label = BinaryInstruction.find(root->symbol)->second;
-        if(op_label=="div")
+        if (op_label == "div")
         {
             std::string end_label = GenLabel();
-            ASM1("bne   $a0, 0, "+end_label);
+            ASM1("bne   $a0, 0, " + end_label);
             ASM1("j     div0");
-            ASM1(end_label+":");
+            ASM1(end_label + ":");
         }
         // store result on the $a0
         ASM1(op_label + "    $a0, $t0,$a0 "); // the result is on the temp 0
@@ -562,8 +633,6 @@ void GenPreclude()
     ASM1("li    $v0, 10");
     ASM1("syscall");
 
-
-
     // print int
     ASM1(".text");
     ASM("printi:");
@@ -605,11 +674,28 @@ void GenPreclude()
     ASM1("sw    $fp, 0($sp)");
     ASM1("subu  $sp, $sp,4");
 
-    ASM1("move  $fp, $sp");
+    ASM("ps_test:");
+    ASM1("lw  $t0, 20($sp)");
+    ASM1("lw  $t1, 12($sp)");
+    ASM1("bge $t0, $t1, ps_end");
 
-    ASM1("lw    $a0, 12($fp)");
-    ASM1("li    $v0, 4");
+    ASM("ps_body:");
+    ASM1("lw  $a0, 16($sp)");
+    ASM1("lw  $t0, 20($sp)");
+    ASM1("mul $t0, $t0, 4");
+
+    ASM1("addu $a0, $a0, $t0");
+
+    ASM1("lw  $a0, 0($a0)");
+    ASM1("li  $v0, 11");
     ASM1("syscall");
+
+    ASM1("lw  $t0, 20($sp)");
+    ASM1("addiu $t0, 1");
+    ASM1("sw  $t0, 20($sp)");
+    ASM1("j   ps_test");
+
+    ASM("ps_end:")
 
     // load back the FP
     ASM1("lw     $fp, 4($sp)");
@@ -620,7 +706,7 @@ void GenPreclude()
     ASM1("addiu  $sp, $sp, 4");
 
     // shrink the stack
-    ASM1("addiu  $sp, $sp, 4");
+    ASM1("addiu  $sp, $sp, 12");
     // jump return
     ASM1("jr    $ra");
 
@@ -676,18 +762,18 @@ void GenPreclude()
         std::string true_label = GenLabel();
         std::string false_label = GenLabel();
         std::string end_label = GenLabel();
-        
+
         ASM1("lw    $a0, 12($fp)");
-        ASM1("beq   $a0, 0, "+false_label);
+        ASM1("beq   $a0, 0, " + false_label);
 
-        ASM1(true_label+":");
+        ASM1(true_label + ":");
         ASM1("la    $a0, true_label");
-        ASM1("j     "+end_label);
+        ASM1("j     " + end_label);
 
-        ASM1(false_label+":");
+        ASM1(false_label + ":");
         ASM1("la    $a0, false_label");
 
-        ASM1(end_label+":");
+        ASM1(end_label + ":");
         ASM1("li    $v0, 4");
         ASM1("syscall");
 

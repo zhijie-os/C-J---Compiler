@@ -32,7 +32,7 @@ The parser is located in `Milestone2/Parser` direcotry.
 
 ### How to use the **parser**?
 
-1. compile the scanner using the above instructions.
+1. compile the parser using the above instructions.
 2. run: `./parser <path to the input file>`.
 
 
@@ -47,5 +47,31 @@ The parser is located in `Milestone2/Parser` direcotry.
 
 ### How to use the **Front End**?
 
-1. compile the scanner using the above instructions.
+1. compile the front end using the above instructions.
 2. run: `./main <path to the input file>`.
+
+
+## Final Project: Code Generation
+
+
+
+
+### How to compile the **Code Generator**?
+
+1. cd into `CodeGen/Compiler`
+2. run `make clean`
+3. run `make`
+
+### How to use the **Code Generator**?
+
+1. compile the code generator using the above instructions.
+2. run: `./main <path to the input file> > [file to be redircted into]`.
+
+
+### Where to find **generated code**?
+
+In  `CodeGen/TEST/generated`
+
+### Where to find **output files**?
+
+In  `CodeGen/TEST/output`
