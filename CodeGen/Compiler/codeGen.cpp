@@ -634,31 +634,50 @@ void GenPreclude()
     EMPTY_LINE;
 
     // printb
-    ASM("printb:");
+    {
+        ASM1(".data")
+        ASM("true_label:    .asciiz \"true\"");
+        ASM("false_label:   .asciiz \"false\"");
+        ASM1(".text");
+        ASM("printb:");
 
-    ASM1("sw    $ra, 0($sp)");
-    ASM1("subu  $sp, $sp,4");
-    ASM1("sw    $fp, 0($sp)");
-    ASM1("subu  $sp, $sp,4");
+        ASM1("sw    $ra, 0($sp)");
+        ASM1("subu  $sp, $sp,4");
+        ASM1("sw    $fp, 0($sp)");
+        ASM1("subu  $sp, $sp,4");
 
-    ASM1("move  $fp, $sp");
+        ASM1("move  $fp, $sp");
 
-    ASM1("lw    $a0, 12($fp)");
-    ASM1("li    $v0, 1");
-    ASM1("syscall");
+        std::string true_label = GenLabel();
+        std::string false_label = GenLabel();
+        std::string end_label = GenLabel();
+        
+        ASM1("lw    $a0, 12($fp)");
+        ASM1("beq   $a0, 0, "+false_label);
 
-    // load back the FP
-    ASM1("lw     $fp, 4($sp)");
-    ASM1("addiu  $sp, $sp, 4");
+        ASM1(true_label+":");
+        ASM1("la    $a0, true_label");
+        ASM1("j     "+end_label);
 
-    // load back the return address
-    ASM1("lw     $ra, 4($sp)");
-    ASM1("addiu  $sp, $sp, 4");
-    // shrink the stack
-    ASM1("addiu  $sp, $sp, 4");
-    // jump return
-    ASM1("jr    $ra");
+        ASM1(false_label+":");
+        ASM1("la    $a0, false_label");
 
+        ASM1(end_label+":");
+        ASM1("li    $v0, 4");
+        ASM1("syscall");
+
+        // load back the FP
+        ASM1("lw     $fp, 4($sp)");
+        ASM1("addiu  $sp, $sp, 4");
+
+        // load back the return address
+        ASM1("lw     $ra, 4($sp)");
+        ASM1("addiu  $sp, $sp, 4");
+        // shrink the stack
+        ASM1("addiu  $sp, $sp, 4");
+        // jump return
+        ASM1("jr    $ra");
+    }
     EMPTY_LINE;
     EMPTY_LINE;
 
@@ -676,24 +695,23 @@ void GenPreclude()
 
         ASM1("move  $fp, $sp");
 
-
         // read character by read string......
         ASM1("la    $a0, buffer");
         ASM1("la    $a1, 2");
         ASM1("li    $v0, 8");
         ASM1("syscall");
 
-        std::string  eof=GenLabel();
-        std::string  end=GenLabel();
-        
-                // move to $a0
+        std::string eof = GenLabel();
+        std::string end = GenLabel();
+
+        // move to $a0
         ASM1("lw    $a0, 0($a0)");
-        ASM1("beq   $a0, 0, "+eof);
-        ASM1("j     "+end);
-        ASM(eof+":");
+        ASM1("beq   $a0, 0, " + eof);
+        ASM1("j     " + end);
+        ASM(eof + ":");
         ASM1("li    $a0, -1");
 
-        ASM(end+":");
+        ASM(end + ":");
         // load back the FP
         ASM1("lw     $fp, 4($sp)");
         ASM1("addiu  $sp, $sp, 4");
