@@ -20,7 +20,7 @@ int label_count = 0;
 
 /**
  * Generate from 'PROGRAM' to leaves
- * 
+ *
  */
 void yycodegen(AST *root)
 {
@@ -120,11 +120,10 @@ void GenMain(AST *root)
          *         <- FP
          */
 
-
         ASM1("# function setup")
         ASM1("sw    $ra, 0($sp)");
         ASM1("subu  $sp, $sp, 4");
-        
+
         ASM1("sw    $fp, 0($sp)");
         ASM1("subu  $sp, $sp, 4");
 
@@ -238,10 +237,10 @@ void GenFuncCall(AST *root)
             ASM1("subu  $sp, $sp, 4");
         }
 
-        for(int i =0; i< Child(root,1)->children.size();i++)
+        for (int i = 0; i < Child(root, 1)->children.size(); i++)
         {
             GenCode(Child(root, 1)->children[i]);
-            ASM1("sw    $a0,"+std::to_string(4+4*i) +"($sp)");
+            ASM1("sw    $a0," + std::to_string(4 + 4 * i) + "($sp)");
         }
 
         // look up the function label
@@ -311,7 +310,7 @@ void GenCondition(AST *root)
         ASM1("# Generate IF-ELSE block: " + true_label + ", " + false_label + ", " + end_label);
         // branch check
         ASM1("bne   $a0, 1, " + false_label);
-        ASM1("j     "+true_label);
+        ASM1("j     " + true_label);
         // if failed, goes in to false_label
         ASM(false_label + ":");
         // gen code for the code inside the label;
@@ -338,9 +337,9 @@ void GenCondition(AST *root)
 
         ASM1("# Generate IF block: " + end_label);
         // branch check
-        ASM1("bne   $a0, 0, " +true_label );
-        ASM1("j     "+end_label);
-        ASM1(true_label+":");
+        ASM1("bne   $a0, 0, " + true_label);
+        ASM1("j     " + end_label);
+        ASM1(true_label + ":");
         // otherwise, true, do this
         GenCode(Child(root, 1));
         // just keep it empty
@@ -373,7 +372,7 @@ void GenWhile(AST *root)
         std::string body_label = GenLabel();
         std::string end_label = GenLabel();
 
-        //ASM1("# Generate WHILE block: " + test_label + ", " + body_label + ", " + end_label);
+        // ASM1("# Generate WHILE block: " + test_label + ", " + body_label + ", " + end_label);
 
         root->break_label = end_label;
 
@@ -471,7 +470,7 @@ void GenExpr(AST *root)
         ASM1("addiu  $sp, $sp, 4");
         // shrink the stack
         ASM1("addiu  $sp, $sp, " + std::to_string(numLocal(root) * 4));
-        
+
         // jump return
         ASM1("jr    $ra");
         EMPTY_LINE;
@@ -532,6 +531,7 @@ void Descend(AST *root)
  */
 void GenPreclude()
 {
+
     ASM1("# Start of the predefined functions")
     // halt
     // halt the program
@@ -663,34 +663,48 @@ void GenPreclude()
     EMPTY_LINE;
 
     // getchar
-    ASM("getchar:");
-    ASM1("sw    $ra, 0($sp)");
-    ASM1("subu  $sp, $sp,4");
-    ASM1("sw    $fp, 0($sp)");
-    ASM1("subu  $sp, $sp,4");
+    {
+        ASM1(".data");
+        ASM1("buffer:   .space 4");
 
-    ASM1("move  $fp, $sp");
-    // read char
-    ASM1("li    $v0, 12");
-    ASM1("syscall");
-    // move to $a0
-    ASM1("move  $a0, $v0");
+        ASM1(".text");
+        ASM("getchar:");
+        ASM1("sw    $ra, 0($sp)");
+        ASM1("subu  $sp, $sp,4");
+        ASM1("sw    $fp, 0($sp)");
+        ASM1("subu  $sp, $sp,4");
 
-    // load back the FP
-    ASM1("lw     $fp, 4($sp)");
-    ASM1("addiu  $sp, $sp, 4");
-
-    // load back the return address
-    ASM1("lw     $ra, 4($sp)");
-    ASM1("addiu  $sp, $sp, 4");
-    // jump return
-    ASM1("jr    $ra");
+        ASM1("move  $fp, $sp");
 
 
+        // read character by read string......
+        ASM1("la    $a0, buffer");
+        ASM1("la    $a1, 2");
+        ASM1("li    $v0, 8");
+        ASM1("syscall");
 
+        std::string  eof=GenLabel();
+        std::string  end=GenLabel();
+        
+                // move to $a0
+        ASM1("lw    $a0, 0($a0)");
+        ASM1("beq   $a0, 0, "+eof);
+        ASM1("j     "+end);
+        ASM(eof+":");
+        ASM1("li    $a0, -1");
+
+        ASM(end+":");
+        // load back the FP
+        ASM1("lw     $fp, 4($sp)");
+        ASM1("addiu  $sp, $sp, 4");
+
+        // load back the return address
+        ASM1("lw     $ra, 4($sp)");
+        ASM1("addiu  $sp, $sp, 4");
+        // jump return
+        ASM1("jr    $ra");
+    }
     // the function
-    
-
 
     ASM1("# End of predefined functions")
 

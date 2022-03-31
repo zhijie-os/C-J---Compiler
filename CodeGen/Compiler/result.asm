@@ -72,15 +72,25 @@ printb:
    jr    $ra
 
 
+   .data
+   buffer:   .space 4
+   .text
 getchar:
    sw    $ra, 0($sp)
    subu  $sp, $sp,4
    sw    $fp, 0($sp)
    subu  $sp, $sp,4
    move  $fp, $sp
-   li    $v0, 12
+   la    $a0, buffer
+   la    $a1, 2
+   li    $v0, 8
    syscall
-   move  $a0, $v0
+   lw    $a0, 0($a0)
+   beq   $a0, 0, Label_0
+   j     Label_1
+Label_0:
+   li    $a0, -1
+Label_1:
    lw     $fp, 4($sp)
    addiu  $sp, $sp, 4
    lw     $ra, 4($sp)
@@ -100,7 +110,7 @@ main:
    subu  $sp, $sp, 4
    move  $fp, $sp
    # WHILE TEST
-Label_0:
+Label_2:
    # Evaluate a binary expression, return will be in $a0
    # ASSIGNMENT
    # Function Call Setup:getchar
@@ -111,17 +121,20 @@ Label_0:
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
-   # Generate Number: 0
-   li    $a0, 0
+   # unary arithmetic -
+   # Generate Number: 1
+   li    $a0, 1
+
+   negu  $a0, $a0
 
    lw    $t0, 4($sp)
    addiu  $sp, $sp, 4
    sne    $a0, $t0,$a0 
 
    # WHILE BODY
-   bne   $a0, 0, Label_1
-   j Label_2
-Label_1:
+   bne   $a0, 0, Label_3
+   j Label_4
+Label_3:
    # Function Call Setup:printc
    # Create Actuals
    subu  $sp, $sp, 4
@@ -133,9 +146,9 @@ Label_1:
    jal   printc
 
 
-   j     Label_0
+   j     Label_2
    # WHILE END
-Label_2:
+Label_4:
 
    lw     $fp, 4($sp)
    addiu  $sp, $sp, 4

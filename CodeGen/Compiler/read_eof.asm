@@ -1,5 +1,5 @@
 .data
-char:   .space 2        # Need 2 because of the null byte at the end (I think)
+char:   .space 4        # Need 2 because of the null byte at the end (I think)
 
 .text
 main:
