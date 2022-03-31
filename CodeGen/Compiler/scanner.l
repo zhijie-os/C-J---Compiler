@@ -30,7 +30,7 @@ number  {digit}+
 %% 
 
 "\""                                                  {BEGIN(STRING_L);}
-<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n])*                 {yylval=new AST(NodeType::STRING, "string" ,new ATR(yylineno,yytext)); return STRING_Y;}
+<STRING_L>(\\[bftrn'"\\]|[^"\\\r\n])*                 {yylval=new AST(NodeType::STRING, "string" ,new ATR(yylineno,yytext, yyleng)); return STRING_Y;}
 <STRING_L>"\""                                        {BEGIN(0);}
 <STRING_L>\\[^bftrn'"\\]                              {lexer_string_error("unsupported escape character");}
 <STRING_L>\n                                          {lexer_string_error("newline in string literal");}
@@ -77,8 +77,8 @@ return      {yylval=new AST(NodeType::RETURN, "return",new ATR(yylineno)); retur
 "}"         {return '}';}
 ";"         {return ';';}
 ","         {return ',';}
-{number}    {yylval=new AST(NodeType::NUMBER,"number", new ATR(yylineno,yytext)); return NUMBER;}
-{id}        {yylval=new AST(NodeType::IDENTIFIER, "identifier",new ATR(yylineno,yytext)); return ID;}
+{number}    {yylval=new AST(NodeType::NUMBER,"number", new ATR(yylineno,yytext, yyleng)); return NUMBER;}
+{id}        {yylval=new AST(NodeType::IDENTIFIER, "identifier",new ATR(yylineno,yytext, yyleng)); return ID;}
 
 .           {lexer_general_error();}
 

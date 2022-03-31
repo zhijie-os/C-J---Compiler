@@ -59,7 +59,7 @@ void GenGlobalVar(AST *root)
     {
         std::string label = VarLabel.find(ChildLiteral(root, 1))->second;
         ASM("    .data");
-        ASM("    .align 2");
+        ASM("    .align 4");
         ASM(label + ":    .space 4");
         ASM("   .text");
         EMPTY_LINE;
@@ -288,6 +288,7 @@ void GenString(AST *root)
         std::string str_label = GenLabel();
         // create new string data
         ASM1("  .data");
+        ASM1("  .align 4");
         ASM1("str_" + str_label + ": .asciiz \"" + root->attribute->literal + "\"");
 
         // back to text
@@ -413,8 +414,17 @@ void GenExpr(AST *root)
         ASM1("lw    $t0, 4($sp)"); // lhs on the temp 1
         ASM1("addiu  $sp, $sp, 4") // restore the stack
 
+
+        std::string op_label = BinaryInstruction.find(root->symbol)->second;
+        if(op_label=="div")
+        {
+            std::string end_label = GenLabel();
+            ASM1("bne   $a0, 0, "+end_label);
+            ASM1("j     div0");
+            ASM1(end_label+":");
+        }
         // store result on the $a0
-        ASM1(BinaryInstruction.find(root->symbol)->second + "    $a0, $t0,$a0 "); // the result is on the temp 0
+        ASM1(op_label + "    $a0, $t0,$a0 "); // the result is on the temp 0
         EMPTY_LINE;
     }
 
@@ -540,6 +550,20 @@ void GenPreclude()
     ASM1("li    $v0, 10"); // load instruction 10
     ASM1("syscall");       // exit via syscall
 
+    // div by zero error
+    ASM1(".data");
+    ASM1(".align 4");
+    ASM1("div_by_zero: .asciiz \"Exception: div by zero......\n\"");
+    ASM1(".text")
+    ASM("div0:")
+    ASM1("la    $a0, div_by_zero");
+    ASM1("li    $v0, 4");
+    ASM1("syscall")
+    ASM1("li    $v0, 10");
+    ASM1("syscall");
+
+
+
     // print int
     ASM1(".text");
     ASM("printi:");
@@ -635,7 +659,8 @@ void GenPreclude()
 
     // printb
     {
-        ASM1(".data")
+        ASM1(".data");
+        ASM1(".align 4");
         ASM("true_label:    .asciiz \"true\"");
         ASM("false_label:   .asciiz \"false\"");
         ASM1(".text");
@@ -684,6 +709,7 @@ void GenPreclude()
     // getchar
     {
         ASM1(".data");
+        ASM1(".align 4")
         ASM1("buffer:   .space 4");
 
         ASM1(".text");

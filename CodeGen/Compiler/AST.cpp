@@ -5,12 +5,15 @@ ATR::ATR(int l)
 {
     line = l;
     literal = "";
+    literal_length=0;
 }
 
-ATR::ATR(int l, std::string s)
+ATR::ATR(int l, std::string s, int length)
 {
     line = l;
-    literal = s;
+    literal = "";
+    literal.append(s);
+    literal_length = length;
 }
 
 AST::AST(NodeType t, std::string str)
@@ -110,11 +113,13 @@ void PrettyPrint(AST *root,  int level)
     {
         // print the line number
         std::cerr << " { line: " << root->attribute->line;
-        if (!root->attribute->literal.empty())
+        if (root->attribute->literal_length>0)
         {
             // print the literal
             std::cerr << ", "
                       << "literal: " << root->attribute->literal;
+            std::cerr << ", "
+                      << "liter_length: " << root->attribute->literal_length;
         }
         if (root->type == NodeType::IDENTIFIER)
         {

@@ -16,11 +16,11 @@ class ATR
 public:
     int line;
     std::string literal;
-
+    int literal_length;
     ATR();
 
     ATR(int);
-    ATR(int, std::string);
+    ATR(int, std::string, int);
 };
 
 class AST
