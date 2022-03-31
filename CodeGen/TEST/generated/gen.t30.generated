@@ -1,0 +1,230 @@
+   # Start of the predefined functions
+   .text
+halt:
+   li    $v0, 10
+   syscall
+   .data
+   .align 4
+   div_by_zero: .asciiz "Exception: div by zero......
+"
+   .text
+div0:
+   la    $a0, div_by_zero
+   li    $v0, 4
+   syscall
+   li    $v0, 10
+   syscall
+   .text
+printi:
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   lw    $a0, 12($fp)
+   li    $v0, 1
+   syscall
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 4
+   jr    $ra
+
+
+prints:
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+ps_test:
+   lw  $t0, 20($sp)
+   lw  $t1, 12($sp)
+   bge $t0, $t1, ps_end
+ps_body:
+   lw  $a0, 16($sp)
+   lw  $t0, 20($sp)
+   mul $t0, $t0, 4
+   addu $a0, $a0, $t0
+   lw  $a0, 0($a0)
+   li  $v0, 11
+   syscall
+   lw  $t0, 20($sp)
+   addiu $t0, 1
+   sw  $t0, 20($sp)
+   j   ps_test
+ps_end:
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra,  4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 12
+   jr    $ra
+
+
+printc:
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   lw    $a0, 12($fp)
+   li    $v0, 11
+   syscall
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 4
+   jr    $ra
+
+
+   .data
+   .align 4
+true_label:    .asciiz "true"
+false_label:   .asciiz "false"
+   .text
+printb:
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   lw    $a0, 12($fp)
+   beq   $a0, 0, Label_1
+   Label_0:
+   la    $a0, true_label
+   j     Label_2
+   Label_1:
+   la    $a0, false_label
+   Label_2:
+   li    $v0, 4
+   syscall
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 4
+   jr    $ra
+
+
+   .data
+   .align 4
+   buffer:   .space 4
+   .text
+getchar:
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   la    $a0, buffer
+   la    $a1, 2
+   li    $v0, 8
+   syscall
+   lw    $a0, 0($a0)
+   beq   $a0, 0, Label_3
+   j     Label_4
+Label_3:
+   li    $a0, -1
+Label_4:
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   jr    $ra
+   # End of predefined functions
+
+
+   # Begin of Function Declaration: foo
+   .text
+Label_5:
+   # function setup
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   # Evaluate a binary expression, return will be in $a0
+   # Evaluate a binary expression, return will be in $a0
+   # Grab ID: x
+   lw    $a0, 12($fp)
+   # ID grabbed
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   # Grab ID: x
+   lw    $a0, 12($fp)
+   # ID grabbed
+
+   lw    $t0, 4($sp)
+   addiu  $sp, $sp, 4
+   mul    $a0, $t0,$a0 
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   # Generate Number: 0
+   li    $a0, 0
+
+   lw    $t0, 4($sp)
+   addiu  $sp, $sp, 4
+   slt    $a0, $t0,$a0 
+
+   # Generate IF block: Label_7
+   bne   $a0, 0, Label_6
+   j     Label_7
+   Label_6:
+   # RETURN
+   # Generate Number: 123
+   li    $a0, 123
+
+   lw    $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw    $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 4
+   jr    $ra
+
+Label_7:
+
+   lw    $fp, 4($sp)
+   addiu $sp, $sp, 4
+   lw    $ra, 4($sp)
+   addiu $sp, $sp, 4
+   addiu  $sp, $sp, 4
+   jr    $ra
+   # End of Function Declaration:foo
+
+
+   .text
+   .globl main
+main:
+   # function setup
+   sw    $ra, 0($sp)
+   subu  $sp, $sp, 4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp, 4
+   move  $fp, $sp
+   # Function Call Setup:foo
+   # Create space for local variables
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # unary arithmetic -
+   # Generate Number: 1
+   li    $a0, 1
+
+   negu  $a0, $a0
+
+   sw    $a0,4($sp)
+   jal   Label_5
+
+
+   lw     $fp, 4($sp)
+   addiu  $sp, $sp, 4
+   lw     $ra, 4($sp)
+   addiu  $sp, $sp, 4
+   addiu  $sp, $sp, 0
+   li    $v0,10
+   syscall
+
+

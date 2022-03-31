@@ -1,48 +1,64 @@
 #include "codeGen.h"
 #include "semantic.h"
 
-#define ASM(x) std::cout << x << std::endl;
-#define ASM1(x) std::cout << "   " << x << std::endl;
-#define ASM2(x) std::cout << "       " << x << std::endl;
-#define EMPTY_LINE std::cout << std::endl;
+/**
+ *  predefined macros 
+ */
 
-#define DATA_SIZE 4
 
+#define ASM(x) std::cout << x << std::endl;                 // print a line with no indentation
+#define ASM1(x) std::cout << "   " << x << std::endl;       // print a line with a tab preceding
+#define ASM2(x) std::cout << "       " << x << std::endl;   // print a line with two tabs preceding
+#define EMPTY_LINE std::cout << std::endl;                  // print an empty line
+
+
+// operator lookup table
 const std::unordered_map<std::string, std::string> BinaryInstruction{
     {"==", "seq"}, {"!=", "sne"}, {">", "sgt"}, {">=", "sge"}, {"<", "slt"}, {"<=", "sle"}, {"+", "addu"}, {"-", "subu"}, {"*", "mul"}, {"/", "div"}, {"%", "rem"}, {"&&", "and"}, {"||", "or"}};
 
+// variable label lookup table
 std::unordered_map<std::string, std::string> VarLabel;
+
+
+// function label loopup table
 std::unordered_map<std::string, std::string> FuncLabel =
     {
         {"printi", "printi"}, {"printc", "printc"}, {"printb", "printb"}, {"prints", "prints"}, {"getchar", "getchar"}, {"halt", "halt"}};
 
+
+// label counter: auto increament when assign a new label
 int label_count = 0;
 
 /**
  * Generate from 'PROGRAM' to leaves
- *
  */
 void yycodegen(AST *root)
 {
-    GenPreclude();
-    GenLabels(root);
-    for (auto c : root->children)
+    GenPreclude();                  // generate code for predefined funcitons
+    GenLabels(root);                // generate labels for the global declared functions and variables
+    
+    for (auto c : root->children)       // traverse the tree
     {
         GenCode(c);
     }
 }
 
+/**
+ *  Generate labels for the global declared functions and variables
+ */
 void GenLabels(AST *root)
 {
     for (auto c : root->children)
     {
         if (c->type == NodeType::FUNC_DEC)
         {
+            // if it is a global function, insert the label in the look up table
             std::string l = GenLabel();
             FuncLabel.insert({ChildLiteral(c, 1), l}); // to look up
         }
         if (c->type == NodeType::GLOBAL_VAR_DEC)
         {
+            // if it is a global variable, insert the label in the look up table
             std::string l = GenLabel();
             VarLabel.insert({ChildLiteral(c, 1), l}); // to look up
         }
