@@ -339,7 +339,7 @@ void GenString(AST *root)
                     str_literal += " " + std::to_string(8);
                     break;
                 case 'f':
-                    str_literal += " " + std::to_string(8);
+                    str_literal += " " + std::to_string(12);
                     break;
                 case 't':
                     str_literal += " " + std::to_string(9);

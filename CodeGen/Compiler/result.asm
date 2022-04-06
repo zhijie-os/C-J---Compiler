@@ -136,111 +136,85 @@ Label_4:
    # End of predefined functions
 
 
+    .data
+    .align 4
+Label_5:    .space 4
+   .text
+
+   # Begin of Function Declaration: bar
+   .text
+Label_6:
+   # function setup
+   sw    $ra, 0($sp)
+   subu  $sp, $sp,4
+   sw    $fp, 0($sp)
+   subu  $sp, $sp,4
+   move  $fp, $sp
+   # ASSIGNMENT
+   # Generate Number: 12345
+   li    $a0, 12345
+
+   la    $t0, Label_5
+   sw    $a0, 0($t0)
+
+   lw    $fp, 4($sp)
+   addiu $sp, $sp, 4
+   lw    $ra, 4($sp)
+   addiu $sp, $sp, 4
+   addiu  $sp, $sp, 0
+   jr    $ra
+   # End of Function Declaration:bar
+
+
    .text
    .globl main
 main:
+   subu  $sp, $sp, 4
    # function setup
    sw    $ra, 0($sp)
    subu  $sp, $sp, 4
    sw    $fp, 0($sp)
    subu  $sp, $sp, 4
    move  $fp, $sp
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_5: .word 97 115 100 102
-     .text
-   la    $a0,Label_5
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 4
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
+   # Function Call Setup:bar
+   # Create space for local variables
+   jal   Label_6
 
 
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_6: .word 8 9 10 12 13 34 39 92
-     .text
-   la    $a0,Label_6
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 8
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_7: .word 1 26
-     .text
-   la    $a0,Label_7
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 2
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Generate Boolean: True
-   li    $a0, 1
-
-   # Generate IF block: Label_9
-   bne   $a0, 0, Label_8
-   j     Label_9
-   Label_8:
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_10: .word 0 32 97 115 100 102
-     .text
-   la    $a0,Label_10
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 6
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-Label_9:
-
-   # Function Call Setup:printc
+   # Function Call Setup:printi
    # Create Actuals
    subu  $sp, $sp, 4
-   # Generate Number: 0
-   li    $a0, 0
+   # Grab ID: i
+   la    $t0, Label_5
+   lw    $a0, 0($t0)
+   # ID grabbed
 
    sw    $a0,4($sp)
-   jal   printc
+   jal   printi
+
+
+   # ASSIGNMENT
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0, 12($fp)
+
+   # Function Call Setup:printb
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Grab ID: i
+   lw    $a0, 12($fp)
+   # ID grabbed
+
+   sw    $a0,4($sp)
+   jal   printb
 
 
    lw     $fp, 4($sp)
    addiu  $sp, $sp, 4
    lw     $ra, 4($sp)
    addiu  $sp, $sp, 4
-   addiu  $sp, $sp, 0
+   addiu  $sp, $sp, 4
    li    $v0,10
    syscall
 
