@@ -2,15 +2,13 @@
 #include "semantic.h"
 
 /**
- *  predefined macros 
+ *  predefined macros
  */
 
-
-#define ASM(x) std::cout << x << std::endl;                 // print a line with no indentation
-#define ASM1(x) std::cout << "   " << x << std::endl;       // print a line with a tab preceding
-#define ASM2(x) std::cout << "       " << x << std::endl;   // print a line with two tabs preceding
-#define EMPTY_LINE std::cout << std::endl;                  // print an empty line
-
+#define ASM(x) std::cout << x << std::endl;               // print a line with no indentation
+#define ASM1(x) std::cout << "   " << x << std::endl;     // print a line with a tab preceding
+#define ASM2(x) std::cout << "       " << x << std::endl; // print a line with two tabs preceding
+#define EMPTY_LINE std::cout << std::endl;                // print an empty line
 
 // operator lookup table
 const std::unordered_map<std::string, std::string> BinaryInstruction{
@@ -19,12 +17,10 @@ const std::unordered_map<std::string, std::string> BinaryInstruction{
 // variable label lookup table
 std::unordered_map<std::string, std::string> VarLabel;
 
-
 // function label loopup table
 std::unordered_map<std::string, std::string> FuncLabel =
     {
         {"printi", "printi"}, {"printc", "printc"}, {"printb", "printb"}, {"prints", "prints"}, {"getchar", "getchar"}, {"halt", "halt"}};
-
 
 // label counter: auto increament when assign a new label
 int label_count = 0;
@@ -34,10 +30,10 @@ int label_count = 0;
  */
 void yycodegen(AST *root)
 {
-    GenPreclude();                  // generate code for predefined funcitons
-    GenLabels(root);                // generate labels for the global declared functions and variables
-    
-    for (auto c : root->children)       // traverse the tree
+    GenPreclude();   // generate code for predefined funcitons
+    GenLabels(root); // generate labels for the global declared functions and variables
+
+    for (auto c : root->children) // traverse the tree
     {
         GenCode(c);
     }
@@ -252,11 +248,9 @@ void GenFuncCall(AST *root)
             ASM1("sw    $a0, 0($sp)");
             ASM1("subu  $sp, $sp, 4");
 
-            
             GenCode(Child(root, 1)->children[0]);
             ASM1("sw    $a0, 0($sp)");
             ASM1("subu  $sp, $sp, 4");
-
 
             ASM1("li    $a0, " + std::to_string(Child(Child(root, 1), 0)->attribute->literal_length));
             ASM1("sw    $a0, 0($sp)");
@@ -373,10 +367,9 @@ void GenString(AST *root)
                 i++;
                 j++;
             }
-            
         }
 
-        root->attribute->literal_length=j;
+        root->attribute->literal_length = j;
 
         ASM1(str_literal);
         // back to text
@@ -491,7 +484,7 @@ void GenWhile(AST *root)
 // the result would be register $a0
 void GenExpr(AST *root)
 {
-    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE || root->type == NodeType::BIN_LOGIC)
+    if (root->type == NodeType::BIN_ARITHMETIC || root->type == NodeType::BIN_RELATION || root->type == NodeType::EQUIVALENCE)
     {
         ASM1("# Evaluate a binary expression, return will be in $a0");
         GenCode(Child(root, 0)); // get lhs
@@ -512,6 +505,34 @@ void GenExpr(AST *root)
         }
         // store result on the $a0
         ASM1(op_label + "    $a0, $t0,$a0 "); // the result is on the temp 0
+        EMPTY_LINE;
+    }
+
+    if (root->type == NodeType::BIN_LOGIC)
+    {
+        ASM1("# Evaluate a binary logic, return will be in $a0");
+        std::string op_label = BinaryInstruction.find(root->symbol)->second;
+        std::string keep_eval_label = GenLabel();
+        std::string end_label = GenLabel();
+        GenCode(Child(root, 0)); // get lhs
+        if (root->symbol == "&&")
+        {
+            // if LHS is true, keep evaluting RHS
+            ASM1("bne   $a0, 0, "+keep_eval_label);
+            // otherwise, return LHS <=> FALSE
+            ASM1("j     "+end_label);
+        }
+        else if (root->symbol == "||")
+        {
+            // if LHS is false, keep evaluting RHS
+            ASM1("bne   $a0, 1, "+keep_eval_label);
+            // otherwise, return LHS <=> TRUE
+            ASM1("j     "+end_label);
+        }
+        // keep evaluating, the result should be equal to the RHS if enter
+        ASM1(keep_eval_label+":");
+        GenCode(Child(root,1));
+        ASM1(end_label+":");
         EMPTY_LINE;
     }
 

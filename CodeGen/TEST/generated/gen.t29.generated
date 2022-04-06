@@ -439,48 +439,46 @@ Label_11:
    jal   prints
 
 
-   # Evaluate a binary expression, return will be in $a0
-   # Evaluate a binary expression, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
    # Function Call Setup:A
    # Create space for local variables
    jal   Label_8
 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 0, Label_22
+   j     Label_23
+   Label_22:
    # Function Call Setup:B
    # Create space for local variables
    jal   Label_9
 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   and    $a0, $t0,$a0 
+   Label_23:
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_20
+   j     Label_21
+   Label_20:
    # Function Call Setup:C
    # Create space for local variables
    jal   Label_10
 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_21:
 
-   # Generate IF-ELSE block: Label_20, Label_21, Label_22
-   bne   $a0, 1, Label_21
-   j     Label_20
-Label_21:
+   # Generate IF-ELSE block: Label_24, Label_25, Label_26
+   bne   $a0, 1, Label_25
+   j     Label_24
+Label_25:
    # Function Call Setup:prints
    li    $a0, 0
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_23: .word 101 108 115 101 45 112 97 114 116 32 101 120 101 99 117 116 101 100 10
+   Label_27: .word 101 108 115 101 45 112 97 114 116 32 101 120 101 99 117 116 101 100 10
      .text
-   la    $a0,Label_23
+   la    $a0,Label_27
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -490,17 +488,17 @@ Label_21:
    jal   prints
 
 
-   j     Label_22
-Label_20:
+   j     Label_26
+Label_24:
    # Function Call Setup:prints
    li    $a0, 0
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_24: .word 105 102 45 112 97 114 116 32 101 120 101 99 117 116 101 100 10
+   Label_28: .word 105 102 45 112 97 114 116 32 101 120 101 99 117 116 101 100 10
      .text
-   la    $a0,Label_24
+   la    $a0,Label_28
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -510,7 +508,7 @@ Label_20:
    jal   prints
 
 
-Label_22:
+Label_26:
 
    lw    $fp, 4($sp)
    addiu $sp, $sp, 4
@@ -560,9 +558,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_25: .word 120 32 61 32 40 65 32 38 38 32 33 66 41 32 124 124 32 67 44 32 119 105 116 104 32 65 61
+   Label_29: .word 120 32 61 32 40 65 32 38 38 32 33 66 41 32 124 124 32 67 44 32 119 105 116 104 32 65 61
      .text
-   la    $a0,Label_25
+   la    $a0,Label_29
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -590,9 +588,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_26: .word 32 66 61
+   Label_30: .word 32 66 61
      .text
-   la    $a0,Label_26
+   la    $a0,Label_30
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -620,9 +618,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_27: .word 32 67 61
+   Label_31: .word 32 67 61
      .text
-   la    $a0,Label_27
+   la    $a0,Label_31
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -650,9 +648,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_28: .word 10
+   Label_32: .word 10
      .text
-   la    $a0,Label_28
+   la    $a0,Label_32
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -663,15 +661,16 @@ Label_12:
 
 
    # ASSIGNMENT
-   # Evaluate a binary expression, return will be in $a0
-   # Evaluate a binary expression, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
    # Function Call Setup:A
    # Create space for local variables
    jal   Label_8
 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 0, Label_35
+   j     Label_36
+   Label_35:
    # unary logic !
    # Function Call Setup:B
    # Create space for local variables
@@ -680,20 +679,17 @@ Label_12:
 
    xori  $a0, $a0,1
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   and    $a0, $t0,$a0 
+   Label_36:
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_33
+   j     Label_34
+   Label_33:
    # Function Call Setup:C
    # Create space for local variables
    jal   Label_10
 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_34:
 
    sw    $a0, 24($fp)
 
@@ -703,9 +699,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_29: .word 120 61
+   Label_37: .word 120 61
      .text
-   la    $a0,Label_29
+   la    $a0,Label_37
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -732,9 +728,9 @@ Label_12:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_30: .word 10
+   Label_38: .word 10
      .text
-   la    $a0,Label_30
+   la    $a0,Label_38
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -791,335 +787,6 @@ main:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_31: .word 10
-     .text
-   la    $a0,Label_31
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,4($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,8($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_32: .word 10
-     .text
-   la    $a0,Label_32
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,4($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,8($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_33: .word 10
-     .text
-   la    $a0,Label_33
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,4($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,8($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_34: .word 10
-     .text
-   la    $a0,Label_34
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,4($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,8($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_35: .word 10
-     .text
-   la    $a0,Label_35
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,4($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,8($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_36: .word 10
-     .text
-   la    $a0,Label_36
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,4($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,8($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_37: .word 10
-     .text
-   la    $a0,Label_37
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:eval
-   # Create space for local variables
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,4($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,8($sp)
-   # Generate Boolean: True
-   li    $a0, 1
-
-   sw    $a0,12($sp)
-   jal   Label_11
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
-   Label_38: .word 10
-     .text
-   la    $a0,Label_38
-
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   li    $a0, 1
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-   jal   prints
-
-
-   # Function Call Setup:assign
-   # Create space for local variables
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Create Actuals
-   subu  $sp, $sp, 4
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,4($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,8($sp)
-   # Generate Boolean: False
-   li    $a0, 0
-
-   sw    $a0,12($sp)
-   jal   Label_12
-
-
-   # Function Call Setup:prints
-   li    $a0, 0
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
-     .data
-     .align 4
    Label_39: .word 10
      .text
    la    $a0,Label_39
@@ -1132,9 +799,8 @@ main:
    jal   prints
 
 
-   # Function Call Setup:assign
+   # Function Call Setup:eval
    # Create space for local variables
-   subu  $sp, $sp, 4
    # Create Actuals
    subu  $sp, $sp, 4
    # Create Actuals
@@ -1153,7 +819,7 @@ main:
    li    $a0, 1
 
    sw    $a0,12($sp)
-   jal   Label_12
+   jal   Label_11
 
 
    # Function Call Setup:prints
@@ -1174,9 +840,8 @@ main:
    jal   prints
 
 
-   # Function Call Setup:assign
+   # Function Call Setup:eval
    # Create space for local variables
-   subu  $sp, $sp, 4
    # Create Actuals
    subu  $sp, $sp, 4
    # Create Actuals
@@ -1195,7 +860,7 @@ main:
    li    $a0, 0
 
    sw    $a0,12($sp)
-   jal   Label_12
+   jal   Label_11
 
 
    # Function Call Setup:prints
@@ -1216,9 +881,8 @@ main:
    jal   prints
 
 
-   # Function Call Setup:assign
+   # Function Call Setup:eval
    # Create space for local variables
-   subu  $sp, $sp, 4
    # Create Actuals
    subu  $sp, $sp, 4
    # Create Actuals
@@ -1237,7 +901,7 @@ main:
    li    $a0, 1
 
    sw    $a0,12($sp)
-   jal   Label_12
+   jal   Label_11
 
 
    # Function Call Setup:prints
@@ -1258,9 +922,8 @@ main:
    jal   prints
 
 
-   # Function Call Setup:assign
+   # Function Call Setup:eval
    # Create space for local variables
-   subu  $sp, $sp, 4
    # Create Actuals
    subu  $sp, $sp, 4
    # Create Actuals
@@ -1279,7 +942,7 @@ main:
    li    $a0, 0
 
    sw    $a0,12($sp)
-   jal   Label_12
+   jal   Label_11
 
 
    # Function Call Setup:prints
@@ -1300,6 +963,339 @@ main:
    jal   prints
 
 
+   # Function Call Setup:eval
+   # Create space for local variables
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,4($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,8($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,12($sp)
+   jal   Label_11
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_44: .word 10
+     .text
+   la    $a0,Label_44
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:eval
+   # Create space for local variables
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,4($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,8($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,12($sp)
+   jal   Label_11
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_45: .word 10
+     .text
+   la    $a0,Label_45
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:eval
+   # Create space for local variables
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,4($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,8($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,12($sp)
+   jal   Label_11
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_46: .word 10
+     .text
+   la    $a0,Label_46
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:assign
+   # Create space for local variables
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,4($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,8($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,12($sp)
+   jal   Label_12
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_47: .word 10
+     .text
+   la    $a0,Label_47
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:assign
+   # Create space for local variables
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,4($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,8($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,12($sp)
+   jal   Label_12
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_48: .word 10
+     .text
+   la    $a0,Label_48
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:assign
+   # Create space for local variables
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,4($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,8($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,12($sp)
+   jal   Label_12
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_49: .word 10
+     .text
+   la    $a0,Label_49
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:assign
+   # Create space for local variables
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,4($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,8($sp)
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,12($sp)
+   jal   Label_12
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_50: .word 10
+     .text
+   la    $a0,Label_50
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
+   # Function Call Setup:assign
+   # Create space for local variables
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Create Actuals
+   subu  $sp, $sp, 4
+   # Generate Boolean: True
+   li    $a0, 1
+
+   sw    $a0,4($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,8($sp)
+   # Generate Boolean: False
+   li    $a0, 0
+
+   sw    $a0,12($sp)
+   jal   Label_12
+
+
+   # Function Call Setup:prints
+   li    $a0, 0
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+     .data
+     .align 4
+   Label_51: .word 10
+     .text
+   la    $a0,Label_51
+
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   li    $a0, 1
+   sw    $a0, 0($sp)
+   subu  $sp, $sp, 4
+   jal   prints
+
+
    # Function Call Setup:assign
    # Create space for local variables
    subu  $sp, $sp, 4
@@ -1330,9 +1326,9 @@ main:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_44: .word 10
+   Label_52: .word 10
      .text
-   la    $a0,Label_44
+   la    $a0,Label_52
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -1372,9 +1368,9 @@ main:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_45: .word 10
+   Label_53: .word 10
      .text
-   la    $a0,Label_45
+   la    $a0,Label_53
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
