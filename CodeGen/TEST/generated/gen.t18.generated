@@ -960,7 +960,7 @@ Label_15:
    subu  $sp, $sp,4
    move  $fp, $sp
    # RETURN
-   # Evaluate a binary expression, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: ch
    lw    $a0, 12($fp)
@@ -977,8 +977,9 @@ Label_15:
    addiu  $sp, $sp, 4
    sge    $a0, $t0,$a0 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 0, Label_80
+   j     Label_81
+   Label_80:
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: ch
    lw    $a0, 12($fp)
@@ -995,9 +996,7 @@ Label_15:
    addiu  $sp, $sp, 4
    sle    $a0, $t0,$a0 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   and    $a0, $t0,$a0 
+   Label_81:
 
    lw    $fp, 4($sp)
    addiu  $sp, $sp, 4
@@ -1025,8 +1024,8 @@ Label_16:
    subu  $sp, $sp,4
    move  $fp, $sp
    # RETURN
-   # Evaluate a binary expression, return will be in $a0
-   # Evaluate a binary expression, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
+   # Evaluate a binary logic, return will be in $a0
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: ch
    lw    $a0, 12($fp)
@@ -1043,8 +1042,9 @@ Label_16:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_84
+   j     Label_85
+   Label_84:
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: ch
    lw    $a0, 12($fp)
@@ -1061,12 +1061,11 @@ Label_16:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_85:
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_82
+   j     Label_83
+   Label_82:
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: ch
    lw    $a0, 12($fp)
@@ -1083,9 +1082,7 @@ Label_16:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_83:
 
    lw    $fp, 4($sp)
    addiu  $sp, $sp, 4
@@ -1113,7 +1110,7 @@ Label_17:
    subu  $sp, $sp,4
    move  $fp, $sp
    # WHILE TEST
-Label_80:
+Label_86:
    # Evaluate a binary expression, return will be in $a0
    # Function Call Setup:peek
    # Create space for local variables
@@ -1132,9 +1129,9 @@ Label_80:
    sne    $a0, $t0,$a0 
 
    # WHILE BODY
-   bne   $a0, 0, Label_81
-   j Label_82
-Label_81:
+   bne   $a0, 0, Label_87
+   j Label_88
+Label_87:
    # ASSIGNMENT
    # Function Call Setup:E
    # Create space for local variables
@@ -1165,9 +1162,9 @@ Label_81:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_83: .word 32 61 32
+   Label_89: .word 32 61 32
      .text
-   la    $a0,Label_83
+   la    $a0,Label_89
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -1194,9 +1191,9 @@ Label_81:
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_84: .word 10
+   Label_90: .word 10
      .text
-   la    $a0,Label_84
+   la    $a0,Label_90
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -1206,9 +1203,9 @@ Label_81:
    jal   prints
 
 
-   j     Label_80
+   j     Label_86
    # WHILE END
-Label_82:
+Label_88:
 
    lw    $fp, 4($sp)
    addiu $sp, $sp, 4
@@ -1240,8 +1237,8 @@ Label_18:
    sw    $a0, 12($fp)
 
    # WHILE TEST
-Label_85:
-   # Evaluate a binary expression, return will be in $a0
+Label_91:
+   # Evaluate a binary logic, return will be in $a0
    # Evaluate a binary expression, return will be in $a0
    # Function Call Setup:peek
    # Create space for local variables
@@ -1259,8 +1256,9 @@ Label_85:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_94
+   j     Label_95
+   Label_94:
    # Evaluate a binary expression, return will be in $a0
    # Function Call Setup:peek
    # Create space for local variables
@@ -1278,14 +1276,12 @@ Label_85:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_95:
 
    # WHILE BODY
-   bne   $a0, 0, Label_86
-   j Label_87
-Label_86:
+   bne   $a0, 0, Label_92
+   j Label_93
+Label_92:
    # Function Call Setup:match
    # Create space for local variables
    # Create Actuals
@@ -1329,10 +1325,10 @@ Label_86:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   # Generate IF-ELSE block: Label_88, Label_89, Label_90
-   bne   $a0, 1, Label_89
-   j     Label_88
-Label_89:
+   # Generate IF-ELSE block: Label_96, Label_97, Label_98
+   bne   $a0, 1, Label_97
+   j     Label_96
+Label_97:
    # ASSIGNMENT
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: l
@@ -1351,8 +1347,8 @@ Label_89:
 
    sw    $a0, 12($fp)
 
-   j     Label_90
-Label_88:
+   j     Label_98
+Label_96:
    # ASSIGNMENT
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: l
@@ -1371,11 +1367,11 @@ Label_88:
 
    sw    $a0, 12($fp)
 
-Label_90:
+Label_98:
 
-   j     Label_85
+   j     Label_91
    # WHILE END
-Label_87:
+Label_93:
 
    # RETURN
    # Grab ID: l
@@ -1418,8 +1414,8 @@ Label_19:
    sw    $a0, 12($fp)
 
    # WHILE TEST
-Label_91:
-   # Evaluate a binary expression, return will be in $a0
+Label_99:
+   # Evaluate a binary logic, return will be in $a0
    # Evaluate a binary expression, return will be in $a0
    # Function Call Setup:peek
    # Create space for local variables
@@ -1437,8 +1433,9 @@ Label_91:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   sw    $a0, 0($sp)
-   subu  $sp, $sp, 4
+   bne   $a0, 1, Label_102
+   j     Label_103
+   Label_102:
    # Evaluate a binary expression, return will be in $a0
    # Function Call Setup:peek
    # Create space for local variables
@@ -1456,14 +1453,12 @@ Label_91:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   lw    $t0, 4($sp)
-   addiu  $sp, $sp, 4
-   or    $a0, $t0,$a0 
+   Label_103:
 
    # WHILE BODY
-   bne   $a0, 0, Label_92
-   j Label_93
-Label_92:
+   bne   $a0, 0, Label_100
+   j Label_101
+Label_100:
    # Function Call Setup:match
    # Create space for local variables
    # Create Actuals
@@ -1506,10 +1501,10 @@ Label_92:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   # Generate IF-ELSE block: Label_94, Label_95, Label_96
-   bne   $a0, 1, Label_95
-   j     Label_94
-Label_95:
+   # Generate IF-ELSE block: Label_104, Label_105, Label_106
+   bne   $a0, 1, Label_105
+   j     Label_104
+Label_105:
    # ASSIGNMENT
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: l
@@ -1524,15 +1519,15 @@ Label_95:
 
    lw    $t0, 4($sp)
    addiu  $sp, $sp, 4
-   bne   $a0, 0, Label_97
+   bne   $a0, 0, Label_107
    j     div0
-   Label_97:
+   Label_107:
    div    $a0, $t0,$a0 
 
    sw    $a0, 12($fp)
 
-   j     Label_96
-Label_94:
+   j     Label_106
+Label_104:
    # ASSIGNMENT
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: l
@@ -1551,11 +1546,11 @@ Label_94:
 
    sw    $a0, 12($fp)
 
-Label_96:
+Label_106:
 
-   j     Label_91
+   j     Label_99
    # WHILE END
-Label_93:
+Label_101:
 
    # RETURN
    # Grab ID: l
@@ -1611,10 +1606,10 @@ Label_20:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   # Generate IF-ELSE block: Label_98, Label_99, Label_100
-   bne   $a0, 1, Label_99
-   j     Label_98
-Label_99:
+   # Generate IF-ELSE block: Label_108, Label_109, Label_110
+   bne   $a0, 1, Label_109
+   j     Label_108
+Label_109:
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: token
    lw    $a0, 16($fp)
@@ -1631,10 +1626,10 @@ Label_99:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   # Generate IF-ELSE block: Label_101, Label_102, Label_103
-   bne   $a0, 1, Label_102
-   j     Label_101
-Label_102:
+   # Generate IF-ELSE block: Label_111, Label_112, Label_113
+   bne   $a0, 1, Label_112
+   j     Label_111
+Label_112:
    # Evaluate a binary expression, return will be in $a0
    # Grab ID: token
    lw    $a0, 16($fp)
@@ -1651,19 +1646,19 @@ Label_102:
    addiu  $sp, $sp, 4
    seq    $a0, $t0,$a0 
 
-   # Generate IF-ELSE block: Label_104, Label_105, Label_106
-   bne   $a0, 1, Label_105
-   j     Label_104
-Label_105:
+   # Generate IF-ELSE block: Label_114, Label_115, Label_116
+   bne   $a0, 1, Label_115
+   j     Label_114
+Label_115:
    # Function Call Setup:prints
    li    $a0, 0
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
      .data
      .align 4
-   Label_107: .word 69 114 114 111 114 58 32 101 120 112 101 99 116 101 100 32 102 97 99 116 111 114 46 10
+   Label_117: .word 69 114 114 111 114 58 32 101 120 112 101 99 116 101 100 32 102 97 99 116 111 114 46 10
      .text
-   la    $a0,Label_107
+   la    $a0,Label_117
 
    sw    $a0, 0($sp)
    subu  $sp, $sp, 4
@@ -1677,8 +1672,8 @@ Label_105:
    jal   halt
 
 
-   j     Label_106
-Label_104:
+   j     Label_116
+Label_114:
    # Function Call Setup:match
    # Create space for local variables
    # Create Actuals
@@ -1700,10 +1695,10 @@ Label_104:
 
    sw    $a0, 12($fp)
 
-Label_106:
+Label_116:
 
-   j     Label_103
-Label_101:
+   j     Label_113
+Label_111:
    # Function Call Setup:match
    # Create space for local variables
    # Create Actuals
@@ -1730,10 +1725,10 @@ Label_101:
 
    sw    $a0, 12($fp)
 
-Label_103:
+Label_113:
 
-   j     Label_100
-Label_98:
+   j     Label_110
+Label_108:
    # Function Call Setup:match
    # Create space for local variables
    # Create Actuals
@@ -1771,7 +1766,7 @@ Label_98:
    jal   Label_13
 
 
-Label_100:
+Label_110:
 
    # RETURN
    # Grab ID: result

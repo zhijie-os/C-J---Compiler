@@ -1,6 +1,4 @@
-Loaded: /home/profs/aycock/411/sw/share/spim/exceptions.s
- = 10
- = 0
- = 12
- = 0
+Loaded: /usr/share/spim/exceptions.s
+ = 6
+ = 1764
 Exception: div by zero......

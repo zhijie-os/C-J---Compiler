@@ -1,4 +1,4 @@
-Loaded: /home/profs/aycock/411/sw/share/spim/exceptions.s
+Loaded: /usr/share/spim/exceptions.s
 fib(0) = 0
 fib(1) = 1
 fib(2) = 1
@@ -30,8 +30,4 @@ fib(27) = 196418
 fib(28) = 317811
 fib(29) = 514229
 fib(30) = 832040
-fib(31) = 1346269
-fib(32) = 2178309
-fib(33) = 3524578
-fib(34) = 5702887
-fib(35) = 
+fib(31) = 
